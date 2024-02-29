@@ -261,6 +261,6 @@ create table tblRecommendTextbook (
 create table tblLocker (
     seq_locker number primary key,
     seq_equipment references tblEquipment(seq_equipment),
-    seq_traineeList references tblTraineesList(seq_traineeList)
+    seq_traineeList references tblTraineeList(seq_traineeList)
 );
 select * from tblLocker;
