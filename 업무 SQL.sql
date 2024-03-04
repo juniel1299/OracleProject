@@ -63,7 +63,7 @@ on r.seq_room = oc.seq_room;
     select * from tblsubject;
     
     
-    --특정 개설 과정 
+    --특정 개설 과정 (??? 틀린거 같음 아마;)
 select s.name,count(case when g.writtengrade is not null then '있음' end),count(case when g.practicalgrade is not null then '있음' end),count(case when q.seq_question is not null then '있음' end)
 from tblGrades g
 inner join tbltraineelist tl
