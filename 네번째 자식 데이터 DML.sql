@@ -5883,28 +5883,10 @@ VALUES (131, 131, 8, 39, TO_DATE('2024-03-04', 'YYYY-MM-DD'), 31, TO_DATE('2024-
 
 INSERT INTO tblGrades(SEQ_GRADES, SEQ_TRAINEELIST, SEQ_SUBJECTLIST, WRITTENGRADE, WRITTENDATE, PRACTICALGRADE, PRACTICALDATE, ATTENDANCEGRADE)
 VALUES (132, 132, 1, 32, TO_DATE('2024-03-04', 'YYYY-MM-DD'), 31, TO_DATE('2024-03-05', 'YYYY-MM-DD'), 17);
+select * from tbltraineelist;
 
 --사물함
-INSERT INTO tbllocker(seq_locker, seq_equipment, seq_traineelist) VALUES (1, 1, 1);
-INSERT INTO tbllocker(seq_locker, seq_equipment, seq_traineelist) VALUES (2, 1, 2);
-INSERT INTO tbllocker(seq_locker, seq_equipment, seq_traineelist) VALUES (3, 1, 3);
-INSERT INTO tbllocker(seq_locker, seq_equipment, seq_traineelist) VALUES (4, 1, 4);
-INSERT INTO tbllocker(seq_locker, seq_equipment, seq_traineelist) VALUES (5, 1, 5);
-INSERT INTO tbllocker(seq_locker, seq_equipment, seq_traineelist) VALUES (6, 1, 6);
-INSERT INTO tbllocker(seq_locker, seq_equipment, seq_traineelist) VALUES (7, 1, 7);
-INSERT INTO tbllocker(seq_locker, seq_equipment, seq_traineelist) VALUES (8, 1, 8);
-INSERT INTO tbllocker(seq_locker, seq_equipment, seq_traineelist) VALUES (9, 1, 9);
-INSERT INTO tbllocker(seq_locker, seq_equipment, seq_traineelist) VALUES (10, 1, 10);
-INSERT INTO tbllocker(seq_locker, seq_equipment, seq_traineelist) VALUES (11, 1, 11);
-INSERT INTO tbllocker(seq_locker, seq_equipment, seq_traineelist) VALUES (12, 1, 12);
-INSERT INTO tbllocker(seq_locker, seq_equipment, seq_traineelist) VALUES (13, 1, 13);
-INSERT INTO tbllocker(seq_locker, seq_equipment, seq_traineelist) VALUES (14, 1, 14);
-INSERT INTO tbllocker(seq_locker, seq_equipment, seq_traineelist) VALUES (15, 1, 15);
-INSERT INTO tbllocker(seq_locker, seq_equipment, seq_traineelist) VALUES (16, 1, 16);
-INSERT INTO tbllocker(seq_locker, seq_equipment, seq_traineelist) VALUES (17, 1, 17);
-INSERT INTO tbllocker(seq_locker, seq_equipment, seq_traineelist) VALUES (18, 1, 18);
-INSERT INTO tbllocker(seq_locker, seq_equipment, seq_traineelist) VALUES (19, 1, 19);
-INSERT INTO tbllocker(seq_locker, seq_equipment, seq_traineelist) VALUES (20, 1, 20);
+
 INSERT INTO tbllocker(seq_locker, seq_equipment, seq_traineelist) VALUES (21, 1, 21);
 INSERT INTO tbllocker(seq_locker, seq_equipment, seq_traineelist) VALUES (22, 1, 22);
 INSERT INTO tbllocker(seq_locker, seq_equipment, seq_traineelist) VALUES (23, 1, 23);
