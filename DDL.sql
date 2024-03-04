@@ -193,14 +193,16 @@ create table tblSubjectList(
 
 -- 두번째 자식 테이블--
 
---시험 일정
-create table tblTestSchedule(
-    seq_testSchedule number primary key,
+--시험 정보
+create table tblTestInfo(
+    seq_testInfo number primary key,
     seq_subjectList references tblSubjectList(seq_subjectList),
     writtenDate date,
-    practicalDate date
+    practicalDate date,
+    writtenPoints number,
+    practicalPoints number,
+    attendancePoints number
 );
-
 
 --교육생 목록
 create table tblTraineeList(                          
@@ -284,7 +286,7 @@ create table tblTeacherEvaluation(
 create table tblGrades(  
     seq_grades number primary key,
     seq_traineeList references tblTraineeList(seq_traineeList),
-    seq_testSchedule references tbltestSchedule(seq_testSchedule),
+    seq_testInfo references tbltestInfo(seq_testInfo),
     writtenGrade number,
     practicalGrade number,
     attendanceGrade number

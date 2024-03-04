@@ -1,28 +1,28 @@
---시험 일정
-INSERT INTO tblTestSchedule(seq_testSchedule,seq_subjectList,writtenDate,practicalDate) 
-VALUES (1, 47, TO_DATE('2023-10-03', 'YYYY-MM-DD'), TO_DATE('2023-10-04', 'YYYY-MM-DD'));
-INSERT INTO tblTestSchedule(seq_testSchedule,seq_subjectList,writtenDate,practicalDate) 
-VALUES (2, 48, TO_DATE('2023-11-01', 'YYYY-MM-DD'), TO_DATE('2023-11-02', 'YYYY-MM-DD'));
-INSERT INTO tblTestSchedule(seq_testSchedule,seq_subjectList,writtenDate,practicalDate) 
-VALUES (3, 49, TO_DATE('2023-11-30', 'YYYY-MM-DD'), TO_DATE('2023-12-01', 'YYYY-MM-DD'));
-INSERT INTO tblTestSchedule(seq_testSchedule,seq_subjectList,writtenDate,practicalDate) 
-VALUES (4, 50, TO_DATE('2023-12-28', 'YYYY-MM-DD'), TO_DATE('2023-12-29', 'YYYY-MM-DD'));
-INSERT INTO tblTestSchedule(seq_testSchedule,seq_subjectList,writtenDate,practicalDate) 
-VALUES (5, 51, TO_DATE('2024-01-15', 'YYYY-MM-DD'), TO_DATE('2024-01-16', 'YYYY-MM-DD'));
-INSERT INTO tblTestSchedule(seq_testSchedule,seq_subjectList,writtenDate,practicalDate) 
-VALUES (6, 52, TO_DATE('2024-01-30', 'YYYY-MM-DD'), TO_DATE('2024-01-31', 'YYYY-MM-DD'));
-INSERT INTO tblTestSchedule(seq_testSchedule,seq_subjectList,writtenDate,practicalDate) 
-VALUES (7, 53, TO_DATE('2024-02-13', 'YYYY-MM-DD'), TO_DATE('2024-02-14', 'YYYY-MM-DD'));
-INSERT INTO tblTestSchedule(seq_testSchedule,seq_subjectList,writtenDate,practicalDate) 
-VALUES (8, 17, TO_DATE('2024-01-29', 'YYYY-MM-DD'), TO_DATE('2024-01-30', 'YYYY-MM-DD'));
-INSERT INTO tblTestSchedule(seq_testSchedule,seq_subjectList,writtenDate,practicalDate) 
-VALUES (9, 18, TO_DATE('2024-02-28', 'YYYY-MM-DD'), TO_DATE('2024-02-29', 'YYYY-MM-DD'));
-INSERT INTO tblTestSchedule(seq_testSchedule,seq_subjectList,writtenDate,practicalDate) 
-VALUES (10, 24, TO_DATE('2024-01-24', 'YYYY-MM-DD'), TO_DATE('2024-01-25', 'YYYY-MM-DD'));
-INSERT INTO tblTestSchedule(seq_testSchedule,seq_subjectList,writtenDate,practicalDate) 
-VALUES (11, 25, TO_DATE('2024-02-22', 'YYYY-MM-DD'), TO_DATE('2024-02-23', 'YYYY-MM-DD'));
-INSERT INTO tblTestSchedule(seq_testSchedule,seq_subjectList,writtenDate,practicalDate) 
-VALUES (12, 31, TO_DATE('2024-02-05', 'YYYY-MM-DD'), TO_DATE('2024-02-06', 'YYYY-MM-DD'));
+--시험 정보
+INSERT INTO tblTestInfo
+VALUES (1, 47, TO_DATE('2023-10-03', 'YYYY-MM-DD'), TO_DATE('2023-10-04', 'YYYY-MM-DD'), 40, 40, 20);
+INSERT INTO tblTestInfo
+VALUES (2, 48, TO_DATE('2023-11-01', 'YYYY-MM-DD'), TO_DATE('2023-11-02', 'YYYY-MM-DD'), 40, 40, 20);
+INSERT INTO tblTestInfo
+VALUES (3, 49, TO_DATE('2023-11-30', 'YYYY-MM-DD'), TO_DATE('2023-12-01', 'YYYY-MM-DD'), 40, 40, 20);
+INSERT INTO tblTestInfo
+VALUES (4, 50, TO_DATE('2023-12-28', 'YYYY-MM-DD'), TO_DATE('2023-12-29', 'YYYY-MM-DD'), 40, 40, 20);
+INSERT INTO tblTestInfo
+VALUES (5, 51, TO_DATE('2024-01-15', 'YYYY-MM-DD'), TO_DATE('2024-01-16', 'YYYY-MM-DD'), 40, 40, 20);
+INSERT INTO tblTestInfo
+VALUES (6, 52, TO_DATE('2024-01-30', 'YYYY-MM-DD'), TO_DATE('2024-01-31', 'YYYY-MM-DD'), 40, 40, 20);
+INSERT INTO tblTestInfo
+VALUES (7, 53, TO_DATE('2024-02-13', 'YYYY-MM-DD'), TO_DATE('2024-02-14', 'YYYY-MM-DD'), 40, 40, 20);
+INSERT INTO tblTestInfo
+VALUES (8, 17, TO_DATE('2024-01-29', 'YYYY-MM-DD'), TO_DATE('2024-01-30', 'YYYY-MM-DD'), 40, 40, 20);
+INSERT INTO tblTestInfo
+VALUES (9, 18, TO_DATE('2024-02-28', 'YYYY-MM-DD'), TO_DATE('2024-02-29', 'YYYY-MM-DD'), 40, 40, 20);
+INSERT INTO tblTestInfo
+VALUES (10, 24, TO_DATE('2024-01-24', 'YYYY-MM-DD'), TO_DATE('2024-01-25', 'YYYY-MM-DD'), 40, 40, 20);
+INSERT INTO tblTestInfo
+VALUES (11, 25, TO_DATE('2024-02-22', 'YYYY-MM-DD'), TO_DATE('2024-02-23', 'YYYY-MM-DD'), 40, 40, 20);
+INSERT INTO tblTestInfo
+VALUES (12, 31, TO_DATE('2024-02-05', 'YYYY-MM-DD'), TO_DATE('2024-02-06', 'YYYY-MM-DD'), 40, 40, 20);
 
 -- 면접 결과
 insert into tblInterviewResults (seq_interviewResults, seq_schedule, status, etc) values (1 , 1, '합격', '' );
