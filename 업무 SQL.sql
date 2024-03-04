@@ -327,10 +327,91 @@ select * from tblGrades g
 
 
 -- 민곤
---d-1 
 
---d-2 
+
 
 --c-1 
 
 --c-5
+
+-- D-1 (테이블 수정 중...)
+
+-- 성적조회
+select * from tbltrainees;
+select * from tblTraineelist;
+select * from tblopencurriculum;
+select * from tblcurriculum;
+select * from tblsubjectlist;
+
+select s.name,t.name,t.id,t.ssn,t.tel,c.name,r.name from tbltrainees t
+inner join tbltraineeList tl
+on t.seq_trainee = tl.seq_trainee
+inner join tblopencurriculum oc
+on oc.seq_opencurriculum = tl.seq_opencurriculum
+inner join tblroom r
+on r.seq_room = oc.seq_room
+inner join tblcurriculum c
+on c.seq_curriculum = oc.seq_curriculum
+inner join tblsubjectlist sl
+on sl.seq_curriculum = c.seq_curriculum
+inner join tblsubject s
+on s.seq_subject = sl.seq_subject
+group by s.name,t.name,t.id,t.ssn,t.tel,c.name,oc.startdate,oc.enddate,r.name
+order by s.name;
+
+
+-- D-2
+-- 출결 관리 및 조회 
+
+--출석 기록 
+
+select * from tblTraineelist;
+select * from tbltrainees;
+select * from tblattendancestatus;
+select * from tblattendance;
+
+-- (출근 퇴근이 하루에 있으면 카운트) 매일 근태 관리
+
+select t.name,ad.situation,a.day,count(case when to_date(substr(a.intime,1,8),'yyyy-mm-dd') = to_date(substr(a.outtime,1,8),'yyyy-mm-dd') then 1
+end) from tblAttendance a
+inner join tblTraineelist tl
+on tl.seq_traineelist = a.seq_traineelist
+inner join tbltrainees t
+on t.seq_trainee = tl.seq_trainee
+inner join tblAttendancestatus ad
+on ad.seq_attendancestatus = a.seq_attendancestatus
+group by t.name,a.intime,a.outtime,ad.situation,a.day;
+
+
+-- 년 월 일로 보는 방법 
+select to_char(to_date(substr(a.day,1,8)),'yyyy-mm-dd'),t.name,ad.situation,a.day from tblAttendance a
+inner join tblTraineelist tl
+on tl.seq_traineelist = a.seq_traineelist
+inner join tbltrainees t
+on t.seq_trainee = tl.seq_trainee
+inner join tblAttendancestatus ad
+on ad.seq_attendancestatus = a.seq_attendancestatus
+where a.day like '23%' and t.name = '천유서';
+
+--D-3
+
+--교사 평가 (수료 학생만 가능) 
+insert into tblTeacherEvaluation
+values(
+1,1,1,5,'설명을 자세하게 해주신다.');
+
+
+--D-4 
+--교사 추천 도서 조회 
+
+-- 조회
+select * from tblRecommendTextbook;
+
+
+--D-6 
+--서류 제출(제출만 가능)
+
+-- 서류 제출
+insert into tblAttendancePapers
+values(
+1,1,'조퇴','2023-09-13','코로나 진단 서류','');
