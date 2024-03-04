@@ -72,7 +72,9 @@ create table tblEquipment (
     seq_equipment number primary key,
     name varchar2(50) not null,
     importDate date not null,
-    expectedExportDate date
+    expectedExportDate date,
+    amount number,
+    brokenAmount number
 );
 
 -- 과정 기간 
