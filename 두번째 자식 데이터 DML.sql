@@ -176,6 +176,7 @@ insert into tblInterviewResults (seq_interviewResults, seq_schedule, status, etc
 insert into tblInterviewResults (seq_interviewResults, seq_schedule, status, etc) values (149 , 149, '합격', '' );
 insert into tblInterviewResults (seq_interviewResults, seq_schedule, status, etc) values (150 , 150, '합격', '' );
 
+
 --개설 교육과정
 --seq_curriculumProgress (1: 예정, 2: 진행, 3: 종료)
 insert into tblOpenCurriculum
@@ -199,6 +200,7 @@ values (6, 6, 5, 9, 1, to_date('2024-03-11' ,'yyyy-mm-dd'), to_date('2024-09-06'
 insert into tblOpenCurriculum
 (seq_openCurriculum, seq_curriculum, seq_room, seq_teacher, seq_curriculumProgress, startDate, endDate)
 values (7, 7, 5, 8, 3, to_date('2023-09-04' ,'yyyy-mm-dd'), to_date('2024-02-15','yyyy-mm-dd'));   -- 종료
+
 
 --과목 목록
 insert into tblSubjectList values (1, 1, 1);
@@ -260,13 +262,5 @@ insert into tblSubjectList values (50, 4, 7);
 insert into tblSubjectList values (51, 12, 7);
 insert into tblSubjectList values (52, 14, 7);
 insert into tblSubjectList values (53, 15, 7);
-
-insert into tblSubjectList values (54, 1, 8);
-insert into tblSubjectList values (55, 2, 8);
-insert into tblSubjectList values (56, 3, 8);
-insert into tblSubjectList values (57, 4, 8);
-insert into tblSubjectList values (58, 5, 8);
-insert into tblSubjectList values (59, 13, 8);
-insert into tblSubjectList values (60, 14, 8);
 
 commit;
