@@ -191,12 +191,22 @@ create table tblSubjectList(
     seq_curriculum references tblCurriculum(seq_curriculum)
 );
 
+--개설 과목 목록
+create table tblOpenSubjectList(
+    seq_openSubjectList number primary key,
+    seq_subjectList references tblSubjectList(seq_subjectList),
+    seq_openCurriculum references tblopenCurriculum(seq_openCurriculum),
+    startDate date,
+    endDate date
+);
+
+
 -- 두번째 자식 테이블--
 
 --시험 정보
 create table tblTestInfo(
     seq_testInfo number primary key,
-    seq_subjectList references tblSubjectList(seq_subjectList),
+    seq_openSubjectList references tblOpenSubjectList(seq_openSubjectList),
     writtenDate date,
     practicalDate date,
     writtenPoints number,
