@@ -269,11 +269,15 @@ from tblTestInfo ti
 
 --c-3 성적 입출력
 -- 1. 교사가 강의를 마친 과목에 대한 성적 처리를 위해서 성적 입출력을 할 수 있어야 한다.
+-- 강의를 마친 과목에 대한 내용은 자바에서 다룬다.
 -- 1.1. 성적 입력
-
+INSERT INTO tblGrades(SEQ_GRADES, SEQ_TRAINEELIST, SEQ_testInfo, WRITTENGRADE, PRACTICALGRADE, ATTENDANCEGRADE)
+VALUES (1, 1,1, 32, 31, 17);
 
 -- 1.2. 성적 출력
-
+select * from tblGrades g
+    inner join tblTestInfo ti
+        on g.seq_testInfo = ti.seq_testInfo;
 
 -- 2. 교사는 자신이 강의를 마친 과목의 목록 중에서 특정 과목을 선택하면, 교육생 정보가 출력되고, 특정 교육생 정보를 선택하면, 해당 교육생의 시험 점수를 입력할 수 있어야 한다. 이때, 출결, 필기, 실기 점수를 구분해서 입력할 수 있어야 한다.
 -- 2.1. 
