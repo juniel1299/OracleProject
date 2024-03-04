@@ -45,7 +45,7 @@ on oc.seq_curriculum = c.seq_curriculum
 inner join tblRoom r
 on oc.seq_room = r.seq_room; 
 
---b-7  ( 테이블 수정 중이라 못 넣음)
+--b-7 
 -- 과목별
 select c.name,t.name,cp.period,r.name,t.ssn,g.writtengrade,g.practicalgrade from tblgrades g
 inner join tbltraineelist tl
