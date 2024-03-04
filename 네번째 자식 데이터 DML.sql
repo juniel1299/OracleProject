@@ -5438,9 +5438,6 @@ insert into tblTeacherEvaluation
 values (9, 9, 7, 4, '실력있고 성품 좋으신 강사님께 6개월간 좋은 강의 해주셔서 감사합니다.');
 insert into tblTeacherEvaluation 
 (seq_teacherEvaluation, seq_traineeList, seq_openCurriculum, grade, content) 
-values (10, 10, 7, null, null);
-insert into tblTeacherEvaluation 
-(seq_teacherEvaluation, seq_traineeList, seq_openCurriculum, grade, content) 
 values (11, 11, 7, 4, '의지만 있다면 얻어갈 것이 많은 훈련');
 insert into tblTeacherEvaluation 
 (seq_teacherEvaluation, seq_traineeList, seq_openCurriculum, grade, content) 
