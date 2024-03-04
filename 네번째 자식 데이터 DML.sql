@@ -5406,6 +5406,7 @@ values
 (931, 20, 7, 7, '수강 완료');
 
 
+
 --교사 평가
 -- 10번은 중도퇴사인데 DDL에서 not null 조건이 걸려있어 일단 코드만 작성하고 insert 하지 않음
 insert into tblTeacherEvaluation 
