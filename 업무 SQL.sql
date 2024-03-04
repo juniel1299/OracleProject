@@ -35,6 +35,8 @@
 
 
 -- 혜정
+-- 수정 필요
+
 --c-2 배점 입출력
 -- 1. 교사가 강의를 마친 과목에 대한 성적 처리를 위해서 배점 입출력을 할 수 있어야 한다.
 
@@ -79,12 +81,39 @@ values (1, 1, 1, '필기');
 
 --3. 출결, 필기, 실기의 배점 비중은 담당 교사가 과목별로 결정한다. 단, 출결은 최소 20점 이상이어야 하고, 출결, 필기, 실기의 합은 100점이 되도록 한다.
 
+-- 수정 필요
 
---4. 과목 목록 출력 시 과목번호, 과정명, 과정기간(시작 년월일, 끝 년월일), 강의실, 과목명, 과목기간(시작 년월일, 끝 년월일), 교재명, 출결, 필기, 실기 배점 등이 출력되고, 특정 과목을 과목번호로 선택 시 출결 배점, 필기 배점, 실기 배점, 시험 날짜, 시험 문제를 입력할 수 있는 화면으로 연결되어야 한다.
+insert into  tblGrades(seq_grades, seq_traineelist, seq_subjectlist,WRITTENGRADE,WRITTENDATE, PRACTICALGRADE,PRACTICALDATE,ATTENDANCEGRADE) 
+values (1, 1, 47, 33, TO_DATE('2024-01-15', 'YYYY-MM-DD'), 33, TO_DATE('2024-01-16', 'YYYY-MM-DD'), 15);
+
+--4. 과목 목록 출력 시 과목번호, 과정명, 과정기간(시작 년월일, 끝 년월일), 강의실, 과목명, 과목기간(시작 년월일, 끝 년월일), 교재명, 출결, 필기, 실기 배점 등이 출력되고, 
+-- 특정 과목을 과목번호로 선택 시 출결 배점, 필기 배점, 실기 배점, 시험 날짜, 시험 문제를 입력할 수 있는 화면으로 연결되어야 한다.
+select 
+    l.seq_subject 과목번호,
+    c.name 과정명,
+    o.startdate 과정시작일,
+    o.enddate 과정종료일,
+    r.name 강의실,
+    s.name 과목명,
+    s.period 과목기간수정해야
+    
+        from tblSubjectList l
+            join tblsubject s
+                on l.seq_subject = s.seq_subject
+                    join tblcurriculum c
+                        on l.seq_subject = s.seq_subject
+                            join tblopencurriculum o
+                                on o.seq_curriculum = c.seq_curriculum
+                                    join tblRoom r
+                                        on r.seq_room = o.seq_room
+                                            join tblTextbookList bl
+                                                on l.seq_subject = bl.seq_subject
+                                                    join tbltextbook b
+                                                        on bl.seq_textbook = b.seq_textbook;
 
 
 --5. 배점 등록이 안 된 과목인 경우는 과목 정보가 출력될 때 배점 부분은 null 값으로 출력한다.
-
+select * from tblOpenCurriculum;
 
 
 --c-3 성적 입출력

@@ -2564,10 +2564,6 @@ insert into tblAttendance values(1325, 132, 1, to_date('2024-03-07','YYYY-MM-DD'
 insert into tblAttendance values(1326, 132, 1, to_date('2024-03-08','YYYY-MM-DD'), to_date('2024-03-01 08:47:44','YYYY-MM-DD HH24:MI:SS'), to_date('2024-03-08 17:59:11','YYYY-MM-DD HH24:MI:SS'));
 
 
-
---사물함
-
-
 --취업 현황
 insert into tblEmploymentStatus 
 (seq_employmentStatus, seq_traineeList, status, city, company, field, salary)
