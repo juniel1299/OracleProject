@@ -5469,7 +5469,6 @@ values (20, 20, 7, 4, '꼼꼼한 강의로 비전공자도 잘 따라올 수 있
 
 
 --성적
-
 INSERT INTO tblGrades(SEQ_GRADES, SEQ_TRAINEELIST, SEQ_testInfo, WRITTENGRADE, PRACTICALGRADE, ATTENDANCEGRADE)
 VALUES (1, 1,1, 32, 31, 17);
 
