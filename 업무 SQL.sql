@@ -70,8 +70,11 @@ set attendancegrade = 15
 where seq_grades = 1;
 
 -- 2.5. 시험 날짜 추가
+-- 테이블 수정 중
 
 -- 2.6. 시험 문제 추가
+insert into tblExampaper(seq_attendancepapers, seq_question, seq_subject, kind) 
+values (1, 1, 1, '필기');
 
 
 --3. 출결, 필기, 실기의 배점 비중은 담당 교사가 과목별로 결정한다. 단, 출결은 최소 20점 이상이어야 하고, 출결, 필기, 실기의 합은 100점이 되도록 한다.
