@@ -63,8 +63,8 @@ on r.seq_room = oc.seq_room;
     select * from tblsubject;
     
     
-    --특정 개설 과정 (??? 틀린거 같음 아마;)
-select s.name,count(case when g.writtengrade is not null then '있음' end),count(case when g.practicalgrade is not null then '있음' end),count(case when q.seq_question is not null then '있음' end)
+    --특정 개설 과정
+select s.name, case when g.writtengrade is not null then '있음' end ,case when g.practicalgrade is not null then '있음' end ,case when q.seq_question is not null then '있음' end
 from tblGrades g
 inner join tbltraineelist tl
 on g.seq_traineelist = tl.seq_traineelist
@@ -81,8 +81,8 @@ on s.seq_subject = sl.seq_subject
 inner join tblexampaper ep
 on ep.seq_subject = s.seq_subject
 inner join tblquestion q
-on q.seq_question = ep.seq_question
-group by s.name;
+on q.seq_question = ep.seq_question;
+
   --교육생 개인 별
     select r.name,j.name,writtengrade,practicalgrade 
 from tblGrades g
