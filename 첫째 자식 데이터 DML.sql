@@ -307,6 +307,7 @@ INSERT INTO Tblexampaper(seq_attendancepapers, seq_question, seq_subject, kind) 
 INSERT INTO Tblexampaper(seq_attendancepapers, seq_question, seq_subject, kind) VALUES (279, 279, 14, '실기');
 INSERT INTO Tblexampaper(seq_attendancepapers, seq_question, seq_subject, kind) VALUES (280, 280, 14, '실기');
 
+
 --교재 목록
 insert into tblTextbookList (seq_textbookList, seq_textbook, seq_subject) values (1, 1, 1);
 insert into tblTextbookList (seq_textbookList, seq_textbook, seq_subject) values (2, 2, 1);
@@ -345,6 +346,7 @@ insert into tblCurriculum values (7, 1,'AWS 클라우드와 Elasticsearch를 활
 'Java 언어를 기반으로 AWS 클라우드와 Elasticsearch를 활용할 수 있는 Full-Stack 개발자를 양성하고 있습니다.');
 insert into tblCurriculum values (8, 2,'자바(Java)기반 Web과 스마트플랫폼 Full-Stack 과정(B)', 
 'Java 언어를 기반으로 스마트웹,콘텐츠 개발을 할 수 있는 Full-Stack 개발자를 양성하고 있습니다.');
+
 
 --면접 스케쥴
 insert into tblInterviewSchedule (seq_schedule, seq_manager, seq_trainee, day) values(1, 2, 1, TO_DATE('2023-08-24', 'YYYY-MM-DD'));
@@ -498,6 +500,7 @@ insert into tblInterviewSchedule (seq_schedule, seq_manager, seq_trainee, day) v
 insert into tblInterviewSchedule (seq_schedule, seq_manager, seq_trainee, day) values(149, 8, 248, TO_DATE('2023-09-06', 'YYYY-MM-DD'));
 insert into tblInterviewSchedule (seq_schedule, seq_manager, seq_trainee, day) values(150, 7, 250, TO_DATE('2023-11-03', 'YYYY-MM-DD'));
 
+
 --강의 가능 과목 목록
 insert into tblAvailableSubjectList values (1, 1, 1);
 insert into tblAvailableSubjectList values (2, 2, 1);
@@ -648,6 +651,7 @@ insert into tblAvailableSubjectList values (146, 17, 7);
 insert into tblAvailableSubjectList values (147, 17, 8);
 insert into tblAvailableSubjectList values (148, 17, 9);
 insert into tblAvailableSubjectList values (149, 17, 10);
+
 
 --추천 교재 목록
 insert into tblRecommendTextbook (seq_recommendTextbook, seq_teacher, seq_textbook, grade) values (1, 1, 1, 4);

@@ -344,3 +344,33 @@ commit;
 
 
 --공지사항
+insert into tblNotice(seq_notice,SEQ_OPENCURRICULUM,title,content) values(1,1,'AWS와 Docker를 활용한 Java Full-Stack 과정(A) 공지사항','안녕하세요, AWS와 Docker를 활용한 Java Full-Stack 과정(A) 수강생 여러분!
+프로젝트 발표일이 7일 남았습니다. 이번 프로젝트에서도 열정적인 참여와 질문을 부탁드리며, 함께 더 나은 개발자가 되도록 노력해봅시다!');
+
+insert into tblNotice(seq_notice,SEQ_OPENCURRICULUM,title,content) values(2,2,'AWS 클라우드를 활용한 Full-Stack 과정(A) 공지 사항','안녕하세요, AWS 클라우드를 활용한 Full-Stack 과정(A) 수강생 여러분!
+우리의 수업이 곧 시작됩니다! 이번 수업은 AWS 클라우드를 중심으로 Full-Stack 개발의 핵심 개념과 실전 기술을 다룰 예정입니다.
+모든 준비물을 확인하고, 수업에 참여할 준비를 완료해 주시기 바랍니다.
+수업에 대한 추가 정보나 질문이 있으시면 언제든지 연락 주시기 바랍니다.
+함께 흥미진진한 여정을 떠나봅시다!   감사합니다.');
+
+insert into tblNotice(seq_notice,SEQ_OPENCURRICULUM,title,content) values(3,3,'AWS 클라우드와 Elasticsearch를 활용한 Java Full-Stack 과정(A) 공지 사항','안녕하세요, AWS 클라우드와 Elasticsearch를 활용한 Java Full-Stack 과정(A) 수강생 여러분!
+저희의 수업이 다시 시작되었습니다! 이번 수업은 AWS 클라우드와 Elasticsearch를 중심으로 Java Full-Stack 개발의 핵심 개념과 실전 기술을 다룰 예정입니다
+모든 준비물을 확인하고, 수업에 참여할 준비를 완료해 주시기 바랍니다.
+수업에 대한 추가 정보나 질문이 있으시면 언제든지 연락 주시기 바랍니다.
+함께 흥미진진한 여정을 떠나봅시다!');
+
+insert into tblNotice(seq_notice,SEQ_OPENCURRICULUM,title,content) values(4,4,'자바(Java)기반 Web과 스마트플랫폼 Full-Stack 과정(A) 공지 사항','안녕하세요, 자바(Java)기반 Web과 스마트플랫폼 Full-Stack 과정(A) 수강생 여러분!
+이번 강의에서는 최신 자바 기술을 활용하여 웹과 스마트플랫폼 개발에 대해 깊이 있게 다룰 예정입니다.
+강의 시작 전에 준비사항을 확인해 주시기 바랍니다.
+강의에 대한 추가 문의사항이나 궁금한 사항이 있으시면 언제든지 연락해 주세요.
+함께 흥미로운 수업을 진행하며 성장하는 시간이 되길 기대합니다!
+감사합니다.');
+
+insert into tblNotice(seq_notice,SEQ_OPENCURRICULUM,title,content) values(5,5,'AWS와 Docker를 활용한 Java Full-Stack 과정(B) 공지사항','이 강의는 AWS 클라우드와 Docker를 중심으로 Java Full-Stack 개발의 핵심을 다룰 예정입니다.
+비 전공자에게는 조금 쉽지 않은 수업이 될 예정이오니 성실한 출석을 통한 수업 참여를 부탁 드립니다.');
+
+insert into tblNotice(seq_notice,SEQ_OPENCURRICULUM,title,content) values(6,6,'AWS 클라우드를 활용한 Full-Stack 과정(B)','다음주 부터는
+HTML,CSS,JS를 통한 다양한 웹 기술을 배울 예정입니다. 교육생분들에게 이번 주말 푹 쉬시고 만반의 준비를 하셔서 오길 공지드립니다.');
+
+insert into tblNotice(seq_notice,SEQ_OPENCURRICULUM,title,content) values(7,7,'AWS 클라우드와 Elasticsearch를 활용한 Java Full-Stack 과정(B) 공지사항','
+안녕하세요 AWS 클라우드와 Elasticsearch를 활용한 Java Full-Stack 과정 교육생 여러분! 다음 프로젝트의 조 명단을 단톡방에 공지 드렸으니 확인 부탁드립니다.');

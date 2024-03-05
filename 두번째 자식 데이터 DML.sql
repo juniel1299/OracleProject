@@ -1,3 +1,58 @@
+--개설 과목 목록
+INSERT INTO tblOpenSubjectList
+VALUES (1, 47, 7, TO_DATE('2023-09-04', 'YYYY-MM-DD'), TO_DATE('2023-10-02', 'YYYY-MM-DD'));
+INSERT INTO tblOpenSubjectList
+VALUES (2, 48, 7, TO_DATE('2023-10-03', 'YYYY-MM-DD'), TO_DATE('2023-11-01', 'YYYY-MM-DD'));
+INSERT INTO tblOpenSubjectList
+VALUES (3, 49, 7, TO_DATE('2023-11-02', 'YYYY-MM-DD'), TO_DATE('2023-11-30', 'YYYY-MM-DD'));
+INSERT INTO tblOpenSubjectList
+VALUES (4, 50, 7, TO_DATE('2023-12-01', 'YYYY-MM-DD'), TO_DATE('2024-12-28', 'YYYY-MM-DD'));
+INSERT INTO tblOpenSubjectList
+VALUES (5, 51, 7, TO_DATE('2023-12-29', 'YYYY-MM-DD'), TO_DATE('2024-01-14', 'YYYY-MM-DD'));
+INSERT INTO tblOpenSubjectList
+VALUES (6, 52, 7, TO_DATE('2024-01-15', 'YYYY-MM-DD'), TO_DATE('2024-01-30', 'YYYY-MM-DD'));
+INSERT INTO tblOpenSubjectList
+VALUES (7, 53, 7, TO_DATE('2024-01-31', 'YYYY-MM-DD'), TO_DATE('2024-02-15', 'YYYY-MM-DD'));
+
+INSERT INTO tblOpenSubjectList
+VALUES (8, 17, 3, TO_DATE('2023-12-29', 'YYYY-MM-DD'), TO_DATE('2024-01-28', 'YYYY-MM-DD'));
+INSERT INTO tblOpenSubjectList
+VALUES (9, 18, 3, TO_DATE('2024-01-29', 'YYYY-MM-DD'), TO_DATE('2024-02-28', 'YYYY-MM-DD'));
+
+INSERT INTO tblOpenSubjectList
+VALUES (10, 24, 4, TO_DATE('2023-12-26', 'YYYY-MM-DD'), TO_DATE('2024-01-25', 'YYYY-MM-DD'));
+INSERT INTO tblOpenSubjectList
+VALUES (11, 25, 4, TO_DATE('2024-01-26', 'YYYY-MM-DD'), TO_DATE('2024-02-25', 'YYYY-MM-DD'));
+
+INSERT INTO tblOpenSubjectList
+VALUES (12, 31, 5, TO_DATE('2024-01-05', 'YYYY-MM-DD'), TO_DATE('2024-02-04', 'YYYY-MM-DD'));
+
+--시험 정보
+INSERT INTO tblTestInfo
+VALUES (1, 1, TO_DATE('2023-10-03', 'YYYY-MM-DD'), TO_DATE('2023-10-04', 'YYYY-MM-DD'), 40, 40, 20);
+INSERT INTO tblTestInfo
+VALUES (2, 2, TO_DATE('2023-11-01', 'YYYY-MM-DD'), TO_DATE('2023-11-02', 'YYYY-MM-DD'), 40, 40, 20);
+INSERT INTO tblTestInfo
+VALUES (3, 3, TO_DATE('2023-11-30', 'YYYY-MM-DD'), TO_DATE('2023-12-01', 'YYYY-MM-DD'), 40, 40, 20);
+INSERT INTO tblTestInfo
+VALUES (4, 4, TO_DATE('2023-12-28', 'YYYY-MM-DD'), TO_DATE('2023-12-29', 'YYYY-MM-DD'), 40, 40, 20);
+INSERT INTO tblTestInfo
+VALUES (5, 5, TO_DATE('2024-01-15', 'YYYY-MM-DD'), TO_DATE('2024-01-16', 'YYYY-MM-DD'), 40, 40, 20);
+INSERT INTO tblTestInfo
+VALUES (6, 6, TO_DATE('2024-01-30', 'YYYY-MM-DD'), TO_DATE('2024-01-31', 'YYYY-MM-DD'), 40, 40, 20);
+INSERT INTO tblTestInfo
+VALUES (7, 7, TO_DATE('2024-02-13', 'YYYY-MM-DD'), TO_DATE('2024-02-14', 'YYYY-MM-DD'), 40, 40, 20);
+INSERT INTO tblTestInfo
+VALUES (8, 8, TO_DATE('2024-01-29', 'YYYY-MM-DD'), TO_DATE('2024-01-30', 'YYYY-MM-DD'), 40, 40, 20);
+INSERT INTO tblTestInfo
+VALUES (9, 9, TO_DATE('2024-02-28', 'YYYY-MM-DD'), TO_DATE('2024-02-29', 'YYYY-MM-DD'), 40, 40, 20);
+INSERT INTO tblTestInfo
+VALUES (10, 10, TO_DATE('2024-01-24', 'YYYY-MM-DD'), TO_DATE('2024-01-25', 'YYYY-MM-DD'), 40, 40, 20);
+INSERT INTO tblTestInfo
+VALUES (11, 11, TO_DATE('2024-02-22', 'YYYY-MM-DD'), TO_DATE('2024-02-23', 'YYYY-MM-DD'), 40, 40, 20);
+INSERT INTO tblTestInfo
+VALUES (12, 12, TO_DATE('2024-02-05', 'YYYY-MM-DD'), TO_DATE('2024-02-06', 'YYYY-MM-DD'), 40, 40, 20);
+
 -- 면접 결과
 insert into tblInterviewResults (seq_interviewResults, seq_schedule, status, etc) values (1 , 1, '합격', '' );
 insert into tblInterviewResults (seq_interviewResults, seq_schedule, status, etc) values (2 , 2, '불합격', '면접 불참' );
@@ -150,6 +205,7 @@ insert into tblInterviewResults (seq_interviewResults, seq_schedule, status, etc
 insert into tblInterviewResults (seq_interviewResults, seq_schedule, status, etc) values (149 , 149, '합격', '' );
 insert into tblInterviewResults (seq_interviewResults, seq_schedule, status, etc) values (150 , 150, '합격', '' );
 
+
 --개설 교육과정
 --seq_curriculumProgress (1: 예정, 2: 진행, 3: 종료)
 insert into tblOpenCurriculum
@@ -173,6 +229,7 @@ values (6, 6, 5, 9, 1, to_date('2024-03-11' ,'yyyy-mm-dd'), to_date('2024-09-06'
 insert into tblOpenCurriculum
 (seq_openCurriculum, seq_curriculum, seq_room, seq_teacher, seq_curriculumProgress, startDate, endDate)
 values (7, 7, 5, 8, 3, to_date('2023-09-04' ,'yyyy-mm-dd'), to_date('2024-02-15','yyyy-mm-dd'));   -- 종료
+
 
 --과목 목록
 insert into tblSubjectList values (1, 1, 1);
@@ -234,13 +291,5 @@ insert into tblSubjectList values (50, 4, 7);
 insert into tblSubjectList values (51, 12, 7);
 insert into tblSubjectList values (52, 14, 7);
 insert into tblSubjectList values (53, 15, 7);
-
-insert into tblSubjectList values (54, 1, 8);
-insert into tblSubjectList values (55, 2, 8);
-insert into tblSubjectList values (56, 3, 8);
-insert into tblSubjectList values (57, 4, 8);
-insert into tblSubjectList values (58, 5, 8);
-insert into tblSubjectList values (59, 13, 8);
-insert into tblSubjectList values (60, 14, 8);
 
 commit;

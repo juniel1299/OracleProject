@@ -72,7 +72,9 @@ create table tblEquipment (
     seq_equipment number primary key,
     name varchar2(50) not null,
     importDate date not null,
-    expectedExportDate date
+    expectedExportDate date,
+    amount number,
+    brokenAmount number
 );
 
 -- 과정 기간 
@@ -189,9 +191,28 @@ create table tblSubjectList(
     seq_curriculum references tblCurriculum(seq_curriculum)
 );
 
+--개설 과목 목록
+create table tblOpenSubjectList(
+    seq_openSubjectList number primary key,
+    seq_subjectList references tblSubjectList(seq_subjectList),
+    seq_openCurriculum references tblopenCurriculum(seq_openCurriculum),
+    startDate date,
+    endDate date
+);
+
+
 -- 두번째 자식 테이블--
 
-
+--시험 정보
+create table tblTestInfo(
+    seq_testInfo number primary key,
+    seq_openSubjectList references tblOpenSubjectList(seq_openSubjectList),
+    writtenDate date,
+    practicalDate date,
+    writtenPoints number,
+    practicalPoints number,
+    attendancePoints number
+);
 
 --교육생 목록
 create table tblTraineeList(                          
@@ -275,11 +296,9 @@ create table tblTeacherEvaluation(
 create table tblGrades(  
     seq_grades number primary key,
     seq_traineeList references tblTraineeList(seq_traineeList),
-    seq_subjectList references tblSubjectList(seq_subjectList),
+    seq_testInfo references tbltestInfo(seq_testInfo),
     writtenGrade number,
-    writtenDate date,
     practicalGrade number,
-    practicalDate date,
     attendanceGrade number
 );
 

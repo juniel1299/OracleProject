@@ -657,15 +657,14 @@ insert into tblAttendanceStatus values (5, '병가');
 insert into tblAttendanceStatus values (6, '기타');
 
 -- 기자재 
-insert into tblEquipment (seq_equipment, name, importDate, expectedExportDate) values (1, '사물함', to_date('2016-01-17', 'yyyy-mm-dd'), null);
-insert into tblEquipment (seq_equipment, name, importDate, expectedExportDate) values (2, '모니터', to_date('2024-01-25', 'yyyy-mm-dd'), to_date('2027-01-25', 'yyyy-mm-dd'));
-insert into tblEquipment (seq_equipment, name, importDate, expectedExportDate) values (3, '본체', to_date('2024-02-14', 'yyyy-mm-dd'), to_date('2027-02-14', 'yyyy-mm-dd'));
-insert into tblEquipment (seq_equipment, name, importDate, expectedExportDate) values (4, '키보드', to_date('2024-02-14', 'yyyy-mm-dd'), to_date('2027-02-14', 'yyyy-mm-dd'));
-insert into tblEquipment (seq_equipment, name, importDate, expectedExportDate) values (5, '마우스', to_date('2024-02-14', 'yyyy-mm-dd'), to_date('2027-02-14', 'yyyy-mm-dd'));
-insert into tblEquipment (seq_equipment, name, importDate, expectedExportDate) values (6, '책상', to_date('2015-08-21', 'yyyy-mm-dd'), null);
-insert into tblEquipment (seq_equipment, name, importDate, expectedExportDate) values (7, '의자', to_date('2012-03-13', 'yyyy-mm-dd'), null);
-insert into tblEquipment (seq_equipment, name, importDate, expectedExportDate) values (8, '오라클 데이터베이스 책', to_date('2024-01-11', 'yyyy-mm-dd'), null);
-insert into tblEquipment (seq_equipment, name, importDate, expectedExportDate) values (9, '빔 프로젝터', to_date('2019-09-10', 'yyyy-mm-dd'), to_date('2024-03-10', 'yyyy-mm-dd'));
+insert into tblEquipment (seq_equipment, name, importDate, expectedExportDate, amount, brokenAmount) values (1, '사물함', to_date('2016-01-17', 'yyyy-mm-dd'), null,176,0);
+insert into tblEquipment (seq_equipment, name, importDate, expectedExportDate, amount, brokenAmount) values (2, '모니터', to_date('2024-01-25', 'yyyy-mm-dd'), to_date('2027-01-25', 'yyyy-mm-dd'),140,2);
+insert into tblEquipment (seq_equipment, name, importDate, expectedExportDate, amount, brokenAmount) values (3, '본체', to_date('2024-02-14', 'yyyy-mm-dd'), to_date('2027-02-14', 'yyyy-mm-dd'),140,3);
+insert into tblEquipment (seq_equipment, name, importDate, expectedExportDate, amount, brokenAmount) values (4, '키보드', to_date('2024-02-14', 'yyyy-mm-dd'), to_date('2027-02-14', 'yyyy-mm-dd'),140,4);
+insert into tblEquipment (seq_equipment, name, importDate, expectedExportDate, amount, brokenAmount) values (5, '마우스', to_date('2024-02-14', 'yyyy-mm-dd'), to_date('2027-02-14', 'yyyy-mm-dd'),140,3);
+insert into tblEquipment (seq_equipment, name, importDate, expectedExportDate, amount, brokenAmount) values (6, '책상', to_date('2015-08-21', 'yyyy-mm-dd'), null,145,5);
+insert into tblEquipment (seq_equipment, name, importDate, expectedExportDate, amount, brokenAmount) values (7, '의자', to_date('2012-03-13', 'yyyy-mm-dd'), null,145,5);
+insert into tblEquipment (seq_equipment, name, importDate, expectedExportDate, amount, brokenAmount) values (8, '빔 프로젝터', to_date('2019-09-10', 'yyyy-mm-dd'), to_date('2024-03-10', 'yyyy-mm-dd'),6,1);
 
 --과정 기간
 insert into tblcoursePeriod values (1, 165);
