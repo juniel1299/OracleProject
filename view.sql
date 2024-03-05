@@ -1,4 +1,39 @@
 -- 교육 과정
+CREATE or replace VIEW vwCurriculum 
+as 
+select
+oc.seq_opencurriculum seq_opencurriculum
+,c.seq_curriculum seq_curriculum
+,sl.seq_subjectlist seq_subjectlist
+,s.seq_subject seq_subject
+,r.seq_room seq_room
+
+,oc.seq_curriculum eq_curriculum
+,oc.seq_room eq_room
+,oc.seq_teacher eq_teacher
+,oc.seq_curriculumProgress eq_curriculumProgress
+,oc.startDate oc_startDate
+,oc.enddate oc_enddate
+,c.seq_coursePeriod eq_coursePeriod
+,c.name c_name
+,c.goal goal
+,sl.seq_subject eq_subject
+,sl.seq_curriculum q_curriculum --2번 이상 ;; 
+,s.name s_name
+,s.period period
+,r.name r_name
+,r.capacity capacity
+,r.wifiid wifiid
+,r.wifipw wifipw
+from tblOpenCurriculum oc
+join tblCurriculum c
+on oc.seq_Curriculum = c.seq_curriculum
+join tblsubjectList sl
+on sl.seq_curriculum = c.seq_curriculum
+join tblsubject s
+on s.seq_subject = sl.seq_subject
+join tblroom r
+on r.seq_room = oc.seq_room;
 
 
 -- 교육생
