@@ -69,6 +69,7 @@ select * from vwTrainees;
 create or replace view vwGrades
 as
     select 
+    g.seq_grades seq_grades,
     g.seq_testInfo seq_testInfo,
     g.seq_traineeList seq_traineeList,
     osl.seq_openCurriculum seq_openCurriculum,
@@ -76,6 +77,8 @@ as
     osl.seq_openSubjectList seq_openSubjectList,
     sl.seq_subjectList seq_subjectList,
     s.seq_subject seq_subject,
+    osl.seq_textbook seq_textbook,
+    osl.seq_teacher seq_teacher,
     g.writtenGrade writtenGrade,
     g.practicalGrade practicalGrade,
     g.attendanceGrade attendanceGrade,
