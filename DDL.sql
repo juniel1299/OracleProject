@@ -123,12 +123,6 @@ create table tblExamPaper (
     kind varchar2(50) not null
 );
 
--- 교재 목록
-create table tblTextbookList (
-    seq_textbookList number primary key,
-    seq_textbook references tblTextbook(seq_textbook),
-    seq_subject references tblSubject(seq_subject)
-);
 
 -- 교육과정
 create table tblCurriculum (
@@ -178,7 +172,6 @@ create table tblOpenCurriculum (
     seq_openCurriculum number primary key,
     seq_curriculum references tblCurriculum(seq_curriculum),
     seq_room references tblRoom(seq_room), 
-    seq_teacher references tblTeacher(seq_teacher), 
     seq_curriculumProgress references tblCurriculumProgress(seq_curriculumProgress),
     startDate date not null,
     endDate date 
@@ -196,6 +189,8 @@ create table tblOpenSubjectList(
     seq_openSubjectList number primary key,
     seq_subjectList references tblSubjectList(seq_subjectList),
     seq_openCurriculum references tblopenCurriculum(seq_openCurriculum),
+    seq_textbook references tbltextbook(seq_textbook),
+    seq_teacher references tblTeacher(seq_teacher), 
     startDate date,
     endDate date
 );
@@ -283,9 +278,9 @@ create table tblOnlineCourseList (
     status varchar2(50) default '0' not null 
 );
 
---교사 평가
-create table tblTeacherEvaluation(  
-    seq_teacherEvaluation number primary key,
+--교육 과정 평가
+create table tblCurriculumEvaluation(  
+    seq_curriculumEvaluation number primary key,
     seq_traineeList references tblTraineeList(seq_traineeList),
     seq_openCurriculum references tblOpenCurriculum(seq_openCurriculum),
     grade number not null,

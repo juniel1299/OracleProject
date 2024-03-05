@@ -308,27 +308,6 @@ INSERT INTO Tblexampaper(seq_attendancepapers, seq_question, seq_subject, kind) 
 INSERT INTO Tblexampaper(seq_attendancepapers, seq_question, seq_subject, kind) VALUES (280, 280, 14, '실기');
 
 
---교재 목록
-insert into tblTextbookList (seq_textbookList, seq_textbook, seq_subject) values (1, 1, 1);
-insert into tblTextbookList (seq_textbookList, seq_textbook, seq_subject) values (2, 2, 1);
-insert into tblTextbookList (seq_textbookList, seq_textbook, seq_subject) values (3, 3, 6);
-insert into tblTextbookList (seq_textbookList, seq_textbook, seq_subject) values (4, 4, 3);
-insert into tblTextbookList (seq_textbookList, seq_textbook, seq_subject) values (5, 5, 9);
-insert into tblTextbookList (seq_textbookList, seq_textbook, seq_subject) values (6, 6, 10);
-insert into tblTextbookList (seq_textbookList, seq_textbook, seq_subject) values (7, 7, 11);
-insert into tblTextbookList (seq_textbookList, seq_textbook, seq_subject) values (8, 8, 2);
-insert into tblTextbookList (seq_textbookList, seq_textbook, seq_subject) values (9, 9, 5);
-insert into tblTextbookList (seq_textbookList, seq_textbook, seq_subject) values (10, 10, 5);
-insert into tblTextbookList (seq_textbookList, seq_textbook, seq_subject) values (11, 11, 7);
-insert into tblTextbookList (seq_textbookList, seq_textbook, seq_subject) values (12, 12, 4);
-insert into tblTextBookList values(13,13,8);
-insert into tblTextBookList values(14,14,12);
-insert into tblTextBookList values(15,15,13);
-insert into tblTextBookList values(16,16,14);
-insert into tblTextBookList values(17,17,15);
-insert into tblTextBookList values(18,18,16);
-insert into tblTextBookList values(19,19,17);
-
 --교육 과정
 insert into tblCurriculum values (1, 2,'AWS와 Docker를 활용한 Java Full-Stack 과정(A)', 
 'Java 언어를 기반으로 AWS와 Docker를 활용하여 Full-Stack 개발자를 양성하고 있습니다.');
@@ -346,7 +325,6 @@ insert into tblCurriculum values (7, 1,'AWS 클라우드와 Elasticsearch를 활
 'Java 언어를 기반으로 AWS 클라우드와 Elasticsearch를 활용할 수 있는 Full-Stack 개발자를 양성하고 있습니다.');
 insert into tblCurriculum values (8, 2,'자바(Java)기반 Web과 스마트플랫폼 Full-Stack 과정(B)', 
 'Java 언어를 기반으로 스마트웹,콘텐츠 개발을 할 수 있는 Full-Stack 개발자를 양성하고 있습니다.');
-
 
 --면접 스케쥴
 insert into tblInterviewSchedule (seq_schedule, seq_manager, seq_trainee, day) values(1, 2, 1, TO_DATE('2023-08-24', 'YYYY-MM-DD'));
@@ -500,7 +478,6 @@ insert into tblInterviewSchedule (seq_schedule, seq_manager, seq_trainee, day) v
 insert into tblInterviewSchedule (seq_schedule, seq_manager, seq_trainee, day) values(149, 8, 248, TO_DATE('2023-09-06', 'YYYY-MM-DD'));
 insert into tblInterviewSchedule (seq_schedule, seq_manager, seq_trainee, day) values(150, 7, 250, TO_DATE('2023-11-03', 'YYYY-MM-DD'));
 
-
 --강의 가능 과목 목록
 insert into tblAvailableSubjectList values (1, 1, 1);
 insert into tblAvailableSubjectList values (2, 2, 1);
@@ -651,7 +628,6 @@ insert into tblAvailableSubjectList values (146, 17, 7);
 insert into tblAvailableSubjectList values (147, 17, 8);
 insert into tblAvailableSubjectList values (148, 17, 9);
 insert into tblAvailableSubjectList values (149, 17, 10);
-
 
 --추천 교재 목록
 insert into tblRecommendTextbook (seq_recommendTextbook, seq_teacher, seq_textbook, grade) values (1, 1, 1, 4);
