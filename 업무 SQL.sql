@@ -244,8 +244,6 @@ delete from tblOpenCurriculum
 	where seq_openCurriculum = 1; 
 
 -- 원준
---b-6 
---쿼리테스트
 
 -- B-6
 
@@ -349,19 +347,20 @@ group by vt.t_name, vt.a_day, vc.c_name, vt.situation;
 
 -- B-9 
 --교사 평가 조회 
+select * from tblopencurriculum;
+select * from tblopensubjectlist;
+select * from tblteacher;
+select * from tblsubjectlist;
+select * from tblsubject;
 
-select t.name,ce.grade,s.name,ce.content from tblcurriculumevaluation ce
+select t.name,ce.grade,ce.content from tblcurriculumevaluation ce
 inner join tblopencurriculum oc
 on ce.seq_opencurriculum = oc.seq_opencurriculum
-inner join tblOpensubjectList osl
-on osl.seq_opencurriculum = oc.seq_curriculum
+inner join tblopensubjectlist osl
+on osl.seq_opencurriculum = oc.seq_opencurriculum
 inner join tblteacher t
-on osl.seq_teacher = t.seq_teacher
-inner join tblsubjectlist sl
-on osl.seq_subjectlist = sl.seq_subjectlist
-inner join tblsubject s
-on s.seq_subject = sl.seq_subjectlist
-group by t.name,s.name,ce.grade,ce.content;
+on t.seq_teacher = osl.seq_teacher
+group by  t.name,ce.grade,ce.content;
 
 select * from tblsubject;
 -- B-10 
@@ -400,6 +399,7 @@ update tblTextbook set publisher  = '에이콘' where name = 'OpenCV-Python으�
 --교재 삭제
 
 delete from tblTextbook where name ='OpenCV-Python으로 배우는 영상처리 및 응용';
+
 
 
 -- 원혁
@@ -785,8 +785,7 @@ from tblOpenCurriculum oc
 
 --c-5
 
--- D-1 (테이블 수정 중...)
-
+-- D-1
 -- 성적조회
 
 select distinct vt.t_name,vt.t_id,vt.t_ssn,vt.t_tel,vc.s_name,vc.osl_startdate,vc.osl_enddate from vwtrainees vt
@@ -796,7 +795,6 @@ inner join vwCurriculum vc
 on vc.seq_opensubjectlist = vg.seq_opensubjectlist
 where vt.t_name ='모백양'
 order by vt.t_name,vt.t_id,vt.t_ssn,vt.t_tel,vc.s_name,vc.osl_startdate,vc.osl_enddate;
-
 
 -- D-2
 -- 출결 관리 및 조회 
@@ -824,6 +822,8 @@ on t.seq_trainee = tl.seq_trainee
 inner join tblAttendancestatus ad
 on ad.seq_attendancestatus = a.seq_attendancestatus
 where a.day like '23%' and t.name = '천유서';
+
+--D-3
 
 --D-3
 
