@@ -5401,68 +5401,68 @@ values
 
 
 
---교사 평가
+--교육 과정 평가
 -- 10번은 중도퇴사인데 DDL에서 not null 조건이 걸려있어 일단 코드만 작성하고 insert 하지 않음
-insert into tblTeacherEvaluation 
-(seq_teacherEvaluation, seq_traineeList, seq_openCurriculum, grade, content) 
+insert into tblCurriculumEvaluation 
+(seq_curriculumEvaluation, seq_traineeList, seq_openCurriculum, grade, content) 
 values (1, 1, 7, 4, '강사님이 이해하기 쉽게 설명해주시고 막히는 부분에서 질문을 하면 설명을 다시 잘 해주셔서 좋았습니다. 이 과정을 주변 코딩을 준비하는 친구 지인들에게 추천하고 싶을 정도로 만족하는 수업이였습니다.');
-insert into tblTeacherEvaluation 
-(seq_teacherEvaluation, seq_traineeList, seq_openCurriculum, grade, content) 
+insert into tblCurriculumEvaluation 
+(seq_curriculumEvaluation, seq_traineeList, seq_openCurriculum, grade, content) 
 values (2, 2, 7, 4, '강사님께서 모든 수업을 재밌고 쉽게 설명해주셔서 잘 배웠습니다! 항상 학생들을 너무너무 잘 챙겨주셨어요!!');
-insert into tblTeacherEvaluation 
-(seq_teacherEvaluation, seq_traineeList, seq_openCurriculum, grade, content) 
+insert into tblCurriculumEvaluation 
+(seq_curriculumEvaluation, seq_traineeList, seq_openCurriculum, grade, content) 
 values (3, 3, 7, 5, '수업 같이 듣는 친구들도 너무 다 좋았어서 제 친구가 다닌다고 하면 무조건 추천할거예요!');
-insert into tblTeacherEvaluation 
-(seq_teacherEvaluation, seq_traineeList, seq_openCurriculum, grade, content) 
+insert into tblCurriculumEvaluation 
+(seq_curriculumEvaluation, seq_traineeList, seq_openCurriculum, grade, content) 
 values (4, 4, 7, 4, '선생님께서 비전공자도 쉽게 이해할 수 있게 강의해주셨으며, 수강생에게 애정을 가지고 계신게 느껴졌습니다.');
-insert into tblTeacherEvaluation 
-(seq_teacherEvaluation, seq_traineeList, seq_openCurriculum, grade, content) 
+insert into tblCurriculumEvaluation 
+(seq_curriculumEvaluation, seq_traineeList, seq_openCurriculum, grade, content) 
 values (5, 5, 7, 3, '말썽쟁이반 강의하시느라 고생 많으셨습니다. 건강하시고 감사해요!!!');
-insert into tblTeacherEvaluation 
-(seq_teacherEvaluation, seq_traineeList, seq_openCurriculum, grade, content) 
+insert into tblCurriculumEvaluation 
+(seq_curriculumEvaluation, seq_traineeList, seq_openCurriculum, grade, content) 
 values (6, 6, 7, 5, '박세인 강사님에 대해 평소 굉장히 후기가 좋았기 때문에 기대하고 교육에 참여하게 되었습니다. 왜 다들 칭찬과 소문이 자자했는지 단번에 알 수 있었습니다. 뒤쳐지는 학생들을 어떻게든 알려주고 이끌어주려고 노력해주시고 현실적인 조언과 함께 격려해주시는 모습에 지난 5.5개월간 너무 유익하게 공부할 수 있었습니다.');
-insert into tblTeacherEvaluation 
-(seq_teacherEvaluation, seq_traineeList, seq_openCurriculum, grade, content) 
+insert into tblCurriculumEvaluation 
+(seq_curriculumEvaluation, seq_traineeList, seq_openCurriculum, grade, content) 
 values (7, 7, 7, 4, '과정에서 설명 되어있듯이 자바 기초부터 클라우드까지 다양한 기술 스택을 단기간에 배울 수 있는 5.5개월 이었습니다. 30명을 모두 케어하기에 힘드실 법도 한데 새로운 걸 시작할 때마다 막히는 부분이 있는지 한 사람 한 사람 챙겨주셔서 더 감사한 시간이었습니다. 다른 개발을 준비하는 친구에게 벌써 추천하였습니다ㅎㅎ ');
-insert into tblTeacherEvaluation 
-(seq_teacherEvaluation, seq_traineeList, seq_openCurriculum, grade, content) 
+insert into tblCurriculumEvaluation 
+(seq_curriculumEvaluation, seq_traineeList, seq_openCurriculum, grade, content) 
 values (8, 8, 7, 3, '좋은  훈련기관을 만나 좋은 강사님 좋은 매니저님  좋은 친구들을 만나 많은 것들을 배웠습니다.');
-insert into tblTeacherEvaluation 
-(seq_teacherEvaluation, seq_traineeList, seq_openCurriculum, grade, content) 
+insert into tblCurriculumEvaluation 
+(seq_curriculumEvaluation, seq_traineeList, seq_openCurriculum, grade, content) 
 values (9, 9, 7, 4, '실력있고 성품 좋으신 강사님께 6개월간 좋은 강의 해주셔서 감사합니다.');
-insert into tblTeacherEvaluation 
-(seq_teacherEvaluation, seq_traineeList, seq_openCurriculum, grade, content) 
+insert into tblCurriculumEvaluation 
+(seq_curriculumEvaluation, seq_traineeList, seq_openCurriculum, grade, content) 
 values (10, 10, 7, null, null);
-insert into tblTeacherEvaluation 
-(seq_teacherEvaluation, seq_traineeList, seq_openCurriculum, grade, content) 
+insert into tblCurriculumEvaluation 
+(seq_curriculumEvaluation, seq_traineeList, seq_openCurriculum, grade, content) 
 values (11, 11, 7, 4, '의지만 있다면 얻어갈 것이 많은 훈련');
-insert into tblTeacherEvaluation 
-(seq_teacherEvaluation, seq_traineeList, seq_openCurriculum, grade, content) 
+insert into tblCurriculumEvaluation 
+(seq_curriculumEvaluation, seq_traineeList, seq_openCurriculum, grade, content) 
 values (12, 12, 7, 5, '저는 기초도 아예 없는 비전공자라서 전공했던 학생들과 같이 수업을 듣는게 조금 걱정스러웠는데, 강사님께서 기초 지식부터 하나하나 알아듣기 쉽게 설명해 주셔서 마지막까지 따라갈 수 있었습니다!
 에러가 나거나 수업을 따라가지 못하는 학생이 있으면, 따라올 수 있게 한 학생 한 학생 끝까지 지도해주셔서 너무 감사했습니다! 강사님 덕분에 자신감을 갖고 취업활동을 할 수 있게 되었습니다.');
-insert into tblTeacherEvaluation 
-(seq_teacherEvaluation, seq_traineeList, seq_openCurriculum, grade, content) 
+insert into tblCurriculumEvaluation 
+(seq_curriculumEvaluation, seq_traineeList, seq_openCurriculum, grade, content) 
 values (13, 13, 7, 3, '자신이 개발자가 되고 싶지만 너무 어렵거나 혼자 하기 힘들다면 해당 훈련과정을 수강하는 것도 좋은 방법이라 생각한다, 물론 아무것도 안 하고 대충 수업 출석만 한다고 개발자가 되는 건 아니다');
-insert into tblTeacherEvaluation 
-(seq_teacherEvaluation, seq_traineeList, seq_openCurriculum, grade, content) 
+insert into tblCurriculumEvaluation 
+(seq_curriculumEvaluation, seq_traineeList, seq_openCurriculum, grade, content) 
 values (14, 14, 7, 4, '매우매우 만족합니다.');
-insert into tblTeacherEvaluation 
-(seq_teacherEvaluation, seq_traineeList, seq_openCurriculum, grade, content) 
+insert into tblCurriculumEvaluation 
+(seq_curriculumEvaluation, seq_traineeList, seq_openCurriculum, grade, content) 
 values (15, 15, 7, 5, '강사님께서 모든 수업을 재밌고 쉽게 설명해주셔서 잘 배웠습니다! 항상 학생들을 너무너무 잘 챙겨주셨어요!! 매니저님께서도 늘 카톡드리면 유쾌하고 친절하게 답변 주셔서 좋았습니답^^!!');
-insert into tblTeacherEvaluation 
-(seq_teacherEvaluation, seq_traineeList, seq_openCurriculum, grade, content) 
+insert into tblCurriculumEvaluation 
+(seq_curriculumEvaluation, seq_traineeList, seq_openCurriculum, grade, content) 
 values (16, 16, 7, 4, '5.5개월이라는 짧지 않은 시간 동안 강사님의 지치지 않는 열정 덕분에 매 수업을 흥미롭고 유익하게 들을 수 있었습니다!');
-insert into tblTeacherEvaluation 
-(seq_teacherEvaluation, seq_traineeList, seq_openCurriculum, grade, content) 
+insert into tblCurriculumEvaluation 
+(seq_curriculumEvaluation, seq_traineeList, seq_openCurriculum, grade, content) 
 values (17, 17, 7, 3, '전공자로써 학부에서 배우지못한 기술들을 배울수 있었습니다. 기초부터 배우기때문에 비전공자들도 쉽게 따라와서 대부분이 무사히 수료하고 취업까지 할 수 있습니다.');
-insert into tblTeacherEvaluation 
-(seq_teacherEvaluation, seq_traineeList, seq_openCurriculum, grade, content) 
+insert into tblCurriculumEvaluation 
+(seq_curriculumEvaluation, seq_traineeList, seq_openCurriculum, grade, content) 
 values (18, 18, 7, 4, '수강하고자 했던 수업내용대로 배울 수 있어 만족했고 강사님께서 질문 답변을 깊이 있게 해주셨고 매니저님은 취업 관련 정보들을 다양하게 제공 해주어 만족스럽게 수강을 마무리 할 수 있었다.');
-insert into tblTeacherEvaluation 
-(seq_teacherEvaluation, seq_traineeList, seq_openCurriculum, grade, content) 
+insert into tblCurriculumEvaluation 
+(seq_curriculumEvaluation, seq_traineeList, seq_openCurriculum, grade, content) 
 values (19, 19, 7, 3, '비대면 훈련임에도 훈련생들에 대한 지속적인 관심과 배려가 너무 좋았습니다. 강사님도 친절하시고 매니저님도 학생들을 위해주셔서 감동 받았습니다');
-insert into tblTeacherEvaluation 
-(seq_teacherEvaluation, seq_traineeList, seq_openCurriculum, grade, content) 
+insert into tblCurriculumEvaluation 
+(seq_curriculumEvaluation, seq_traineeList, seq_openCurriculum, grade, content) 
 values (20, 20, 7, 4, '꼼꼼한 강의로 비전공자도 잘 따라올 수 있는 환경을 마련해주셨습니다. 한명한명의 수강생들을 챙기셨고 뒤쳐지는 사람이 없도록 노력하시는 모습이 대부분의 사람들이 중도포기하지 않고 끝까지 갈 수 있었던 이유인 것 같습니다.');
 
 
