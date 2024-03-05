@@ -2,15 +2,12 @@
 CREATE or replace VIEW vwCurriculum 
 as 
 select
---pk
 oc.seq_opencurriculum seq_opencurriculum
 ,c.seq_curriculum seq_curriculum
 ,sl.seq_subjectlist seq_subjectlist
 ,s.seq_subject seq_subject
 ,r.seq_room seq_room
 ,osl.seq_opensubjectlist seq_opensubjectlist
---fk , 이외
-,oc.seq_teacher seq_teacher
 ,oc.seq_curriculumProgress seq_curriculumProgress
 ,oc.startDate oc_startDate
 ,oc.enddate oc_enddate
