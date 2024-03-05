@@ -8,6 +8,7 @@ oc.seq_opencurriculum seq_opencurriculum
 ,s.seq_subject seq_subject
 ,r.seq_room seq_room
 ,osl.seq_opensubjectlist seq_opensubjectlist
+,osl.seq_teacher seq_teacher
 ,oc.seq_curriculumProgress seq_curriculumProgress
 ,oc.startDate oc_startDate
 ,oc.enddate oc_enddate
