@@ -659,15 +659,16 @@ b.name 교재명,
 ti.attendancePoints "출결 배점",
 ti.writtenPoints "필기 배점",
 ti.practicalPoints "실기 배점",
-g.attendanceGrade "출결 점수",
-g.writtenGrade "필기 점수",
-g.practicalGrade "실기 점수"
+case
+    when g.attendanceGrade is not null and g.writtenGrade is not null and g.practicalGrade is not null then '완료'
+    else '미완료' 
+end "성적 등록 여부"
 from vwCurriculum vc
     inner join tblTextbook b
         on b.seq_textbook = vc.seq_textbook
             inner join tblTestInfo ti
                 on ti.seq_openSubjectList = vc.seq_openSubjectList
-                    inner join tblGrades g
+                    left outer join tblGrades g
                         on g.seq_testInfo = ti.seq_testInfo;
 
 
@@ -689,13 +690,16 @@ from vwGrades vg
 
 -- 4. 성적 등록 여부는 교육생 전체에 대해서 성적을 등록했는지의 여부를 출력한다.
 select 
+g.seq_testInfo "시험 정보 번호",
 tl.seq_trainee "학생 번호",
-g.attendanceGrade "출결 성적",
-g.writtenGrade "필기 성적",
-g.practicalGrade "실기 성적"
+case
+    when g.attendanceGrade is not null and g.writtenGrade is not null and g.practicalGrade is not null then '완료'
+    else '미완료'
+end "성적 등록 여부"
 from tblGrades g
     right outer join tblTraineeList tl
-        on tl.seq_traineeList = g.seq_traineeList;
+        on tl.seq_traineeList = g.seq_traineeList
+            order by "시험 정보 번호";
 
 
 -- 5. 과정을 중도 탈락해서 성적 처리가 제외된 교육생이더라도 교육생 명단에는 출력되어야 한다. 중도 탈락 여부를 확인할 수 있도록 해야 한다.
@@ -705,7 +709,7 @@ select * from tblTraineeList where status = '중도탈락';
 
 
 --c-4 출결 관리 및 출결 조회
--- 교사가 강의한 과정에 한해 선택하는 경우 모든 교육생의 출결을 조회할 수 있어야 한다.
+-- 1. 교사가 강의한 과정에 한해 선택하는 경우 모든 교육생의 출결을 조회할 수 있어야 한다.
 select 
 oc.seq_openCurriculum "개설 교육과정 번호",
 asl.seq_subject "과목 번호",
@@ -713,60 +717,119 @@ tl.seq_trainee "교육생 번호",
 to_char(a.inTime, 'HH24:MI:SS') "출근 시간",
 to_char(a.outTime, 'HH24:MI:SS') "퇴근 시간"
 from tblOpenCurriculum oc
-    inner join tblAvailableSubjectList asl
-        on oc.seq_teacher = asl.seq_teacher
-                inner join tblTraineeList tl
-                    on tl.seq_openCurriculum = oc.seq_openCurriculum
-                        inner join tblAttendance a
-                            on a.seq_traineeList = tl.seq_traineeList
-                                where oc.seq_teacher = 1 -- 특정교사
+    inner join tblOpenSubjectList osl
+        on osl.seq_openCurriculum = oc.seq_openCurriculum
+            inner join tblAvailableSubjectList asl
+                on asl.seq_teacher = osl.seq_teacher
+                    inner join tblTraineeList tl
+                        on tl.seq_openCurriculum = oc.seq_openCurriculum
+                            inner join tblAttendance a
+                                on a.seq_traineeList = tl.seq_traineeList
+                                where osl.seq_teacher = 1 -- 특정교사
                                     and asl.seq_subject = 1 -- 특정 과목
                                         order by tl.seq_trainee;
         
         
--- 출결 현황을 기간별(년, 월, 일) 조회할 수 있어야 한다.
+-- 2. 출결 현황을 기간별(년, 월, 일) 조회할 수 있어야 한다.
 select 
-oc.seq_openCurriculum "개설 교육과정 번호",
+vc.seq_openCurriculum "개설 교육과정 번호",
 asl.seq_subject "과목 번호",
 tl.seq_trainee "교육생 번호",
 a.day 날짜,
 to_char(a.inTime, 'HH24:MI:SS') "출근 시간",
 to_char(a.outTime, 'HH24:MI:SS') "퇴근 시간"
-from tblOpenCurriculum oc
-    inner join tblOpenSubjectList osl
-        on oc.seq_openCurriculum = osl.seq_openCurriculum
-            inner join tblAvailableSubjectList asl
-                on asl.seq_teacher = osl.seq_teacher
-                
-                
-                    inner join tblTraineeList tl
-                        on tl.seq_openCurriculum = oc.seq_openCurriculum
-                            inner join tblAttendance a
-                                on a.seq_traineeList = tl.seq_traineeList
-                                    where a.inTime between to_date('2023-09-04', 'YYYY-MM-DD') and to_date('2023-11-09', 'YYYY-MM-DD') -- 특정 기간
-                                        order by tl.seq_trainee;
+from vwCurriculum vc
+    inner join tblAvailableSubjectList asl
+        on asl.seq_subject = vc.seq_subject
+            inner join tblTraineeList tl
+                on tl.seq_openCurriculum = vc.seq_openCurriculum
+                    inner join tblAttendance a
+                        on a.seq_traineeList = tl.seq_traineeList
+                            where a.inTime between to_date('2023-09-04', 'YYYY-MM-DD') and to_date('2023-10-04', 'YYYY-MM-DD') -- 특정 기간
+                                order by tl.seq_trainee;
+
+
+-- 3. 특정(특정 과정, 특정 인원) 출결 현황을 조회할 수 있어야 한다.
+-- 3.1. 특정 과정
+select 
+vc.seq_openCurriculum "개설 교육과정 번호",
+asl.seq_subject "과목 번호",
+tl.seq_trainee "교육생 번호",
+a.day 날짜,
+to_char(a.inTime, 'HH24:MI:SS') "출근 시간",
+to_char(a.outTime, 'HH24:MI:SS') "퇴근 시간"
+from vwCurriculum vc
+    inner join tblAvailableSubjectList asl
+        on asl.seq_subject = vc.seq_subject
+            inner join tblTraineeList tl
+                on tl.seq_openCurriculum = vc.seq_openCurriculum
+                    inner join tblAttendance a
+                        on a.seq_traineeList = tl.seq_traineeList
+                            where vc.seq_openCurriculum = 7 -- 특정 과정
+                                order by tl.seq_trainee;
+
+-- 3.2. 특정 인원
+select 
+vc.seq_openCurriculum "개설 교육과정 번호",
+asl.seq_subject "과목 번호",
+tl.seq_trainee "교육생 번호",
+a.day 날짜,
+to_char(a.inTime, 'HH24:MI:SS') "출근 시간",
+to_char(a.outTime, 'HH24:MI:SS') "퇴근 시간"
+from vwCurriculum vc
+    inner join tblAvailableSubjectList asl
+        on asl.seq_subject = vc.seq_subject
+            inner join tblTraineeList tl
+                on tl.seq_openCurriculum = vc.seq_openCurriculum
+                    inner join tblAttendance a
+                        on a.seq_traineeList = tl.seq_traineeList
+                            where tl.seq_trainee = 1 -- 특정 인원
+                                order by tl.seq_trainee;
                                 
-
--- 특정(특정 과정, 특정 인원) 출결 현황을 조회할 수 있어야 한다.
-
-
--- 모든 출결 조회는 근태 상황을 구분할 수 있어야 한다.(정상, 지각, 조퇴, 외출, 병가, 기타)
-
+-- 4. 모든 출결 조회는 근태 상황을 구분할 수 있어야 한다.(정상, 지각, 조퇴, 외출, 병가, 기타)
+select 
+vc.seq_openCurriculum "개설 교육과정 번호",
+asl.seq_subject "과목 번호",
+tl.seq_trainee "교육생 번호",
+a.day 날짜,
+to_char(a.inTime, 'HH24:MI:SS') "출근 시간",
+to_char(a.outTime, 'HH24:MI:SS') "퇴근 시간",
+tas.situation "상태"
+from vwCurriculum vc
+    inner join tblAvailableSubjectList asl
+        on asl.seq_subject = vc.seq_subject
+            inner join tblTraineeList tl
+                on tl.seq_openCurriculum = vc.seq_openCurriculum
+                    inner join tblAttendance a
+                        on a.seq_traineeList = tl.seq_traineeList
+                            inner join tblAttendanceStatus tas
+                                on tas.seq_attendanceStatus = a.seq_attendanceStatus
+                                    order by tl.seq_trainee;
 
 
 --c-6 추천 도서 관리
 --1. 교재 추가
 --새로운 교재 정보를 추가한다.
-
+insert into tblTextbook values(1,'자바의 정석','도우출판');
 
 --2. 교재 추천
 -- 교재를 추천할 수 있다.
+insert into tblRecommendTextbook (seq_recommendTextbook, seq_teacher, seq_textbook, grade) values (1, 1, 1, 4);
 
 
-
---c-7 후기 관리
--- 1. 후기 관리
+--c-7 교육 과정 평가
+-- 1. 교육 과정 평가
 -- 프로젝트 종료 이후 교육생이 작성한 후기를 조회 및 관리 할 수 있다.
+select 
+oc.seq_openCurriculum "교육 과정 번호",
+to_date(oc.endDate, 'YYYY-MM-DD') "과정 종료일",
+to_date(sysdate, 'YYYY-MM-DD') 오늘,
+ce.grade 평점,
+ce.content 후기
+from tblCurriculumEvaluation ce
+    inner join tblOpenCurriculum oc
+        on oc.seq_openCurriculum = ce.seq_openCurriculum
+            where to_date(oc.endDate, 'YYYY-MM-DD') < to_date(sysdate, 'YYYY-MM-DD');
 
 
 
