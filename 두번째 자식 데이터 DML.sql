@@ -1,116 +1,127 @@
 --개설 과목 목록
+select seq_subjectlist, s.name from tblsubjectlist sl
+inner join tblsubject s
+on s.seq_subject = sl.seq_subject order by seq_subjectlist;
+
+select * from tbltextbook;
+select * from tblopencurriculum;
+select t.seq_teacher, s.name, t.name from tblavailablesubjectlist asl
+    inner join tblsubject s
+on s.seq_subject = asl.seq_subject
+inner join tblteacher t
+on asl.seq_teacher = t.seq_teacher;
 INSERT INTO tblOpenSubjectList
-VALUES (1, 47, 7, TO_DATE('2023-09-04', 'YYYY-MM-DD'), TO_DATE('2023-10-02', 'YYYY-MM-DD'));
+VALUES (1, 47, 7, 1, 1, TO_DATE('2023-09-04', 'YYYY-MM-DD'), TO_DATE('2023-10-02', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (2, 48, 7, TO_DATE('2023-10-03', 'YYYY-MM-DD'), TO_DATE('2023-11-01', 'YYYY-MM-DD'));
+VALUES (2, 48, 7, 8, 1, TO_DATE('2023-10-03', 'YYYY-MM-DD'), TO_DATE('2023-11-01', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (3, 49, 7, TO_DATE('2023-11-02', 'YYYY-MM-DD'), TO_DATE('2023-11-30', 'YYYY-MM-DD'));
+VALUES (3, 49, 7, 4, 1, TO_DATE('2023-11-02', 'YYYY-MM-DD'), TO_DATE('2023-11-30', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (4, 50, 7, TO_DATE('2023-12-01', 'YYYY-MM-DD'), TO_DATE('2024-12-28', 'YYYY-MM-DD'));
+VALUES (4, 50, 7, 12, 1, TO_DATE('2023-12-01', 'YYYY-MM-DD'), TO_DATE('2024-12-28', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (5, 51, 7, TO_DATE('2023-12-29', 'YYYY-MM-DD'), TO_DATE('2024-01-14', 'YYYY-MM-DD'));
+VALUES (5, 51, 7, 14, 1, TO_DATE('2023-12-29', 'YYYY-MM-DD'), TO_DATE('2024-01-14', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (6, 52, 7, TO_DATE('2024-01-15', 'YYYY-MM-DD'), TO_DATE('2024-01-30', 'YYYY-MM-DD'));
+VALUES (6, 52, 7, 16, 1, TO_DATE('2024-01-15', 'YYYY-MM-DD'), TO_DATE('2024-01-30', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (7, 53, 7, TO_DATE('2024-01-31', 'YYYY-MM-DD'), TO_DATE('2024-02-15', 'YYYY-MM-DD'));
+VALUES (7, 53, 7, 17, 1, TO_DATE('2024-01-31', 'YYYY-MM-DD'), TO_DATE('2024-02-15', 'YYYY-MM-DD'));
 
 INSERT INTO tblOpenSubjectList
-VALUES (8, 17, 3, TO_DATE('2023-12-29', 'YYYY-MM-DD'), TO_DATE('2024-01-28', 'YYYY-MM-DD'));
+VALUES (8, 17, 3, 2, 2, TO_DATE('2023-12-29', 'YYYY-MM-DD'), TO_DATE('2024-01-28', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (9, 18, 3, TO_DATE('2024-01-29', 'YYYY-MM-DD'), TO_DATE('2024-02-28', 'YYYY-MM-DD'));
+VALUES (9, 18, 3, 8, 2, TO_DATE('2024-01-29', 'YYYY-MM-DD'), TO_DATE('2024-02-28', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (13, 19, 3, TO_DATE('2024-02-29', 'YYYY-MM-DD'), TO_DATE('2024-03-28', 'YYYY-MM-DD'));
+VALUES (13, 19, 3, 4, 2, TO_DATE('2024-02-29', 'YYYY-MM-DD'), TO_DATE('2024-03-28', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (14, 20, 3, TO_DATE('2024-03-29', 'YYYY-MM-DD'), TO_DATE('2024-04-28', 'YYYY-MM-DD'));
+VALUES (14, 20, 3, 12, 2, TO_DATE('2024-03-29', 'YYYY-MM-DD'), TO_DATE('2024-04-28', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (15, 21, 3, TO_DATE('2024-04-29', 'YYYY-MM-DD'), TO_DATE('2024-05-13', 'YYYY-MM-DD'));
+VALUES (15, 21, 3, 14, 2, TO_DATE('2024-04-29', 'YYYY-MM-DD'), TO_DATE('2024-05-13', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (16, 22, 3, TO_DATE('2024-05-14', 'YYYY-MM-DD'), TO_DATE('2024-05-27', 'YYYY-MM-DD'));
+VALUES (16, 22, 3, 16, 2, TO_DATE('2024-05-14', 'YYYY-MM-DD'), TO_DATE('2024-05-27', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (17, 23, 3, TO_DATE('2024-05-28', 'YYYY-MM-DD'), TO_DATE('2024-06-10', 'YYYY-MM-DD'));
+VALUES (17, 23, 3, 17, 2, TO_DATE('2024-05-28', 'YYYY-MM-DD'), TO_DATE('2024-06-10', 'YYYY-MM-DD'));
 
 INSERT INTO tblOpenSubjectList
-VALUES (10, 24, 4, TO_DATE('2023-12-26', 'YYYY-MM-DD'), TO_DATE('2024-01-25', 'YYYY-MM-DD'));
+VALUES (10, 24, 4, 1, 3, TO_DATE('2023-12-26', 'YYYY-MM-DD'), TO_DATE('2024-01-25', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (11, 25, 4, TO_DATE('2024-01-26', 'YYYY-MM-DD'), TO_DATE('2024-02-25', 'YYYY-MM-DD'));
+VALUES (11, 25, 4, 8, 3, TO_DATE('2024-01-26', 'YYYY-MM-DD'), TO_DATE('2024-02-25', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (18, 26, 4, TO_DATE('2024-02-26', 'YYYY-MM-DD'), TO_DATE('2024-03-25', 'YYYY-MM-DD'));
+VALUES (18, 26, 4, 4, 3, TO_DATE('2024-02-26', 'YYYY-MM-DD'), TO_DATE('2024-03-25', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (19, 27, 4, TO_DATE('2024-03-26', 'YYYY-MM-DD'), TO_DATE('2024-04-25', 'YYYY-MM-DD'));
+VALUES (19, 27, 4, 12, 3, TO_DATE('2024-03-26', 'YYYY-MM-DD'), TO_DATE('2024-04-25', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (20, 28, 4, TO_DATE('2024-04-26', 'YYYY-MM-DD'), TO_DATE('2024-05-25', 'YYYY-MM-DD'));
+VALUES (20, 28, 4, 9, 3, TO_DATE('2024-04-26', 'YYYY-MM-DD'), TO_DATE('2024-05-25', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (21, 29, 4, TO_DATE('2024-05-26', 'YYYY-MM-DD'), TO_DATE('2024-06-08', 'YYYY-MM-DD'));
+VALUES (21, 29, 4, 15, 3, TO_DATE('2024-05-26', 'YYYY-MM-DD'), TO_DATE('2024-06-08', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (22, 30, 4, TO_DATE('2024-06-09', 'YYYY-MM-DD'), TO_DATE('2024-06-22', 'YYYY-MM-DD'));
+VALUES (22, 30, 4, 16, 3, TO_DATE('2024-06-09', 'YYYY-MM-DD'), TO_DATE('2024-06-22', 'YYYY-MM-DD'));
 
 INSERT INTO tblOpenSubjectList
-VALUES (12, 31, 5, TO_DATE('2024-01-05', 'YYYY-MM-DD'), TO_DATE('2024-02-04', 'YYYY-MM-DD'));
+VALUES (12, 31, 5, 2, 4, TO_DATE('2024-01-05', 'YYYY-MM-DD'), TO_DATE('2024-02-04', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (23, 32, 5, TO_DATE('2024-02-05', 'YYYY-MM-DD'), TO_DATE('2024-03-04', 'YYYY-MM-DD'));
+VALUES (23, 32, 5, 8, 4, TO_DATE('2024-02-05', 'YYYY-MM-DD'), TO_DATE('2024-03-04', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (24, 33, 5, TO_DATE('2024-03-05', 'YYYY-MM-DD'), TO_DATE('2024-04-04', 'YYYY-MM-DD'));
+VALUES (24, 33, 5, 4, 4, TO_DATE('2024-03-05', 'YYYY-MM-DD'), TO_DATE('2024-04-04', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (25, 34, 5, TO_DATE('2024-04-05', 'YYYY-MM-DD'), TO_DATE('2024-05-04', 'YYYY-MM-DD'));
+VALUES (25, 34, 5, 9, 4, TO_DATE('2024-04-05', 'YYYY-MM-DD'), TO_DATE('2024-05-04', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (26, 35, 5, TO_DATE('2024-05-05', 'YYYY-MM-DD'), TO_DATE('2024-05-20', 'YYYY-MM-DD'));
+VALUES (26, 35, 5, 18, 4, TO_DATE('2024-05-05', 'YYYY-MM-DD'), TO_DATE('2024-05-20', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (27, 36, 5, TO_DATE('2024-05-21', 'YYYY-MM-DD'), TO_DATE('2024-06-03', 'YYYY-MM-DD'));
+VALUES (27, 36, 5, 19, 4, TO_DATE('2024-05-21', 'YYYY-MM-DD'), TO_DATE('2024-06-03', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (28, 37, 5, TO_DATE('2024-06-04', 'YYYY-MM-DD'), TO_DATE('2024-06-17', 'YYYY-MM-DD'));
+VALUES (28, 37, 5, 17, 4, TO_DATE('2024-06-04', 'YYYY-MM-DD'), TO_DATE('2024-06-17', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (29, 38, 5, TO_DATE('2024-06-18', 'YYYY-MM-DD'), TO_DATE('2024-07-02', 'YYYY-MM-DD'));
+VALUES (29, 38, 5, 16, 4, TO_DATE('2024-06-18', 'YYYY-MM-DD'), TO_DATE('2024-07-02', 'YYYY-MM-DD'));
 
 INSERT INTO tblOpenSubjectList
-VALUES (30, 1, 1, TO_DATE('2024-02-29', 'YYYY-MM-DD'), TO_DATE('2024-03-28', 'YYYY-MM-DD'));
+VALUES (30, 1, 1, 1, 5, TO_DATE('2024-02-29', 'YYYY-MM-DD'), TO_DATE('2024-03-28', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (31, 2, 1, TO_DATE('2024-03-29', 'YYYY-MM-DD'), TO_DATE('2024-04-28', 'YYYY-MM-DD'));
+VALUES (31, 2, 1, 8, 5, TO_DATE('2024-03-29', 'YYYY-MM-DD'), TO_DATE('2024-04-28', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (32, 3, 1, TO_DATE('2024-04-29', 'YYYY-MM-DD'), TO_DATE('2024-05-28', 'YYYY-MM-DD'));
+VALUES (32, 3, 1, 4, 5, TO_DATE('2024-04-29', 'YYYY-MM-DD'), TO_DATE('2024-05-28', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (33, 4, 1, TO_DATE('2024-05-29', 'YYYY-MM-DD'), TO_DATE('2024-06-28', 'YYYY-MM-DD'));
+VALUES (33, 4, 1, 9, 5, TO_DATE('2024-05-29', 'YYYY-MM-DD'), TO_DATE('2024-06-28', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (34, 5, 1, TO_DATE('2024-06-29', 'YYYY-MM-DD'), TO_DATE('2024-07-12', 'YYYY-MM-DD'));
+VALUES (34, 5, 1, 18, 5, TO_DATE('2024-06-29', 'YYYY-MM-DD'), TO_DATE('2024-07-12', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (35, 6, 1, TO_DATE('2024-07-13', 'YYYY-MM-DD'), TO_DATE('2024-07-26', 'YYYY-MM-DD'));
+VALUES (35, 6, 1, 19, 5, TO_DATE('2024-07-13', 'YYYY-MM-DD'), TO_DATE('2024-07-26', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (36, 7, 1, TO_DATE('2024-07-27', 'YYYY-MM-DD'), TO_DATE('2024-08-17', 'YYYY-MM-DD'));
+VALUES (36, 7, 1, 17, 5, TO_DATE('2024-07-27', 'YYYY-MM-DD'), TO_DATE('2024-08-17', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (37, 8, 1, TO_DATE('2024-08-18', 'YYYY-MM-DD'), TO_DATE('2024-08-26', 'YYYY-MM-DD'));
+VALUES (37, 8, 1, 16, 5, TO_DATE('2024-08-18', 'YYYY-MM-DD'), TO_DATE('2024-08-26', 'YYYY-MM-DD'));
 
 INSERT INTO tblOpenSubjectList
-VALUES (38, 9, 2, TO_DATE('2024-03-07', 'YYYY-MM-DD'), TO_DATE('2024-04-06', 'YYYY-MM-DD'));
+VALUES (38, 9, 2, 2, 6, TO_DATE('2024-03-07', 'YYYY-MM-DD'), TO_DATE('2024-04-06', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (39, 10, 2, TO_DATE('2024-04-07', 'YYYY-MM-DD'), TO_DATE('2024-05-06', 'YYYY-MM-DD'));
+VALUES (39, 10, 2, 8, 6, TO_DATE('2024-04-07', 'YYYY-MM-DD'), TO_DATE('2024-05-06', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (40, 11, 2, TO_DATE('2024-05-07', 'YYYY-MM-DD'), TO_DATE('2024-06-06', 'YYYY-MM-DD'));
+VALUES (40, 11, 2, 4, 6, TO_DATE('2024-05-07', 'YYYY-MM-DD'), TO_DATE('2024-06-06', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (41, 12, 2, TO_DATE('2024-06-07', 'YYYY-MM-DD'), TO_DATE('2024-07-06', 'YYYY-MM-DD'));
+VALUES (41, 12, 2, 12, 6, TO_DATE('2024-06-07', 'YYYY-MM-DD'), TO_DATE('2024-07-06', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (42, 13, 2, TO_DATE('2024-07-07', 'YYYY-MM-DD'), TO_DATE('2024-07-19', 'YYYY-MM-DD'));
+VALUES (42, 13, 2, 18, 6, TO_DATE('2024-07-07', 'YYYY-MM-DD'), TO_DATE('2024-07-19', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (43, 14, 2, TO_DATE('2024-07-20', 'YYYY-MM-DD'), TO_DATE('2024-08-01', 'YYYY-MM-DD'));
+VALUES (43, 14, 2, 19, 6, TO_DATE('2024-07-20', 'YYYY-MM-DD'), TO_DATE('2024-08-01', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (44, 15, 2, TO_DATE('2024-08-02', 'YYYY-MM-DD'), TO_DATE('2024-08-16', 'YYYY-MM-DD'));
+VALUES (44, 15, 2, 17, 6, TO_DATE('2024-08-02', 'YYYY-MM-DD'), TO_DATE('2024-08-16', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (45, 16, 2, TO_DATE('2024-08-17', 'YYYY-MM-DD'), TO_DATE('2024-09-02', 'YYYY-MM-DD'));
+VALUES (45, 16, 2, 16, 6, TO_DATE('2024-08-17', 'YYYY-MM-DD'), TO_DATE('2024-09-02', 'YYYY-MM-DD'));
 
 INSERT INTO tblOpenSubjectList
-VALUES (46, 39, 6, TO_DATE('2024-03-11', 'YYYY-MM-DD'), TO_DATE('2024-04-10', 'YYYY-MM-DD'));
+VALUES (46, 39, 6, 1, 7, TO_DATE('2024-03-11', 'YYYY-MM-DD'), TO_DATE('2024-04-10', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (47, 40, 6, TO_DATE('2024-04-11', 'YYYY-MM-DD'), TO_DATE('2024-05-10', 'YYYY-MM-DD'));
+VALUES (47, 40, 6, 8, 7, TO_DATE('2024-04-11', 'YYYY-MM-DD'), TO_DATE('2024-05-10', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (48, 41, 6, TO_DATE('2024-05-11', 'YYYY-MM-DD'), TO_DATE('2024-06-10', 'YYYY-MM-DD'));
+VALUES (48, 41, 6, 4, 7, TO_DATE('2024-05-11', 'YYYY-MM-DD'), TO_DATE('2024-06-10', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (49, 42, 6, TO_DATE('2024-06-11', 'YYYY-MM-DD'), TO_DATE('2024-07-10', 'YYYY-MM-DD'));
+VALUES (49, 42, 6, 12, 7, TO_DATE('2024-06-11', 'YYYY-MM-DD'), TO_DATE('2024-07-10', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (50, 43, 6, TO_DATE('2024-07-11', 'YYYY-MM-DD'), TO_DATE('2024-07-24', 'YYYY-MM-DD'));
+VALUES (50, 43, 6, 18, 7, TO_DATE('2024-07-11', 'YYYY-MM-DD'), TO_DATE('2024-07-24', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (51, 44, 6, TO_DATE('2024-07-25', 'YYYY-MM-DD'), TO_DATE('2024-08-07', 'YYYY-MM-DD'));
+VALUES (51, 44, 6, 19, 7, TO_DATE('2024-07-25', 'YYYY-MM-DD'), TO_DATE('2024-08-07', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (52, 45, 6, TO_DATE('2024-08-08', 'YYYY-MM-DD'), TO_DATE('2024-08-21', 'YYYY-MM-DD'));
+VALUES (52, 45, 6, 17, 7, TO_DATE('2024-08-08', 'YYYY-MM-DD'), TO_DATE('2024-08-21', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
-VALUES (53, 46, 6, TO_DATE('2024-08-22', 'YYYY-MM-DD'), TO_DATE('2024-09-06', 'YYYY-MM-DD'));
+VALUES (53, 46, 6, 16, 7, TO_DATE('2024-08-22', 'YYYY-MM-DD'), TO_DATE('2024-09-06', 'YYYY-MM-DD'));
 
 --시험 정보
 INSERT INTO tblTestInfo
@@ -137,6 +148,7 @@ INSERT INTO tblTestInfo
 VALUES (11, 11, TO_DATE('2024-02-22', 'YYYY-MM-DD'), TO_DATE('2024-02-23', 'YYYY-MM-DD'), 40, 40, 20);
 INSERT INTO tblTestInfo
 VALUES (12, 12, TO_DATE('2024-02-05', 'YYYY-MM-DD'), TO_DATE('2024-02-06', 'YYYY-MM-DD'), 40, 40, 20);
+
 
 -- 면접 결과
 insert into tblInterviewResults (seq_interviewResults, seq_schedule, status, etc) values (1 , 1, '합격', '' );
@@ -290,31 +302,29 @@ insert into tblInterviewResults (seq_interviewResults, seq_schedule, status, etc
 insert into tblInterviewResults (seq_interviewResults, seq_schedule, status, etc) values (149 , 149, '합격', '' );
 insert into tblInterviewResults (seq_interviewResults, seq_schedule, status, etc) values (150 , 150, '합격', '' );
 
-
 --개설 교육과정
 --seq_curriculumProgress (1: 예정, 2: 진행, 3: 종료)
 insert into tblOpenCurriculum
-(seq_openCurriculum, seq_curriculum, seq_room, seq_teacher, seq_curriculumProgress, startDate, endDate)
-values (1, 1, 1, 1, 2, to_date('2024-02-29' ,'yyyy-mm-dd'), to_date('2024-08-26','yyyy-mm-dd'));   -- 진행
+(seq_openCurriculum, seq_curriculum, seq_room, seq_curriculumProgress, startDate, endDate)
+values (1, 1, 1, 2, to_date('2024-02-29' ,'yyyy-mm-dd'), to_date('2024-08-26','yyyy-mm-dd'));   -- 진행
 insert into tblOpenCurriculum
-(seq_openCurriculum, seq_curriculum, seq_room, seq_teacher, seq_curriculumProgress, startDate, endDate)
-values (2, 2, 2, 2, 1, to_date('2024-03-07' ,'yyyy-mm-dd'), to_date('2024-09-02','yyyy-mm-dd'));   -- 예정
+(seq_openCurriculum, seq_curriculum, seq_room, seq_curriculumProgress, startDate, endDate)
+values (2, 2, 2, 1, to_date('2024-03-07' ,'yyyy-mm-dd'), to_date('2024-09-02','yyyy-mm-dd'));   -- 예정
 insert into tblOpenCurriculum
-(seq_openCurriculum, seq_curriculum, seq_room, seq_teacher, seq_curriculumProgress, startDate, endDate)
-values (3, 3, 4, 4, 2, to_date('2023-12-29' ,'yyyy-mm-dd'), to_date('2024-06-10','yyyy-mm-dd'));   -- 진행
+(seq_openCurriculum, seq_curriculum, seq_room, seq_curriculumProgress, startDate, endDate)
+values (3, 3, 4, 2, to_date('2023-12-29' ,'yyyy-mm-dd'), to_date('2024-06-10','yyyy-mm-dd'));   -- 진행
 insert into tblOpenCurriculum
-(seq_openCurriculum, seq_curriculum, seq_room, seq_teacher, seq_curriculumProgress, startDate, endDate)
-values (4, 4, 6, 7, 2, to_date('2023-12-26' ,'yyyy-mm-dd'), to_date('2024-06-22','yyyy-mm-dd'));   -- 진행
+(seq_openCurriculum, seq_curriculum, seq_room, seq_curriculumProgress, startDate, endDate)
+values (4, 4, 6, 2, to_date('2023-12-26' ,'yyyy-mm-dd'), to_date('2024-06-22','yyyy-mm-dd'));   -- 진행
 insert into tblOpenCurriculum
-(seq_openCurriculum, seq_curriculum, seq_room, seq_teacher, seq_curriculumProgress, startDate, endDate)
-values (5, 5, 3, 10, 2, to_date('2024-01-05' ,'yyyy-mm-dd'), to_date('2024-07-02','yyyy-mm-dd'));  -- 진행
+(seq_openCurriculum, seq_curriculum, seq_room, seq_curriculumProgress, startDate, endDate)
+values (5, 5, 3, 2, to_date('2024-01-05' ,'yyyy-mm-dd'), to_date('2024-07-02','yyyy-mm-dd'));  -- 진행
 insert into tblOpenCurriculum
-(seq_openCurriculum, seq_curriculum, seq_room, seq_teacher, seq_curriculumProgress, startDate, endDate)
-values (6, 6, 5, 9, 1, to_date('2024-03-11' ,'yyyy-mm-dd'), to_date('2024-09-06','yyyy-mm-dd'));   -- 예정
+(seq_openCurriculum, seq_curriculum, seq_room, seq_curriculumProgress, startDate, endDate)
+values (6, 6, 5, 1, to_date('2024-03-11' ,'yyyy-mm-dd'), to_date('2024-09-06','yyyy-mm-dd'));   -- 예정
 insert into tblOpenCurriculum
-(seq_openCurriculum, seq_curriculum, seq_room, seq_teacher, seq_curriculumProgress, startDate, endDate)
-values (7, 7, 5, 8, 3, to_date('2023-09-04' ,'yyyy-mm-dd'), to_date('2024-02-15','yyyy-mm-dd'));   -- 종료
-
+(seq_openCurriculum, seq_curriculum, seq_room, seq_curriculumProgress, startDate, endDate)
+values (7, 7, 5, 3, to_date('2023-09-04' ,'yyyy-mm-dd'), to_date('2024-02-15','yyyy-mm-dd'));   -- 종료
 
 --과목 목록
 insert into tblSubjectList values (1, 1, 1);
@@ -376,5 +386,13 @@ insert into tblSubjectList values (50, 4, 7);
 insert into tblSubjectList values (51, 12, 7);
 insert into tblSubjectList values (52, 14, 7);
 insert into tblSubjectList values (53, 15, 7);
+
+insert into tblSubjectList values (54, 1, 8);
+insert into tblSubjectList values (55, 2, 8);
+insert into tblSubjectList values (56, 3, 8);
+insert into tblSubjectList values (57, 4, 8);
+insert into tblSubjectList values (58, 5, 8);
+insert into tblSubjectList values (59, 13, 8);
+insert into tblSubjectList values (60, 14, 8);
 
 commit;
