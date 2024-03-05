@@ -6,6 +6,7 @@ oc.seq_opencurriculum seq_opencurriculum
 ,c.seq_curriculum seq_curriculum
 ,sl.seq_subjectlist seq_subjectlist
 ,s.seq_subject seq_subject
+,osl.seq_textbook seq_textbook
 ,r.seq_room seq_room
 ,osl.seq_opensubjectlist seq_opensubjectlist
 ,osl.seq_teacher seq_teacher
@@ -67,6 +68,7 @@ as
 
 select * from vwTrainees;
 -- 성적
+
 create or replace view vwGrades
 as
     select 
