@@ -2630,7 +2630,7 @@ insert into tblEmploymentStatus
 (seq_employmentStatus, seq_traineeList, status, city, company, field, salary)
 values (20, 20, '취업', '구리', '엠큐닉', '응용 소프트웨어 개발', 34000000);
 
-
+select * from tblOnlineCourseList;
 --온라인 강의 목록
 insert into tblOnlineCourseList
 (seq_onlineCourseList, seq_traineeList, seq_onlineLecture, seq_openCurriculum, status)
@@ -5470,3 +5470,4 @@ values (20, 20, 7, 4, '꼼꼼한 강의로 비전공자도 잘 따라올 수 있
 
 
 --성적
+commit;
