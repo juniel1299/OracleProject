@@ -67,7 +67,6 @@ as
                         inner join tblAttendanceStatus tas
                             on a.seq_attendanceStatus = tas.seq_attendanceStatus;
 
-select * from vwTrainees;
 -- 성적
 create or replace view vwGrades
 as
