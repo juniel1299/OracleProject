@@ -26,16 +26,16 @@ oc.seq_opencurriculum seq_opencurriculum
 ,osl.startdate osl_startdate
 ,osl.enddate osl_enddate
 from tblOpenCurriculum oc
-    join tblCurriculum c
+    inner join tblCurriculum c
         on oc.seq_Curriculum = c.seq_curriculum
-            join tblsubjectList sl
+            inner join tblsubjectList sl
                 on sl.seq_curriculum = c.seq_curriculum
-                    join tblsubject s
+                    inner join tblsubject s
                         on s.seq_subject = sl.seq_subject
-                            join tblroom r
+                            inner join tblroom r
                                 on r.seq_room = oc.seq_room
-                                    join tblopensubjectlist osl
-                                        on osl.seq_opencurriculum = oc.seq_opencurriculum;
+                                    inner join tblopensubjectlist osl
+                                        on osl.seq_subjectList = sl.seq_subjectList;
 
 -- 교육생
 create or replace view vwTrainees
@@ -60,12 +60,12 @@ as
     a.outTime outTime,
     tas.situation situation
     from tblTraineeList tl
-        join tblTrainees t
-        on tl.seq_trainee = t.seq_trainee
-            join tblAttendance a
-            on tl.seq_traineeList = a.seq_traineeList
-                join tblAttendanceStatus tas
-                on a.seq_attendanceStatus = tas.seq_attendanceStatus;
+        inner join tblTrainees t
+            on tl.seq_trainee = t.seq_trainee
+                inner join tblAttendance a
+                    on tl.seq_traineeList = a.seq_traineeList
+                        inner join tblAttendanceStatus tas
+                            on a.seq_attendanceStatus = tas.seq_attendanceStatus;
 
 -- 성적
 create or replace view vwGrades
@@ -73,7 +73,6 @@ as
     select 
     g.seq_testInfo seq_testInfo,
     g.seq_traineeList seq_traineeList,
-    ti.seq_testinfo eq_testinfo,
     osl.seq_openCurriculum seq_openCurriculum,
     sl.seq_curriculum seq_curriculum,
     osl.seq_openSubjectList seq_openSubjectList,
@@ -92,12 +91,12 @@ as
     s.name s_name,
     s.period period
     from tblGrades g
-        join tblTestInfo ti
+        inner join tblTestInfo ti
             on g.seq_testInfo = ti.seq_testInfo
-                join tblOpenSubjectList osl
+                inner join tblOpenSubjectList osl
                     on osl.seq_openSubjectList = ti.seq_openSubjectList
-                        join tblSubjectList sl
+                        inner join tblSubjectList sl
                             on sl.seq_subjectList = osl.seq_subjectList
-                                join tblSubject s
+                                inner join tblSubject s
                                     on s.seq_subject = sl.seq_subject;
 
