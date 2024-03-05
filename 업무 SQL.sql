@@ -1,14 +1,246 @@
 -- 희연
 --b-1 
+--할거 없음 :)
 
 --b-2 
+/* 과정명 관리 */
+--1.입력
+--과정 기간 번호(seq_coursePeriod) : 1 - 5.5개월, 2 - 6개월, 3 - 7개월
+insert into tblCurriculum(seq_curriculum, seq_coursePeriod, name, goal) values 
+((select max(seq_curriculum) from tblCurriculum) + 1, 2,'AWS와 Docker를 활용한 Java Full-Stack 과정(A)', 
+'Java 언어를 기반으로 AWS와 Docker를 활용하여 Full-Stack 개발자를 양성하고 있습니다.');
 
+--2. 출력
+select distinct
+	name as 과정명
+from tblCurriculum 
+    order by name;
+	
+--3. 수정
+update tblCurriculum set name = '(게임콘텐츠제작) 유니티-언리얼 게임프로그래밍 실무과정'
+	where seq_curriculum = 1;
+ 
+--4. 삭제
+delete from tblCurriculum
+	where seq_curriculum = 1;
+	
+/* 과목명 관리 */
+--1.입력
+insert into tblSubject(seq_subject, name, period)
+	values ((select max(seq_subject) from tblSubject) + 1, '엘라스틱 서치', 30);
+
+--2. 출력
+select
+	name as 과목명
+from tblSubject;
+ 	
+--3. 수정
+update tblSubject set name = 'Elastic Search'
+	where seq_subject = 17;
+ 
+--4. 삭제
+delete from tblSubject
+	where seq_subject = 17;
+
+/* 강의실 관리 */
+--1.출력
+select
+	name as 강의실명,
+    capacity as 정원,
+    wifiid as "wi-fi",
+    wifipw as "wi-fi pw"
+from tblRoom;
+    	
+--2. 와이파이 정보 수정
+update tblRoom set wifiid = 'SIST_1_5G'
+	where seq_room = 1;
+update tblRoom set wifipw = 'sist34822'
+	where seq_room = 1;    
+    
+/* 교재명 관리 */
+--1.입력
+insert into tblTextbook(seq_textbook, name, publisher)
+	values((select max(seq_textbook) from tblTextbook) + 1, '모두의 파이썬', '길벗(주)');
+    
+--2. 출력
+select
+	name as 제목,
+    publisher as 출판사
+from tblTextbook;
+    	
+--3-1. 교재명 수정
+update tblTextbook set name = '모두의 파이썬 개정2판'
+	where seq_textbook = 24;
+	
+--3-2. 교재 출판사명 수정
+update tblTextbook set publisher = '한빛미디어'
+	where seq_textbook = 24;
+ 
+--4. 삭제
+delete from tblTextbook
+	where seq_textbook = 17; 
+    
+    
 --b-3 
+/* 교사 정보 관리 */
+--1.1 교사 기초 정보입력
+insert into tblTeacher(seq_teacher, name, id, ssn, tel)
+	values ((select max(seq_teacher) from tblTeacher) + 1, '김둘리', 'hoit15', '1089465', '01064898000');
+    
+--1.2 교사별 강의 가능 과목 입력
+--seq_subject : 과목번호, seq_teacher : 교사 번호
+insert into tblAvailableSubjectList (seq_availableSubjectList, seq_subject, seq_teacher)
+	values ((select max(seq_availableSubjectList) from tblAvailableSubjectList) + 1, 1, 1);
 
+--2.1 교사 전체 명단 출력
+select
+	t.name as 교사명,
+    t.ssn as "주민번호 뒷자리",
+    t.tel as 전화번호,
+    s.name as "강의 가능 과목"
+from tblTeacher t
+    inner join tblAvailableSubjectList a
+        on t.seq_teacher = a.seq_teacher
+            inner join tblsubject s
+                on a.seq_subject = s.seq_subject;
+                
+--2.2 특정 교사 정보 출력
+select
+	--과목별 기간은 자바로 구현할 예정
+    s.name as "배정된 개설 과목명",
+    c.name as 과정명,
+    o.startdate as 과정시작일,
+    o.enddate as 과정종료일,
+    b.name as 교재명,
+    r.name as 강의실,
+    g.status as 강의진행여부
+from tblTeacher t
+    inner join tblOpenCurriculum o
+        on t.seq_teacher = o.seq_teacher
+            inner join tblcurriculum c
+                on c.seq_curriculum = o.seq_curriculum
+                    inner join tblSubjectList sl
+                        on c.seq_curriculum = sl.seq_curriculum
+                            inner join tblSubject s
+                                on s.seq_subject = sl.seq_subject
+                                    inner join tblTextbookList bl
+                                        on s.seq_subject = bl.seq_subject
+                                            inner join tblTextbook b
+                                                on b.seq_textbook = bl.seq_textbook
+                                                    inner join tblRoom r
+                                                        on o.seq_room = r.seq_room
+                                                            inner join tblcurriculumprogress g
+                                                                on o.seq_curriculumprogress = g.seq_curriculumprogress
+                                                                    where t.seq_teacher = 1;                
+
+--2.3 강의 과목별로 가능한 교사 정보 출력
+select
+	t.name as 교사명,
+    s.name as "강의 가능 과목"
+from tblTeacher t
+    inner join tblAvailableSubjectList a
+        on t.seq_teacher = a.seq_teacher
+            inner join tblsubject s
+                on a.seq_subject = s.seq_subject
+                    where s.name = '컴퓨터 이론';
+
+--3. 수정
+update tblTeacher set tel = '01055554444'
+	where seq_teacher = 1;
+ 
+--4. 삭제
+delete from tblTeacher
+	where seq_teacher = 1;
+    
 --b-4 
+/* 개설 과정 관리 */
+--1.입력
+insert into tblOpenCurriculum
+(seq_openCurriculum, seq_curriculum, seq_room, seq_teacher, seq_curriculumProgress, startDate, endDate)
+values ((select max(seq_openCurriculum) from tblOpenCurriculum) + 1, 1, 1, 1, 2, to_date('2024-02-29' ,'yyyy-mm-dd'), to_date('2024-08-26','yyyy-mm-dd'));
+    
+--2. 출력
+select
+    c.name as 과정명,
+    o.startdate as 과정시작일,
+    o.enddate as 과정종료일,
+    r.name as 강의실
+from tblOpenCurriculum o
+    inner join tblcurriculum c
+        on c.seq_curriculum = o.seq_curriculum
+            inner join tblRoom r
+                on o.seq_room = r.seq_room
+                    order by 과정시작일;
+    	
+--3. 수정
+update tblOpenCurriculum set startdate = to_date('2024-02-29' ,'yyyy-mm-dd')
+	where seq_openCurriculum = 1;
+ 
+--4. 삭제
+delete from tblOpenCurriculum
+	where seq_openCurriculum = 1; 
+    
+--b-5 tblSubjectList
+/* 과목 관리 */
+--1.입력
+insert into tblSubject(seq_subject, name, period)
+values ((select max(seq_subject) from tblSubject) + 1, '자바', 30);
+    
+--2. 출력
+select
+    name 과목명,
+    period 과목기간
+from tblSubject;
+    	
+--3. 수정
+update tblSubject set period = 15
+	where seq_subject = 1;
+ 
+--4. 삭제
+delete from tblSubject
+	where seq_subject = 1; 
 
---b-5 
-
+/* 개설 과목 관리 */
+--1.입력
+INSERT INTO tblOpenSubjectList
+VALUES (1, 47, 7, TO_DATE('2023-09-04', 'YYYY-MM-DD'), TO_DATE('2023-10-02', 'YYYY-MM-DD'));
+    
+--2. 출력
+select
+    c.name as 과정명,
+    oc.startdate as 과정시작일,
+    oc.enddate as 과정종료일,
+    s.name 과목명,
+    os.startdate as 과목시작일,
+    os.enddate as 과목종료일,
+    b.name 교재명,
+    t.name 교사명
+from tblopencurriculum oc
+    left outer join tblOpenSubjectList os
+        on oc.seq_opencurriculum = os.seq_opencurriculum
+            inner join tblcurriculum c
+                on oc.seq_curriculum = c.seq_curriculum
+                    inner join tblSubjectList sl
+                     on sl.seq_subjectList = os.seq_subjectList
+                        inner join tblSubject s
+                            on s.seq_subject = sl.seq_subject
+                                inner join tblTextbookList bl
+                                        on s.seq_subject = bl.seq_subject
+                                            inner join tblTextbook b
+                                                on b.seq_textbook = bl.seq_textbook
+                                                    
+    inner join tblTeacher t
+        on t.seq_teacher = oc.seq_teacher
+                                order by 과정명;
+                    
+select * from tblOpenSubjectList;    	
+--3. 수정
+update tblOpenCurriculum set startdate = to_date('2024-02-29' ,'yyyy-mm-dd')
+	where seq_openCurriculum = 1;
+ 
+--4. 삭제
+delete from tblOpenCurriculum
+	where seq_openCurriculum = 1; 
 
 -- 원준
 --b-6 
@@ -35,97 +267,15 @@
 
 
 -- 혜정
---c-2 배점 입출력
--- 1. 교사가 강의를 마친 과목에 대한 성적 처리를 위해서 배점 입출력을 할 수 있어야 한다.
+--c-2 
 
--- 1.1. 배점 입력
-insert into  tblGrades(seq_grades, seq_traineelist, seq_subjectlist,WRITTENGRADE,WRITTENDATE, PRACTICALGRADE,PRACTICALDATE,ATTENDANCEGRADE) 
-values (1, 1, 47, 33, TO_DATE('2024-01-15', 'YYYY-MM-DD'), 33, TO_DATE('2024-01-16', 'YYYY-MM-DD'), 15);
+--c-3 
 
--- 1.2. 배점 출력
-select * from tblGrades where SEQ_GRADES = 1;
+--c-4 
 
+--c-6 
 
---2. 교사는 자신이 강의를 마친 과목의 목록 중에서 특정 과목을 선택하고 해당 과목의 배점 정보를 출결, 필기, 실기로 구분해서 등록할 수 있어야 한다. 시험 날짜, 시험 문제를 추가할 수 있어야 한다.
-
--- 2.1. 특정 과목 선택
-insert into tblGrades(seq_grades, seq_traineelist, seq_subjectlist) 
-values (1, 1, 47);
-
--- 2.2. 필기 점수 등록
-update tblGrades 
-set writtengrade = 33,
-    writtendate = TO_DATE('2024-01-15', 'YYYY-MM-DD')
-where seq_grades = 1;
-
--- 2.3.실기 점수 등록
-update tblGrades 
-set practicalgrade = 33,
-    practicaldate = TO_DATE('2024-01-16', 'YYYY-MM-DD')
-where seq_grades = 1;
-
--- 2.4. 출결 점수 등록
-update tblGrades 
-set attendancegrade = 15
-where seq_grades = 1;
-
--- 2.5. 시험 날짜 추가
-
--- 2.6. 시험 문제 추가
-
-
---3. 출결, 필기, 실기의 배점 비중은 담당 교사가 과목별로 결정한다. 단, 출결은 최소 20점 이상이어야 하고, 출결, 필기, 실기의 합은 100점이 되도록 한다.
-
-
---4. 과목 목록 출력 시 과목번호, 과정명, 과정기간(시작 년월일, 끝 년월일), 강의실, 과목명, 과목기간(시작 년월일, 끝 년월일), 교재명, 출결, 필기, 실기 배점 등이 출력되고, 특정 과목을 과목번호로 선택 시 출결 배점, 필기 배점, 실기 배점, 시험 날짜, 시험 문제를 입력할 수 있는 화면으로 연결되어야 한다.
-
-
---5. 배점 등록이 안 된 과목인 경우는 과목 정보가 출력될 때 배점 부분은 null 값으로 출력한다.
-
-
-
---c-3 성적 입출력
--- 교사가 강의를 마친 과목에 대한 성적 처리를 위해서 성적 입출력을 할 수 있어야 한다.
-
--- 교사는 자신이 강의를 마친 과목의 목록 중에서 특정 과목을 선택하면, 교육생 정보가 출력되고, 특정 교육생 정보를 선택하면, 해당 교육생의 시험 점수를 입력할 수 있어야 한다. 이때, 출결, 필기, 실기 점수를 구분해서 입력할 수 있어야 한다.
-
--- 과목 목록 출력시 과목번호, 과정명, 과정기간(시작 년월일, 끝 년월일), 강의실, 과목명, 과목기간(시작 년월일, 끝 년월일), 교재명, 출결, 필기, 실기 배점, 성적 등록 여부 등이 출력되고, 특정 과목을 과목번호로 선택시 교육생 정보(이름, 전화번호, 수료 또는 중도탈락) 및 성적이 출결, 필기, 실기 점수로 구분되어서 출력되어야 한다.
-
--- 성적 등록 여부는 교육생 전체에 대해서 성적을 등록했는지의 여부를 출력한다.
-
--- 과정을 중도 탈락해서 성적 처리가 제외된 교육생이더라도 교육생 명단에는 출력되어야 한다. 중도 탈락 여부를 확인할 수 있도록 해야 한다.
-
--- 중도 탈락인 경우 중도탈락 날짜가 출력되도록 한다.
-
--- 중도 탈락 처리된 교육생의 성적인 경우 중도탈락 이후 날짜의 성적은 입력하지 않는다.
-
-
-
---c-4 출결 관리 및 출결 조회
--- 교사가 강의한 과정에 한해 선택하는 경우 모든 교육생의 출결을 조회할 수 있어야 한다.
-
--- 출결 현황을 기간별(년, 월, 일) 조회할 수 있어야 한다.
-
--- 특정(특정 과정, 특정 인원) 출결 현황을 조회할 수 있어야 한다.
-
--- 모든 출결 조회는 근태 상황을 구분할 수 있어야 한다.(정상, 지각, 조퇴, 외출, 병가, 기타)
-
-
-
---c-6 추천 도서 관리
---1. 교재 추가
---새로운 교재 정보를 추가한다.
-
-
---2. 교재 추천
--- 교재를 추천할 수 있다.
-
-
-
---c-7 후기 관리
--- 1. 후기 관리
--- 프로젝트 종료 이후 교육생이 작성한 후기를 조회 및 관리 할 수 있다.
-
+--c-7
 
 
 -- 민곤
