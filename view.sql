@@ -10,39 +10,32 @@ oc.seq_opencurriculum seq_opencurriculum
 ,r.seq_room seq_room
 ,osl.seq_opensubjectlist seq_opensubjectlist
 --fk , 이외
-,oc.seq_curriculum eq_curriculum
-,oc.seq_room eq_room
-,oc.seq_teacher eq_teacher
-,oc.seq_curriculumProgress eq_curriculumProgress
+,oc.seq_teacher seq_teacher
+,oc.seq_curriculumProgress seq_curriculumProgress
 ,oc.startDate oc_startDate
 ,oc.enddate oc_enddate
-,c.seq_coursePeriod eq_coursePeriod
+,c.seq_coursePeriod seq_coursePeriod
 ,c.name c_name
 ,c.goal goal
-,sl.seq_subject eq_subject
-,sl.seq_curriculum sl_curriculum --2번 이상 ; 
 ,s.name s_name
 ,s.period period
 ,r.name r_name
 ,r.capacity capacity
 ,r.wifiid wifiid
 ,r.wifipw wifipw
-,osl.seq_subjectlist eq_subjectlist
-,osl.seq_opencurriculum eq_opencurriculum
 ,osl.startdate osl_startdate
 ,osl.enddate osl_enddate
 from tblOpenCurriculum oc
-join tblCurriculum c
-on oc.seq_Curriculum = c.seq_curriculum
-join tblsubjectList sl
-on sl.seq_curriculum = c.seq_curriculum
-join tblsubject s
-on s.seq_subject = sl.seq_subject
-join tblroom r
-on r.seq_room = oc.seq_room
-join tblopensubjectlist osl
-on osl.seq_opencurriculum = oc.seq_opencurriculum;
-
+    join tblCurriculum c
+        on oc.seq_Curriculum = c.seq_curriculum
+            join tblsubjectList sl
+                on sl.seq_curriculum = c.seq_curriculum
+                    join tblsubject s
+                        on s.seq_subject = sl.seq_subject
+                            join tblroom r
+                                on r.seq_room = oc.seq_room
+                                    join tblopensubjectlist osl
+                                        on osl.seq_opencurriculum = oc.seq_opencurriculum;
 
 -- 교육생
 create or replace view vwTrainees
