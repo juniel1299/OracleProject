@@ -566,17 +566,16 @@ vc.s_name 과목명,
 vc.osl_startdate "과목 시작일",
 vc.osl_enddate "과목 종료일",
 b.name 교재명,
-vg.attendancePoints "출결 배점",
-vg.writtenPoints "필기 배점",
-vg.practicalPoints "실기 배점"
+ti.attendancePoints "출결 배점",
+ti.writtenPoints "필기 배점",
+ti.practicalPoints "실기 배점"
 from vwCurriculum vc
-    inner join tblTextbookList bl
-        on bl.seq_subject = vc.seq_subject
-            inner join tblTextbook b
-                on b.seq_textbook = bl.seq_textbook
-                    inner join vwGrades vg
-                        on vg.seq_subjectList = vc.seq_subjectList
-                            where vc.seq_subject = 1; -- 특정 과목
+    inner join tblTextbook b
+        on b.seq_textbook = vc.seq_textbook
+            inner join tblTestInfo ti
+                on ti.seq_openSubjectList = vc.seq_openSubjectList
+                    where seq_subject = 1; -- 특정 과목
+
                             
 -- 4.2. 입력 화면
 INSERT INTO tblTestInfo
@@ -616,8 +615,12 @@ VALUES (1, 1,1, 32, 31, 17);
 
 -- 1.2. 성적 출력
 select 
-*
-from tblGrades;
+vg.s_name 과목명,
+vg.seq_openCurriculum "교육 과정 번호"
+from vwGrades vg
+    inner join tblOpenCurriculum oc
+        on vg.seq_openCurriculum = oc.seq_openCurriculum
+            where to_char(vg.osl_endDate, 'yyyy-mm-dd') < to_char(sysdate, 'yyyy-mm-dd'); -- 현재보다 과목 종료일이 과거인 경우
 
 
 -- 2. 교사는 자신이 강의를 마친 과목의 목록 중에서 특정 과목을 선택하면, 교육생 정보가 출력되고, 특정 교육생 정보를 선택하면, 해당 교육생의 시험 점수를 입력할 수 있어야 한다. 이때, 출결, 필기, 실기 점수를 구분해서 입력할 수 있어야 한다.
@@ -629,7 +632,10 @@ from vwGrades vg
         on  tl.seq_traineeList = vg.seq_traineeList
             inner join tblTrainees t
                 on t.seq_trainee = tl.seq_trainee
-                    where vg.seq_subject = 1; -- 특정과목
+                    inner join tblOpenCurriculum oc
+                        on oc.seq_openCurriculum = vg.seq_openCurriculum
+                            where vg.seq_subject = 1 -- 특정과목
+                                and to_char(vg.osl_endDate, 'yyyy-mm-dd') < to_char(sysdate, 'yyyy-mm-dd'); -- 현재보다 과목 종료일이 과거인 경우
                     
 -- 2.2. 특정 교육생 선택(PL/SQL로 해야할 듯)
 select 
@@ -732,17 +738,22 @@ a.day 날짜,
 to_char(a.inTime, 'HH24:MI:SS') "출근 시간",
 to_char(a.outTime, 'HH24:MI:SS') "퇴근 시간"
 from tblOpenCurriculum oc
-    inner join tblAvailableSubjectList asl
-        on oc.seq_teacher = asl.seq_teacher
-                inner join tblTraineeList tl
-                    on tl.seq_openCurriculum = oc.seq_openCurriculum
-                        inner join tblAttendance a
-                            on a.seq_traineeList = tl.seq_traineeList
-                                where a.inTime between to_date('2023-09-04', 'YYYY-MM-DD') and to_date('2023-11-09', 'YYYY-MM-DD') -- 특정 기간
-                                    order by tl.seq_trainee;
+    inner join tblOpenSubjectList osl
+        on oc.seq_openCurriculum = osl.seq_openCurriculum
+            inner join tblAvailableSubjectList asl
+                on asl.seq_teacher = osl.seq_teacher
+                
+                
+                    inner join tblTraineeList tl
+                        on tl.seq_openCurriculum = oc.seq_openCurriculum
+                            inner join tblAttendance a
+                                on a.seq_traineeList = tl.seq_traineeList
+                                    where a.inTime between to_date('2023-09-04', 'YYYY-MM-DD') and to_date('2023-11-09', 'YYYY-MM-DD') -- 특정 기간
+                                        order by tl.seq_trainee;
                                 
 
 -- 특정(특정 과정, 특정 인원) 출결 현황을 조회할 수 있어야 한다.
+
 
 -- 모든 출결 조회는 근태 상황을 구분할 수 있어야 한다.(정상, 지각, 조퇴, 외출, 병가, 기타)
 
