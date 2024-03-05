@@ -2626,7 +2626,7 @@ insert into tblEmploymentStatus
 (seq_employmentStatus, seq_traineeList, status, city, company, field, salary)
 values (20, 20, '취업', '구리', '엠큐닉', '응용 소프트웨어 개발', 34000000);
 
-
+select * from tblOnlineCourseList;
 --온라인 강의 목록
 insert into tblOnlineCourseList
 (seq_onlineCourseList, seq_traineeList, seq_onlineLecture, seq_openCurriculum, status)
@@ -6379,3 +6379,4 @@ INSERT INTO tbllocker(seq_locker, seq_equipment, seq_traineelist) VALUES (129, 1
 INSERT INTO tbllocker(seq_locker, seq_equipment, seq_traineelist) VALUES (130, 1, 130);
 INSERT INTO tbllocker(seq_locker, seq_equipment, seq_traineelist) VALUES (131, 1, 131);
 INSERT INTO tbllocker(seq_locker, seq_equipment, seq_traineelist) VALUES (132, 1, 132);
+
