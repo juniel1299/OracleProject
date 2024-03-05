@@ -88,6 +88,9 @@ insert into tblTeacher(seq_teacher, name, id, ssn, tel)
 	values ((select max(seq_teacher) from tblTeacher) + 1, '김둘리', 'hoit15', '1089465', '01064898000');
     
 --1.2 교사별 강의 가능 과목 입력
+--a. 기초 정보 과목명 조회
+select * from tblSubject;
+--b. 교사별 강의 가능 과목 추가
 --seq_subject : 과목번호, seq_teacher : 교사 번호
 insert into tblAvailableSubjectList (seq_availableSubjectList, seq_subject, seq_teacher)
 	values ((select max(seq_availableSubjectList) from tblAvailableSubjectList) + 1, 1, 1);
@@ -104,34 +107,23 @@ from tblTeacher t
             inner join tblsubject s
                 on a.seq_subject = s.seq_subject;
                 
---2.2 특정 교사 정보 출력
-select
-	--과목별 기간은 자바로 구현할 예정
-    s.name as "배정된 개설 과목명",
-    c.name as 과정명,
-    o.startdate as 과정시작일,
-    o.enddate as 과정종료일,
+--2.2 특정 교사 정보 출력          
+select 
+    s_name as "배정된 개설 과목명",
+    osl_startdate as 과목시작일,
+    osl_enddate as 과목종료일,
+    c_name as 과정명,
+    oc_startdate as 과정시작일,
+    oc_enddate as 과정종료일,
     b.name as 교재명,
-    r.name as 강의실,
+    r_name as 강의실,
     g.status as 강의진행여부
-from tblTeacher t
-    inner join tblOpenCurriculum o
-        on t.seq_teacher = o.seq_teacher
-            inner join tblcurriculum c
-                on c.seq_curriculum = o.seq_curriculum
-                    inner join tblSubjectList sl
-                        on c.seq_curriculum = sl.seq_curriculum
-                            inner join tblSubject s
-                                on s.seq_subject = sl.seq_subject
-                                    inner join tblTextbookList bl
-                                        on s.seq_subject = bl.seq_subject
-                                            inner join tblTextbook b
-                                                on b.seq_textbook = bl.seq_textbook
-                                                    inner join tblRoom r
-                                                        on o.seq_room = r.seq_room
-                                                            inner join tblcurriculumprogress g
-                                                                on o.seq_curriculumprogress = g.seq_curriculumprogress
-                                                                    where t.seq_teacher = 1;                
+from vwCurriculum v
+    inner join tblTextbook b
+        on b.seq_textbook = v.seq_textbook
+            inner join tblcurriculumprogress g
+                on v.seq_curriculumprogress = g.seq_curriculumprogress
+                     where seq_teacher = 특정교사번호;
 
 --2.3 강의 과목별로 가능한 교사 정보 출력
 select
@@ -142,7 +134,7 @@ from tblTeacher t
         on t.seq_teacher = a.seq_teacher
             inner join tblsubject s
                 on a.seq_subject = s.seq_subject
-                    where s.name = '컴퓨터 이론';
+                    where s.name = 과목이름;
 
 --3. 수정
 update tblTeacher set tel = '01055554444'
@@ -161,17 +153,21 @@ values ((select max(seq_openCurriculum) from tblOpenCurriculum) + 1, 1, 1, 1, 2,
     
 --2. 출력
 select
-    c.name as 과정명,
-    o.startdate as 과정시작일,
-    o.enddate as 과정종료일,
-    r.name as 강의실
-from tblOpenCurriculum o
-    inner join tblcurriculum c
-        on c.seq_curriculum = o.seq_curriculum
-            inner join tblRoom r
-                on o.seq_room = r.seq_room
-                    order by 과정시작일;
-    	
+    distinct c_name as 과정명,
+    oc_startdate as 과정시작일,
+    oc_enddate as 과정종료일,
+    r_name as 강의실,
+    case
+        when seq_opensubjectlist is not null then '등록'
+        when seq_opensubjectlist is null then '미등록'
+    end as "개설 과목 등록 여부",
+    count(tl.seq_opencurriculum) as "교육생 등록 인원"
+from vwcurriculum v
+    left outer join tbltraineelist tl
+        on tl.seq_opencurriculum = v.seq_opencurriculum
+            group by c_name,oc_startdate, oc_enddate, r_name, seq_opensubjectlist, tl.seq_opencurriculum
+                order by 과정시작일 desc;
+ 	
 --3. 수정
 update tblOpenCurriculum set startdate = to_date('2024-02-29' ,'yyyy-mm-dd')
 	where seq_openCurriculum = 1;
@@ -180,68 +176,65 @@ update tblOpenCurriculum set startdate = to_date('2024-02-29' ,'yyyy-mm-dd')
 delete from tblOpenCurriculum
 	where seq_openCurriculum = 1; 
     
---b-5 
-/* 과목 관리 */
---1.입력
-insert into tblSubject(seq_subject, name, period)
-values ((select max(seq_subject) from tblSubject) + 1, '자바', 30);
-    
---2. 출력
+/* 특정 과목 선택 */
+--a. 전체 개설 과정 출력
 select
-    name 과목명,
-    period 과목기간
-from tblSubject;
-    	
---3. 수정
-update tblSubject set period = 15
-	where seq_subject = 1;
- 
---4. 삭제
-delete from tblSubject
-	where seq_subject = 1; 
+    distinct c_name as 과정명,
+    oc_startdate as 과정시작일,
+    oc_enddate as 과정종료일,
+    r_name as 강의실
+from vwcurriculum
+    order by 과정시작일 desc;
 
-
-/* 개설 과목 관리 */
+--b. 관련 과목 정보 출력
+select
+    distinct s_name as 과목명,
+    osl_startdate as 과목시작일,
+    osl_enddate as 과목종료일
+from vwcurriculum 
+    where seq_opencurriculum = 1;
+--c. 등록된 교육생 정보    
+select
+    distinct t.name as 이름,
+    t.tel as 전화번호
+from vwcurriculum v
+    left outer join tbltraineelist tl
+        on tl.seq_opencurriculum = v.seq_opencurriculum
+            inner join tbltrainees t
+                on t.seq_trainee = tl.seq_trainee
+                    where v.seq_opencurriculum = 1
+                        order by 이름;
+        
+--b-5 
 --1.입력
 INSERT INTO tblOpenSubjectList
-VALUES (1, 47, 7, TO_DATE('2023-09-04', 'YYYY-MM-DD'), TO_DATE('2023-10-02', 'YYYY-MM-DD'));
+VALUES (1, 47, 7, 1, 1, TO_DATE('2023-09-04', 'YYYY-MM-DD'), TO_DATE('2023-10-02', 'YYYY-MM-DD'));
     
 --2. 출력
 select
-    c.name as 과정명,
-    oc.startdate as 과정시작일,
-    oc.enddate as 과정종료일,
-    s.name 과목명,
-    os.startdate as 과목시작일,
-    os.enddate as 과목종료일,
+    c_name as 과정명,
+    oc_startdate as 과정시작일,
+    oc_enddate as 과정종료일,
+    r_name as 강의실,
+    s_name 과목명,
+    osl_startdate as 과목시작일,
+    osl_enddate as 과목종료일,
     b.name 교재명,
     t.name 교사명
-from tblopencurriculum oc
-    left outer join tblOpenSubjectList os
-        on oc.seq_opencurriculum = os.seq_opencurriculum
-            inner join tblcurriculum c
-                on oc.seq_curriculum = c.seq_curriculum
-                    inner join tblSubjectList sl
-                     on sl.seq_subjectList = os.seq_subjectList
-                        inner join tblSubject s
-                            on s.seq_subject = sl.seq_subject
-                                inner join tblTextbookList bl
-                                        on s.seq_subject = bl.seq_subject
-                                            inner join tblTextbook b
-                                                on b.seq_textbook = bl.seq_textbook
-                                                    
-    inner join tblTeacher t
-        on t.seq_teacher = oc.seq_teacher
-                                order by 과정명;
-                    
-select * from tblOpenSubjectList;    	
+from vwcurriculum v
+    inner join tblTextbook b
+        on b.seq_textbook = v.seq_textbook                                  
+            inner join tblTeacher t
+                on t.seq_teacher = v.seq_teacher
+                    order by 과정명;
+ 	
 --3. 수정
-update tblOpenCurriculum set startdate = to_date('2024-02-29' ,'yyyy-mm-dd')
-	where seq_openCurriculum = 1;
+update tblOpenSubjectList set seq_teacher = 2
+	where seq_OpenSubjectList = 1;
  
 --4. 삭제
-delete from tblOpenCurriculum
-	where seq_openCurriculum = 1; 
+delete from tblOpenSubjectList
+	where seq_OpenSubjectList = 1; 
 
 -- 원준
 --b-6 

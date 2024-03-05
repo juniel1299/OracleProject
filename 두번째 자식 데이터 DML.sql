@@ -1,15 +1,4 @@
 --개설 과목 목록
-select seq_subjectlist, s.name from tblsubjectlist sl
-inner join tblsubject s
-on s.seq_subject = sl.seq_subject order by seq_subjectlist;
-
-select * from tbltextbook;
-select * from tblopencurriculum;
-select t.seq_teacher, s.name, t.name from tblavailablesubjectlist asl
-    inner join tblsubject s
-on s.seq_subject = asl.seq_subject
-inner join tblteacher t
-on asl.seq_teacher = t.seq_teacher;
 INSERT INTO tblOpenSubjectList
 VALUES (1, 47, 7, 1, 1, TO_DATE('2023-09-04', 'YYYY-MM-DD'), TO_DATE('2023-10-02', 'YYYY-MM-DD'));
 INSERT INTO tblOpenSubjectList
