@@ -307,26 +307,6 @@ INSERT INTO Tblexampaper(seq_attendancepapers, seq_question, seq_subject, kind) 
 INSERT INTO Tblexampaper(seq_attendancepapers, seq_question, seq_subject, kind) VALUES (279, 279, 14, '실기');
 INSERT INTO Tblexampaper(seq_attendancepapers, seq_question, seq_subject, kind) VALUES (280, 280, 14, '실기');
 
---교재 목록
-insert into tblTextbookList (seq_textbookList, seq_textbook, seq_subject) values (1, 1, 1);
-insert into tblTextbookList (seq_textbookList, seq_textbook, seq_subject) values (2, 2, 1);
-insert into tblTextbookList (seq_textbookList, seq_textbook, seq_subject) values (3, 3, 6);
-insert into tblTextbookList (seq_textbookList, seq_textbook, seq_subject) values (4, 4, 3);
-insert into tblTextbookList (seq_textbookList, seq_textbook, seq_subject) values (5, 5, 9);
-insert into tblTextbookList (seq_textbookList, seq_textbook, seq_subject) values (6, 6, 10);
-insert into tblTextbookList (seq_textbookList, seq_textbook, seq_subject) values (7, 7, 11);
-insert into tblTextbookList (seq_textbookList, seq_textbook, seq_subject) values (8, 8, 2);
-insert into tblTextbookList (seq_textbookList, seq_textbook, seq_subject) values (9, 9, 5);
-insert into tblTextbookList (seq_textbookList, seq_textbook, seq_subject) values (10, 10, 5);
-insert into tblTextbookList (seq_textbookList, seq_textbook, seq_subject) values (11, 11, 7);
-insert into tblTextbookList (seq_textbookList, seq_textbook, seq_subject) values (12, 12, 4);
-insert into tblTextBookList values(13,13,8);
-insert into tblTextBookList values(14,14,12);
-insert into tblTextBookList values(15,15,13);
-insert into tblTextBookList values(16,16,14);
-insert into tblTextBookList values(17,17,15);
-insert into tblTextBookList values(18,18,16);
-insert into tblTextBookList values(19,19,17);
 
 --교육 과정
 insert into tblCurriculum values (1, 2,'AWS와 Docker를 활용한 Java Full-Stack 과정(A)', 
