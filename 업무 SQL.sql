@@ -211,37 +211,40 @@ select
     c.name as 과정명,
     oc.startdate as 과정시작일,
     oc.enddate as 과정종료일,
+    r.name as 강의실,
     s.name 과목명,
     os.startdate as 과목시작일,
     os.enddate as 과목종료일,
     b.name 교재명,
     t.name 교사명
 from tblopencurriculum oc
-    left outer join tblOpenSubjectList os
-        on oc.seq_opencurriculum = os.seq_opencurriculum
-            inner join tblcurriculum c
-                on oc.seq_curriculum = c.seq_curriculum
-                    inner join tblSubjectList sl
-                     on sl.seq_subjectList = os.seq_subjectList
-                        inner join tblSubject s
-                            on s.seq_subject = sl.seq_subject
-                                inner join tblTextbookList bl
-                                        on s.seq_subject = bl.seq_subject
-                                            inner join tblTextbook b
-                                                on b.seq_textbook = bl.seq_textbook
-                                                    
-    inner join tblTeacher t
-        on t.seq_teacher = oc.seq_teacher
-                                order by 과정명;
+  left outer join tblOpenSubjectList os
+    on oc.seq_opencurriculum = os.seq_opencurriculum
+      inner join tblcurriculum c
+        on oc.seq_curriculum = c.seq_curriculum
+          inner join tblSubjectList sl
+            on sl.seq_subjectList = os.seq_subjectList
+              inner join tblSubject s
+                on s.seq_subject = sl.seq_subject
+                  inner join tblTextbookList bl
+                    on s.seq_subject = bl.seq_subject
+                      inner join tblTextbook b
+                        on b.seq_textbook = bl.seq_textbook                                  
+                          inner join tblTeacher t
+                            on t.seq_teacher = oc.seq_teacher
+                              inner join tblRoom r
+                                on oc.seq_room = r.seq_room
+                                  order by 과정명;
                     
-select * from tblOpenSubjectList;    	
+select * from tblOpenSubjectList;
+
 --3. 수정
-update tblOpenCurriculum set startdate = to_date('2024-02-29' ,'yyyy-mm-dd')
-	where seq_openCurriculum = 1;
+update tblOpenSubjectList set startdate = to_date('2024-02-29' ,'yyyy-mm-dd')
+	where seq_openSubjectList = 1;
  
 --4. 삭제
-delete from tblOpenCurriculum
-	where seq_openCurriculum = 1; 
+delete from tblOpenSubjectList
+	where seq_openSubjectList = 1; 
 
 -- 원준
 --b-6 
