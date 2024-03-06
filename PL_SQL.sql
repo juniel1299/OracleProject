@@ -979,58 +979,508 @@ end procTestQuestionIn;
 
 
 -- 4. 과목 목록 출력 시 과목번호, 과정명, 과정기간(시작 년월일, 끝 년월일), 강의실, 과목명, 과목기간(시작 년월일, 끝 년월일), 교재명, 출결, 필기, 실기 배점 등이 출력되고, 
--- 특정 과목을 과목번호로 선택 시 출결 배점, 필기 배점, 실기 배점, 시험 날짜, 시험 문제를 입력할 수 있는 화면으로 연결되어야 한다.
+-- 특정 과목을 과목번호로 선택 시 출결 배점, 필기 배점, 실기 배점, 시험 날짜, 시험 문제를 입력할 수 있는 화면으로 연결되어야 한다. (자바에서 구현해야할 듯)
 -- 5. 배점 등록이 안 된 과목인 경우는 과목 정보가 출력될 때 배점 부분은 null 값으로 출력한다.
+-- 4.1. 특정 교사가 개설 과목 목록 번호로 선택하면 정보 출력
 begin
-    
+    procSubjectListOut(1, 1);
 end;
 /
 
-create or replace procedure procTestDateIn (
+create or replace procedure procSubjectListOut (
     pSeq_teacher in number,
+    pSeq_openSubjectList in number
+) 
+is
+ cursor vcursor is
+        select 
+        vc.seq_subject "과목 번호",
+        vc.c_name "과정명",
+        vc.oc_startDate "과정 시작일",
+        vc.oc_enddate "과정 종료일",
+        vc.r_name 강의실,
+        vc.s_name 과목명,
+        vc.osl_startdate "과목 시작일",
+        vc.osl_enddate "과목 종료일",
+        b.name 교재명,
+        ti.attendancePoints "출결 배점",
+        ti.writtenPoints "필기 배점",
+        ti.practicalPoints "실기 배점"
+        from vwCurriculum vc
+            inner join tblTextbook b
+                on b.seq_textbook = vc.seq_textbook
+                    inner join tblTestInfo ti
+                        on ti.seq_openSubjectList = vc.seq_openSubjectList
+                            where vc.seq_teacher = pSeq_teacher
+                            and vc.seq_openSubjectList = pSeq_openSubjectList
+                            and vc.osl_enddate < sysdate;
+                            
+    vrecord vcursor%rowtype;
+    
+begin
+    -- 정보 출력
+     open vcursor;
+    loop
+        fetch vcursor into vrecord;
+        exit when vcursor%notfound;
+        dbms_output.put_line('-----------------------------------------------------------------------------------');
+        dbms_output.put_line('과목 번호: ' || vrecord."과목 번호");
+        dbms_output.put_line('과정명: ' || vrecord."과정명");
+        dbms_output.put_line('과정 시작일: ' || vrecord."과정 시작일");
+        dbms_output.put_line('과정 종료일: ' || vrecord."과정 종료일");
+        dbms_output.put_line('강의실: ' || vrecord.강의실);
+        dbms_output.put_line('과목명: ' || vrecord.과목명);
+        dbms_output.put_line('과목 시작일: ' || vrecord."과목 시작일");
+        dbms_output.put_line('과목 종료일: ' || vrecord."과목 종료일");
+        dbms_output.put_line('교재명: ' || vrecord.교재명);
+        dbms_output.put_line('출결 배점: ' || vrecord."출결 배점");
+        dbms_output.put_line('필기 배점: ' || vrecord."필기 배점");
+        dbms_output.put_line('실기 배점: ' || vrecord."실기 배점");
+        dbms_output.put_line('-----------------------------------------------------------------------------------');
+    end loop;
+    close vcursor;
+exception
+    when no_data_found then
+        dbms_output.put_line('해당 과목이 존재하지 않습니다.');
+    when others then
+        dbms_output.put_line('오류 발생: ' || SQLERRM);
+end procSubjectListOut;
+/
+
+
+
+--c-3 성적 입출력
+-- 3.1. 성적 입력
+-- 3.1.1. 교사는 자신이 강의를 마친 과목의 목록 중에서 특정 과목을 선택한다. > 교육생 정보가 출력
+begin
+    procTraineeInfoOut (1, 1);
+end;
+/
+
+create or replace procedure procTraineeInfoOut (
+    pSeq_teacher in number,
+    pSeq_openSubjectList in number
+) 
+is
+ cursor vcursor is
+        select 
+        distinct osl.seq_subjectList "과목 목록 번호",
+        vt.seq_trainee "학생 번호",
+        vt.t_name "이름",
+        vt.t_id "아이디",
+        vt.t_tel "전화번호"
+        from  vwTrainees vt
+            inner join tblOpenSubjectList osl
+                on osl.seq_openCurriculum = vt.seq_openCurriculum
+                    where osl.seq_teacher = pSeq_teacher
+                    and osl.seq_openSubjectList = pSeq_openSubjectList
+                    and osl.enddate < sysdate;
+                            
+    vrecord vcursor%rowtype;
+    
+begin
+    -- 정보 출력
+    open vcursor;
+    loop
+        fetch vcursor into vrecord;
+        exit when vcursor%notfound;
+        
+        -- 정보 출력
+        dbms_output.put_line('과목 목록 번호: ' || vrecord."과목 목록 번호");
+        dbms_output.put_line('학생 번호: ' || vrecord."학생 번호");
+        dbms_output.put_line('이름: ' || vrecord."이름");
+        dbms_output.put_line('아이디: ' || vrecord."아이디");
+        dbms_output.put_line('전화번호: ' || vrecord."전화번호");
+        dbms_output.put_line('-----------------------------------------------------------------------------------');
+    end loop;
+    
+    close vcursor;
+exception
+    when no_data_found then
+        dbms_output.put_line('해당 정보가 없습니다.');
+    when others then
+        dbms_output.put_line('오류 발생: ' || SQLERRM);
+end procTraineeInfoOut;
+/
+
+-- 3.1.2. 특정 교육생 선택 > 3.1.3. 해당 교육생의 시험 점수를 입력
+begin
+    procTestGradesIn(1, 1, 1, 1, 1, 32, 31, 17);
+end;
+/
+
+create or replace procedure procTestGradesIn(
+    pSeq_teacher in number,
+    pSeq_openSubjectList in number,
     pSeq_testInfo in number,
-    pWrittenDate in date,
-    pPracticalDate in date
+    pSeq_grades in number,
+    pSeq_traineeList in number,
+    pWrittenGrade in number,
+    pPracticalGrade in number,
+    pAttendanceGrade in number
 ) 
 is
     vEnddate date;
 begin
     -- tblopensubjectlist 테이블의 enddate 확인
-    select osl.enddate into vEnddate
+    select distinct osl.enddate into vEnddate
     from tblOpenSubjectList osl
         inner join tblTestInfo ti
             on ti.seq_openSubjectList = osl.seq_openSubjectList
-                where osl.seq_teacher = pSeq_teacher
-                and ti.seq_testinfo = pSeq_testInfo;
+                inner join tblTraineeList tl
+                    on tl.seq_openCurriculum = osl.seq_openCurriculum
+                        inner join tblGrades g
+                            on g.seq_traineeList = tl.seq_traineeList
+                                where osl.seq_teacher = pSeq_teacher
+                                and ti.seq_OpenSubjectList = pSeq_openSubjectList
+                                and tl.seq_traineeList = pSeq_traineeList;
 
-    -- enddate가 오늘 이전인 경우에만 시험 날짜 추가
+    -- enddate가 오늘 이전인 경우에만 성적 입력
     if vEnddate < sysdate then
-        -- 시험 날짜 추가
-        update tblTestInfo
-        set writtenDate = TO_DATE(pWrittenDate, 'YYYY-MM-DD'), 
-            practicalDate = TO_DATE(pPracticalDate, 'YYYY-MM-DD')
-        where seq_testInfo = pSeq_testInfo;
+        insert into tblGrades(SEQ_GRADES, SEQ_TRAINEELIST, SEQ_testInfo, WRITTENGRADE, PRACTICALGRADE, ATTENDANCEGRADE)
+        values (pSeq_grades, pSeq_traineeList, pSeq_testInfo, pWrittenGrade, pPracticalGrade, pAttendanceGrade);
 
         if sql%rowcount = 0 then
-            dbms_output.put_line('해당 시험 정보가 존재하지 않습니다.');
+            dbms_output.put_line('성적 등록에 실패했습니다.');
         else
-            dbms_output.put_line('시험 날짜가 추가되었습니다.');
+            dbms_output.put_line('성적이 성공적으로 등록되었습니다.');
         end if;
     else
-        dbms_output.put_line('해당 과목은 아직 종료되지 않았습니다.');
+        dbms_output.put_line('시험이 종료되지 않았습니다.');
     end if;
-end procTestDateIn;
+end procTestGradesIn;
+/
+
+-- 3.2. 성적 출력
+-- 3.2.1. 과목 목록 출력시 과목번호, 과정명, 과정기간(시작 년월일, 끝 년월일), 강의실, 과목명, 과목기간(시작 년월일, 끝 년월일), 교재명, 출결, 필기, 실기 배점, 성적 등록 여부 등이 출력된다.
+-- 업무 SQL에서 구현
+
+
+-- 3.2.2. 특정 과목을 과목번호로 선택하면 교육생 정보(이름, 전화번호, 수료 또는 중도탈락) 및 성적이 출결, 필기, 실기 점수로 구분되어서 출력되어야 한다.
+-- 3.2.3. 성적 등록 여부는 교육생 전체에 대해서 성적을 등록했는지의 여부를 출력한다.
+-- 과정을 중도 탈락해서 성적 처리가 제외된 교육생이더라도 교육생 명단에는 출력되어야 한다. 중도 탈락 여부를 확인할 수 있도록 해야 한다.
+-- 중도 탈락인 경우 중도탈락 날짜가 출력되도록 한다.
+
+begin
+    procTestGradesOut (1, 1);
+end;
+/
+
+create or replace procedure procTestGradesOut (
+    pSeq_teacher in number,
+    pSeq_openSubjectList in number
+) 
+is
+    cursor vcursor is
+        select
+        distinct tl.seq_traineeList "교육생 목록 번호",
+        t.name 이름,
+        t.tel 전화번호,
+        tl.status 상태,
+        tl.day "상태 완료 날짜",
+        g.attendanceGrade "출결 점수",
+        g.writtenGrade "필기 점수",
+        g.practicalGrade "실기 점수"
+        from tblTraineeList tl
+            left outer join tblOpenSubjectList osl
+                on osl.seq_openCurriculum = tl.seq_openCurriculum
+                    left outer join tblGrades g
+                        on g.seq_traineeList = tl.seq_traineeList
+                            left outer join tblTrainees t
+                                on t.seq_trainee = tl.seq_trainee
+                                    where osl.seq_teacher = pSeq_teacher
+                                    and osl.seq_openSubjectList = pSeq_openSubjectList
+                                    and osl.endDate < sysdate;
+                            
+    vrecord vcursor%rowtype;
+    vCompletion varchar2(10);
+    
+begin
+    -- 정보 출력
+    open vcursor;
+    loop
+        fetch vcursor into vrecord;
+        exit when vcursor%notfound;
+        
+        -- 출결, 필기, 실기 점수가 모두 입력된 경우에만 "완료" 출력
+        if vrecord."출결 점수" is not null and vrecord."필기 점수" is not null and vrecord."실기 점수" is not null then
+            vCompletion := '완료';
+        else
+            vCompletion := '미완료';
+        end if;
+        
+        -- 정보 출력
+        dbms_output.put_line('교육생 목록 번호: ' || vrecord."교육생 목록 번호");
+        dbms_output.put_line('이름: ' || vrecord."이름");
+        dbms_output.put_line('전화번호: ' || vrecord."전화번호");
+        dbms_output.put_line('상태: ' || vrecord."상태");
+        dbms_output.put_line('출결 점수: ' || vrecord."출결 점수");
+        dbms_output.put_line('필기 점수: ' || vrecord."필기 점수");
+        dbms_output.put_line('실기 점수: ' || vrecord."실기 점수");
+        dbms_output.put_line('성적 등록 여부: ' || vCompletion);
+        dbms_output.put_line('-----------------------------------------------------------------------------------');
+    end loop;
+    
+    close vcursor;
+exception
+    when no_data_found then
+        dbms_output.put_line('해당 정보가 없습니다.');
+    when others then
+        dbms_output.put_line('오류 발생: ' || SQLERRM);
+end procTestGradesOut;
 /
 
 
 
---c-3 
-
-
 --c-4 
+-- 4.1. 기간별로, 출결 상황을 구분하여 조회한다.
+-- 출결 현황을 기간별(전체, 월, 일) 조회할 수 있어야 한다.
+-- 모든 출결 조회는 근태 상황을 구분할 수 있어야 한다.(정상, 지각, 조퇴, 외출, 병가, 기타)
+-- 교사가 강의한 과정에 한해 선택하는 경우 모든 교육생의 출결을 조회할 수 있어야 한다.
+
+begin
+    procTraineeAttendanceOut (1, 1, to_date('2023-09-04', 'YYYY-MM-DD'), to_date('2023-10-04', 'YYYY-MM-DD'));
+end;
+/
+
+create or replace procedure procTraineeAttendanceOut (
+    pSeq_teacher in number,
+    pSeq_openSubjectList in number,
+    pStartDate in date,
+    pEndDate in date
+) 
+is
+    cursor vcursor is
+        select 
+        vc.seq_openCurriculum "개설 교육과정 번호",
+        asl.seq_subject "과목 번호",
+        tl.seq_trainee "교육생 번호",
+        a.day 날짜,
+        to_char(a.inTime, 'HH24:MI:SS') "출근 시간",
+        to_char(a.outTime, 'HH24:MI:SS') "퇴근 시간",
+        tas.situation "상태"
+        from vwCurriculum vc
+            inner join tblAvailableSubjectList asl
+                on asl.seq_subject = vc.seq_subject
+                    inner join tblTraineeList tl
+                        on tl.seq_openCurriculum = vc.seq_openCurriculum
+                            inner join tblAttendance a
+                                on a.seq_traineeList = tl.seq_traineeList
+                                    inner join tblAttendanceStatus tas
+                                        on tas.seq_attendanceStatus = a.seq_attendanceStatus
+                                            where a.inTime between pStartDate and pEndDate
+                                            and vc.seq_teacher = pSeq_teacher
+                                            and vc.seq_openSubjectList = pSeq_openSubjectList
+                                            order by tl.seq_trainee;
+    vrecord vcursor%rowtype;
+    
+begin
+    -- 정보 출력
+    open vcursor;
+    loop
+        fetch vcursor into vrecord;
+        exit when vcursor%notfound;
+        
+        -- 정보 출력
+        dbms_output.put_line('개설 교육과정 번호: ' || vrecord."개설 교육과정 번호");
+        dbms_output.put_line('과목 번호: ' || vrecord."과목 번호");
+        dbms_output.put_line('교육생 번호: ' || vrecord."교육생 번호");
+        dbms_output.put_line('날짜: ' || vrecord.날짜);
+        dbms_output.put_line('출근 시간: ' || vrecord."출근 시간");
+        dbms_output.put_line('퇴근 시간: ' || vrecord."퇴근 시간");
+        dbms_output.put_line('상태: ' || vrecord.상태);
+        dbms_output.put_line('-----------------------------------------------------------------------------------');
+    end loop;
+    
+    close vcursor;
+exception
+    when no_data_found then
+        dbms_output.put_line('해당 정보가 없습니다.');
+    when others then
+        dbms_output.put_line('오류 발생: ' || SQLERRM);
+end procTraineeAttendanceOut;
+/
+
+-- 4.1.2. 특정(특정 과정, 특정 인원) 출결 현황을 조회할 수 있어야 한다.
+-- 특정 과정
+begin
+    procSpecificCurriculumAttendanceOut (1, 1, 7);
+end;
+/
+
+create or replace procedure procSpecificCurriculumAttendanceOut (
+    pSeq_teacher in number,
+    pSeq_openSubjectList in number,
+    pSeq_openCurriculum in number
+) 
+is
+    cursor vcursor is
+        select 
+        vc.seq_openCurriculum "개설 교육과정 번호",
+        asl.seq_subject "과목 번호",
+        tl.seq_trainee "교육생 번호",
+        a.day 날짜,
+        to_char(a.inTime, 'HH24:MI:SS') "출근 시간",
+        to_char(a.outTime, 'HH24:MI:SS') "퇴근 시간"
+        from vwCurriculum vc
+            inner join tblAvailableSubjectList asl
+                on asl.seq_subject = vc.seq_subject
+                    inner join tblTraineeList tl
+                        on tl.seq_openCurriculum = vc.seq_openCurriculum
+                            inner join tblAttendance a
+                                on a.seq_traineeList = tl.seq_traineeList
+                                    where vc.seq_openCurriculum = pSeq_openCurriculum
+                                        and vc.seq_teacher = pSeq_teacher
+                                        and vc.seq_openSubjectList = pSeq_openSubjectList
+                                        order by tl.seq_trainee;
+    vrecord vcursor%rowtype;
+    
+begin
+    -- 정보 출력
+    open vcursor;
+    loop
+        fetch vcursor into vrecord;
+        exit when vcursor%notfound;
+        
+        -- 정보 출력
+        dbms_output.put_line('개설 교육과정 번호: ' || vrecord."개설 교육과정 번호");
+        dbms_output.put_line('과목 번호: ' || vrecord."과목 번호");
+        dbms_output.put_line('교육생 번호: ' || vrecord."교육생 번호");
+        dbms_output.put_line('날짜: ' || vrecord.날짜);
+        dbms_output.put_line('출근 시간: ' || vrecord."출근 시간");
+        dbms_output.put_line('퇴근 시간: ' || vrecord."퇴근 시간");
+        dbms_output.put_line('-----------------------------------------------------------------------------------');
+    end loop;
+    
+    close vcursor;
+exception
+    when no_data_found then
+        dbms_output.put_line('해당 정보가 없습니다.');
+    when others then
+        dbms_output.put_line('오류 발생: ' || SQLERRM);
+end procSpecificCurriculumAttendanceOut;
+/
+
+-- 특정 인원
+begin
+    procSpecificTraineeAttendanceOut (1, 1, 1);
+end;
+/
+
+create or replace procedure procSpecificTraineeAttendanceOut (
+    pSeq_teacher in number,
+    pSeq_openSubjectList in number,
+    pSeq_trainee in number
+) 
+is
+    cursor vcursor is
+        select 
+        vc.seq_openCurriculum "개설 교육과정 번호",
+        asl.seq_subject "과목 번호",
+        tl.seq_trainee "교육생 번호",
+        a.day 날짜,
+        to_char(a.inTime, 'HH24:MI:SS') "출근 시간",
+        to_char(a.outTime, 'HH24:MI:SS') "퇴근 시간"
+        from vwCurriculum vc
+            inner join tblAvailableSubjectList asl
+                on asl.seq_subject = vc.seq_subject
+                    inner join tblTraineeList tl
+                        on tl.seq_openCurriculum = vc.seq_openCurriculum
+                            inner join tblAttendance a
+                                on a.seq_traineeList = tl.seq_traineeList
+                                    where vc.seq_openSubjectList = pSeq_openSubjectList
+                                        and vc.seq_teacher = pSeq_teacher
+                                        and tl.seq_trainee = pSeq_trainee
+                                        order by tl.seq_trainee;
+    vrecord vcursor%rowtype;
+    
+begin
+    -- 정보 출력
+    open vcursor;
+    loop
+        fetch vcursor into vrecord;
+        exit when vcursor%notfound;
+        
+        -- 정보 출력
+        dbms_output.put_line('개설 교육과정 번호: ' || vrecord."개설 교육과정 번호");
+        dbms_output.put_line('과목 번호: ' || vrecord."과목 번호");
+        dbms_output.put_line('교육생 번호: ' || vrecord."교육생 번호");
+        dbms_output.put_line('날짜: ' || vrecord.날짜);
+        dbms_output.put_line('출근 시간: ' || vrecord."출근 시간");
+        dbms_output.put_line('퇴근 시간: ' || vrecord."퇴근 시간");
+        dbms_output.put_line('-----------------------------------------------------------------------------------');
+    end loop;
+    
+    close vcursor;
+exception
+    when no_data_found then
+        dbms_output.put_line('해당 정보가 없습니다.');
+    when others then
+        dbms_output.put_line('오류 발생: ' || SQLERRM);
+end procSpecificTraineeAttendanceOut;
+/
 
 
---c-6 
 
 
---c-7
+
+--c-6 추천 도서 관리
+-- 1. 교재 추가
+-- 새로운 교재 정보를 추가한다.
+
+-- 2. 교재 추천
+-- 교재를 추천할 수 있다.
+
+
+
+
+
+--c-7 후기 관리
+-- 1. 후기 관리
+-- 프로젝트 종료 이후 교육생이 작성한 후기를 조회 및 관리 할 수 있다.
+begin
+    procCurriculumEvaluationOut (1, 7);
+end;
+/
+
+create or replace procedure procCurriculumEvaluationOut (
+    pSeq_teacher in number,
+    pSeq_openCurriculum in number
+) 
+is
+    cursor vcursor is
+        select 
+        oc.seq_openCurriculum "교육 과정 번호",
+        oc.endDate "과정 종료일",
+        ce.grade 평점,
+        ce.content 후기
+        from tblCurriculumEvaluation ce
+            inner join tblOpenCurriculum oc
+                on oc.seq_openCurriculum = ce.seq_openCurriculum
+                    where oc.seq_openCurriculum = pSeq_openCurriculum
+                        and to_date(oc.endDate, 'YYYY-MM-DD') < sysdate; 
+    vrecord vcursor%rowtype;
+    
+begin
+    -- 정보 출력
+    open vcursor;
+    loop
+        fetch vcursor into vrecord;
+        exit when vcursor%notfound;
+        
+        -- 정보 출력
+        dbms_output.put_line('교육 과정 번호: ' || vrecord."교육 과정 번호");
+        dbms_output.put_line('과정 종료일: ' || vrecord."과정 종료일");
+        dbms_output.put_line('평점: ' || vrecord.평점);
+        dbms_output.put_line('후기: ' || vrecord.후기);
+        dbms_output.put_line('-----------------------------------------------------------------------------------');
+    end loop;
+    
+    close vcursor;
+exception
+    when no_data_found then
+        dbms_output.put_line('해당 정보가 없습니다.');
+    when others then
+        dbms_output.put_line('오류 발생: ' || SQLERRM);
+end procCurriculumEvaluationOut;
+/
