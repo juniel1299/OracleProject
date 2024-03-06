@@ -553,7 +553,6 @@ VALUES (1, 1, TO_DATE('2023-10-03', 'YYYY-MM-DD'), TO_DATE('2023-10-04', 'YYYY-M
 
 --4. 과목 목록 출력 시 과목번호, 과정명, 과정기간(시작 년월일, 끝 년월일), 강의실, 과목명, 과목기간(시작 년월일, 끝 년월일), 교재명, 출결, 필기, 실기 배점 등이 출력되고, 
 -- 특정 과목을 과목번호로 선택 시 출결 배점, 필기 배점, 실기 배점, 시험 날짜, 시험 문제를 입력할 수 있는 화면으로 연결되어야 한다.
--- pl/sql로 구현해야한다.
 
 -- 4.1. 과목 목록 출력
 select 
@@ -611,7 +610,7 @@ from tblTestInfo ti
 -- 강의를 마친 과목에 대한 내용은 자바에서 다룬다.
 -- 1.1. 성적 입력
 INSERT INTO tblGrades(SEQ_GRADES, SEQ_TRAINEELIST, SEQ_testInfo, WRITTENGRADE, PRACTICALGRADE, ATTENDANCEGRADE)
-VALUES (1, 1,1, 32, 31, 17);
+VALUES (1, 1, 1, 32, 31, 17);
 
 -- 1.2. 성적 출력
 select 
@@ -632,6 +631,7 @@ from vwGrades vg
 
 -- 2. 교사는 자신이 강의를 마친 과목의 목록 중에서 특정 과목을 선택하면, 교육생 정보가 출력되고, 특정 교육생 정보를 선택하면, 해당 교육생의 시험 점수를 입력할 수 있어야 한다. 이때, 출결, 필기, 실기 점수를 구분해서 입력할 수 있어야 한다.
 -- 2.1. 특정 과목 선택
+/*
 select 
 distinct sl.seq_subject "과목 번호",
 vt.seq_trainee "학생 번호",
@@ -644,6 +644,18 @@ from  vwTrainees vt
             inner join tblSubjectList sl
                 on sl.seq_subjectList = osl.seq_subjectList
                     where sl.seq_subject = 1; -- 특정과목
+*/
+
+select 
+distinct osl.seq_subjectList "과목 목록 번호",
+vt.seq_trainee "학생 번호",
+vt.t_name "이름",
+vt.t_id "아이디",
+vt.t_tel "전화번호"
+from  vwTrainees vt
+    inner join tblOpenSubjectList osl
+        on osl.seq_openCurriculum = vt.seq_openCurriculum
+            where osl.seq_subjectList = 1; -- 특정과목
                     
 -- 2.2. 특정 교육생 선택
 select 
