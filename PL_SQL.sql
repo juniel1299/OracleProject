@@ -624,6 +624,193 @@ BEGIN
 END;
 /
 
+-- 원혁
+-- PL/SQL
+-- B-12 
+-- 온라인 강의 수강 여부 확인
+declare 
+    vname tblTrainees.name%TYPE;
+    vtitle tblOnlineLecture.title%TYPE;
+    vstatus tblOnlineCourseList.status%TYPE;
+cursor vcursor
+is
+select
+    t.name as "이름",
+    ol.title as "온라인 강의명",
+    oc.status as "수강 여부"
+    from tblTrainees t
+        inner join tblTraineeList tl 
+            on t.seq_trainee = tl.seq_trainee
+                inner join tblOnlineCourseList oc 
+                    on tl.seq_traineeList = oc.seq_traineeList
+                        inner join tblOnlineLecture ol 
+                            on oc.seq_onlineLecture = ol.seq_onlineLecture
+                                where oc.status = '수강 완료';
+begin
+    open vcursor;
+    loop
+    fetch vcursor into vname, vtitle, vstatus;
+    exit when vcursor%notfound;
+    if vstatus = '수강 완료' then
+        dbms_output.put_line('----------------------------------------');
+        dbms_output.put_line('이름: ' || vname);
+        dbms_output.put_line('온라인 강의명: ' || vtitle);
+        dbms_output.put_line('수강 여부: ' || vstatus);
+        dbms_output.put_line('----------------------------------------');
+    elsif vstatus = '수강 미완료' THEN
+        dbms_output.put_line('----------------------------------------');
+        dbms_output.put_line(vname || ' ' || vtitle || ' ' || vstatus);
+        dbms_output.put_line('----------------------------------------');
+    else
+        dbms_output.put_line('잘못 입력했거나 조회된 데이터가 없습니다');
+    end if;
+    end loop;
+    close vcursor;
+end;
+/
+
+-- B-13
+-- 출결 서류 인정 관리
+-- 등록
+create or replace procedure insert_attendancePapers (
+    p_seq_attendancePapers in tblAttendancePapers.seq_attendancePapers%type,
+    p_seq_traineeList in tblAttendancePapers.seq_traineeList%type,
+    p_status in tblAttendancePapers.status%type,
+    p_day in tblAttendancePapers.day%type,
+    p_document in tblAttendancePapers.document%type,
+    p_admitattendance in tblAttendancePapers.admitattendance%type
+)
+is
+begin
+    insert into tblAttendancePapers (seq_attendancePapers, seq_traineeList, status, day, document, admitattendance)
+    values (p_seq_attendancePapers, p_seq_traineeList, p_status, p_day, p_document, p_admitattendance);
+    dbms_output.put_line('출결 서류 등록이 완료되었습니다.');
+end insert_attendancePapers;
+
+-- 수정
+update tblAttendancePapers
+    set document = '국민취업지원제도 상담'
+        where seq_attendancePapers = 1;
+        
+create or replace procedure update_attendancePapers (
+    p_seq_attendancePapers in number, 
+    p_seq_traineeList in number, 
+    p_status in varchar2, 
+    p_day in date, 
+    p_document in varchar2, 
+    p_admitattendance in varchar2
+)
+is
+begin
+    update tblAttendancePapers
+    set
+    seq_traineeList = p_seq_traineeList,
+    status = p_status,
+    day = p_day,
+    document = p_document,
+    admitattendance = p_admitattendance
+    where seq_attendancePapers = p_seq_attendancePapers;
+    exception
+    when others then
+    dbms_output.put_line('수정에 실패했습니다.');
+end update_attendancePapers;
+
+-- 조회
+select 
+t.name as "이름", 
+ap.document "제출 서류", 
+ap.admitattendance "출석 인정 여부", 
+ap.status "출결" 
+from tblTrainees t
+    inner join tblTraineeList tl
+        on t.seq_trainee = tl.seq_trainee
+            inner join tblAttendancePapers ap
+                on tl.seq_traineeList = ap.seq_traineeList
+                    where t.name = '모진백';
+                    
+create or replace procedure select_attendancePapers
+is
+    vname tblTrainees.name%type;
+    vdocument tblAttendancePapers.document%type;
+    vadmitattendance tblAttendancePapers.admitattendance%type;
+    vstatus tblAttendancePapers.status%type;
+    
+cursor vcursor
+is
+select 
+t.name "이름", 
+ap.document "제출 서류", 
+ap.admitattendance "출석 인정 여부", 
+ap.status "출결" 
+from tblTrainees t
+    inner join tblTraineeList tl
+        on t.seq_trainee = tl.seq_trainee
+            inner join tblAttendancePapers ap
+                on tl.seq_traineeList = ap.seq_traineeList;
+                    
+begin
+open vcursor;
+loop
+    fetch vcursor into vname, vdocument, vadmitattendance, vstatus;
+    exit when vcursor%notfound;
+    dbms_output.put_line('이름 : ' || vname || ', 제출 서류 : ' || vdocument || ', 출석 인정 여부 : ' || vadmitattendance || ', 출결 : ' || vstatus);
+end loop;
+close vcursor;
+end;
+/
+
+-- 삭제
+create or replace procedure delete_attendancePapers (
+p_seq_attendancePapers in tblAttendancePapers.seq_attendancePapers%type
+)
+is
+begin
+delete from tblAttendancePapers
+where seq_attendancePapers = p_seq_attendancePapers;
+exception
+when others then
+dbms_output.put_line('잘못된 번호입니다');
+end delete_attendancePapers;
+
+-- B-14 기자재 & 사물함 관리
+-- 기자재 조회
+select * from tblEquipment;
+
+-- 기자재 등록    
+create or replace procedure insert_equipment (
+    p_seq_equipment in tblEquipment.seq_equipment%type,
+    p_name in tblEquipment.name%type,
+    p_expectedExportDate in tblEquipment.expectedExportDate%type,
+    p_amount in tblEquipment.amount%type,
+    p_brokenAmount in tblEquipment.brokenAmount%type
+)
+is
+begin
+    insert into tblEquipment (seq_equipment, name, importDate, expectedExportDate, amount, brokenAmount)
+        values (p_seq_equipment, p_name, p_expectedExportDate, p_amount, p_brokenAmount);
+    dbms_output.put_line('기자재 등록이 완료되었습니다.');
+end insert_equipment;
+
+-- 기자재 수정
+update tblEquipment set amount = 100 where seq_equipment = 1;
+
+create or replace procedure update_equipment (
+    p_seq_equipment in number,
+    p_name in varchar2,
+    p_importDate in date,
+    p_expectedExportDate in date
+)
+is
+begin
+    if seq_equipment = p_seq_equipment then
+    update tblEquipment
+    set p_seq_equipment = 1
+    name = p_name,
+    importDate = p_importDate,
+    expectedExportDate = p_expectedExportDate
+    else
+    dbms_output.put_line('잘못된 입력입니다');
+
 -- D-1 
 
 -- 성적조회
