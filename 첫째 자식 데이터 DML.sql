@@ -10,7 +10,7 @@ from tblTestInfo ti
                     inner join tblSubject s
                         on s.seq_subject = sl.seq_subject;
                         
---시험지
+--시험지(pk명 수정해야됨)
 --자바
 INSERT INTO Tblexampaper(seq_attendancepapers, seq_question, seq_openSubjectList, kind) VALUES (1, 1, 1, '필기');
 INSERT INTO Tblexampaper(seq_attendancepapers, seq_question, seq_openSubjectList, kind) VALUES (2, 2, 1, '필기');
