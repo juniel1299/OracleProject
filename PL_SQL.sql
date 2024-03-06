@@ -931,18 +931,20 @@ begin
 end procTestDateIn;
 /
 
-
 -- 2.6. 시험 문제 추가
 begin
-    procTestQuestionIn(1, 1);
+    procTestQuestionIn(1, 1, 1, 1, '자바 소스 확장자는?', '3', '필기');
 end;
 /
 
-create or replace procedure rocTestQuestionIn (
+create or replace procedure procTestQuestionIn (
     pSeq_teacher in number,
-    pSeq_testInfo in number,
-    pWrittenDate in date,
-    pPracticalDate in date
+    pSeq_question in number,
+    pSeq_openSubjectList in number,
+    pSeq_examPaper in number,
+    pQuestion in varchar2,
+    pAnswer in varchar2,
+    pKind in varchar2    
 ) 
 is
     vEnddate date;
@@ -950,28 +952,29 @@ begin
     -- tblopensubjectlist 테이블의 enddate 확인
     select osl.enddate into vEnddate
     from tblOpenSubjectList osl
-        inner join tblTestInfo ti
+        inner join tblTestInfo ti 
             on ti.seq_openSubjectList = osl.seq_openSubjectList
                 where osl.seq_teacher = pSeq_teacher
-                and ti.seq_testinfo = pSeq_testInfo;
+                    and ti.seq_openSubjectList = pSeq_openSubjectList;
 
-    -- enddate가 오늘 이전인 경우에만 시험 날짜 추가
+    -- enddate가 오늘 이전인 경우에만 시험 문제 추가
     if vEnddate < sysdate then
-        -- 시험 날짜 추가
-        update tblTestInfo
-        set writtenDate = TO_DATE(pWrittenDate, 'YYYY-MM-DD'), 
-            practicalDate = TO_DATE(pPracticalDate, 'YYYY-MM-DD')
-        where seq_testInfo = pSeq_testInfo;
+        -- 시험 문제 추가
+        insert into tblQuestion (seq_question, question, answer)
+        values (pSeq_question, pQuestion, pAnswer);
+        
+        insert into Tblexampaper (seq_examPaper, seq_question, seq_openSubjectList, kind) 
+        values (pSeq_examPaper, pSeq_question, pSeq_openSubjectList, pKind);
 
         if sql%rowcount = 0 then
             dbms_output.put_line('해당 시험 정보가 존재하지 않습니다.');
         else
-            dbms_output.put_line('시험 날짜가 추가되었습니다.');
+            dbms_output.put_line('시험 문제가 추가되었습니다.');
         end if;
     else
         dbms_output.put_line('해당 과목은 아직 종료되지 않았습니다.');
     end if;
-end procTestDateIn;
+end procTestQuestionIn;
 /
 
 
