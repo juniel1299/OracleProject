@@ -1,50 +1,27 @@
 --PL/SQL
 
 --b-3
-/* 교사 정보 관리 */
---1.2 교사별 강의 가능 과목 입력
---a. 기초 정보 과목명 조회
-select * from tblSubject;
---b. 교사별 강의 가능 과목 추가
-create or replace procedure procAddASL(
-    pname in varchar2,            
-    psubject out number
+set serveroutput on;
+
+--특정 교사 정보 출력   
+create or replace procedure procTeacherInfo (
+    pname in varchar2  
 )
 is
-begin
-    select seq_subject into psubject from tblsubject where name like '%'||pname||'%';     
-end procAddASL;
-/
-declare
-    vtemp number;
-begin
-    procAddASL('자바',vtemp); 
-    select t.seq_teacher, t.name from tblteacher t inner join tblAvailableSubjectList asl on t.seq_teacher = asl.seq_teacher
-        where asl.seq_subject = vtemp;
+    vtName tblTeacher.name%type;
+    vsName tblSubject.name%type;
+    vsStart tblopensubjectlist.startdate%type;
+    vsEnd tblopensubjectlist.enddate%type;
+    vcName tblcurriculum.name%type;
+    vcstart tblopencurriculum.startdate%type;
+    vcend tblopencurriculum.enddate%type;
+    vbname tblTextbook.name%type;
+    vrname tblroom.name%type;
+    vStat varchar2(15);
     
-end;
-/
-set serveroutput on;
-select * from tblAvailableSubjectList;
-rollback;
-insert into tblAvailableSubjectList (seq_availableSubjectList, seq_subject, seq_teacher)
-	values ((select max(seq_availableSubjectList) from tblAvailableSubjectList) + 1, vtemp, 1);
-
---2.1 교사 전체 명단 출력
-select
-	t.name as 교사명,
-    t.ssn as "주민번호 뒷자리",
-    t.tel as 전화번호,
-    s.name as "강의 가능 과목"
-from tblTeacher t
-    inner join tblAvailableSubjectList a
-        on t.seq_teacher = a.seq_teacher
-            inner join tblsubject s
-                on a.seq_subject = s.seq_subject;
-                
---2.2 특정 교사 정보 출력          
-select 
-    s_name as "배정된 개설 과목명",
+    cursor vcursor is
+    select 
+    s_name as "개설 과목명",
     osl_startdate as 과목시작일,
     osl_enddate as 과목종료일,
     c_name as 과정명,
@@ -52,107 +29,118 @@ select
     oc_enddate as 과정종료일,
     b.name as 교재명,
     r_name as 강의실,
-    g.status as 강의진행여부
+    case
+        when osl_startdate < sysdate and sysdate > osl_enddate then '강의종료'
+        when osl_startdate > sysdate then '강의예정'
+        when osl_startdate <= sysdate and sysdate <= osl_enddate then '강의중'
+    end as "강의상태"
 from vwCurriculum v
     inner join tblTextbook b
         on b.seq_textbook = v.seq_textbook
             inner join tblcurriculumprogress g
                 on v.seq_curriculumprogress = g.seq_curriculumprogress
-                     where seq_teacher = 특정교사번호;
-
---2.3 강의 과목별로 가능한 교사 정보 출력
-select
-	t.name as 교사명,
-    s.name as "강의 가능 과목"
-from tblTeacher t
-    inner join tblAvailableSubjectList a
-        on t.seq_teacher = a.seq_teacher
-            inner join tblsubject s
-                on a.seq_subject = s.seq_subject
-                    where s.name = 과목이름;
-
---3. 수정
-update tblTeacher set tel = '01055554444'
-	where seq_teacher = 1;
- 
---4. 삭제
-delete from tblTeacher
-	where seq_teacher = 1;
-    
+                    inner join tblteacher t
+                        on v.seq_teacher = t.seq_teacher
+                            where t.name = pname
+                                order by 과목시작일;
+begin
+    open vcursor;
+    loop
+        fetch vcursor into vsName, vsStart, vsEnd, vcname, vcstart, vcend, vbname, vrname, vStat;
+        exit when vcursor%notfound;
+        dbms_output.put_line('-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------');
+        dbms_output.put_line('교사명: ' || pName || '| 과목명: ' || vsName || '| 과목시작일: ' || vsStart || '| 과목종료일: ' || vsEnd || '| 과정명: ' || vcname || '| 과정시작일: ' || vcstart || '| 과정종료일: ' || vcend || '| 교재명: ' || vbname || '| 강의실명: '|| vrname || '| 강의상태: ' || vStat);
+        dbms_output.put_line('-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------');
+    end loop;
+    close vcursor;   
+end procTeacherInfo;
+/
+begin
+    procTeacherInfo('김희연');     
+end;
 /
 
-
-
-
-
---교육생 이름으로 성적 검색 프로시저
-CREATE OR REPLACE PROCEDURE proctg(
-    ptname VARCHAR2
+--입력한 과목을 강의 가능한 교사 정보 출력 > b-5 한번에 해결
+create or replace procedure procTeacherWhoCan(
+    pname in varchar2
 )
-IS
-    vt_name VARCHAR2(500);
-    vs_name VARCHAR2(500);
-    vosl_startdate DATE;
-    vosl_enddate DATE;
-    vg_writtenDate DATE;
-    vg_practicalDate DATE;
-    vg_writtenGrade NUMBER;
-    vg_practicalGrade NUMBER;
-    vg_attendanceGrade NUMBER;
-
-    CURSOR vcursor IS
-        SELECT DISTINCT
-            t.name AS 교육생이름,
-            g.s_name AS 과목명,
-            osl.startdate AS 과목시작일,
-            osl.enddate AS 과목종료일,
-            g.writtenDate AS 필기날짜,
-            g.practicalDate AS 실기날짜,
-            g.writtenGrade AS 필기점수,
-            g.practicalGrade AS 실기점수,
-            g.attendanceGrade AS 출결점수
-        FROM
-            vwgrades g
-            INNER JOIN tbltraineelist tl ON g.seq_traineelist = tl.seq_traineelist
-            INNER JOIN tbltrainees t ON tl.seq_trainee = t.seq_trainee
-            INNER JOIN tblteacher tc ON g.seq_teacher = tc.seq_teacher
-            INNER JOIN tblopensubjectlist osl ON g.seq_opensubjectlist = osl.seq_opensubjectlist
-            INNER JOIN tbltextbook b ON osl.seq_textbook = b.seq_textbook
-            INNER JOIN tblopencurriculum oc ON g.seq_opencurriculum = oc.seq_opencurriculum
-            INNER JOIN tblroom r ON oc.seq_room = r.seq_room
-            INNER JOIN tblexampaper ep ON g.seq_subject = ep.seq_subject
-            INNER JOIN tblquestion q ON ep.seq_question = q.seq_question
-        WHERE
-            t.name = ptname;
-
-BEGIN
-    OPEN vcursor;
-    LOOP
-        FETCH vcursor INTO vt_name, vs_name, vosl_startdate, vosl_enddate, vg_writtenDate, vg_practicalDate, vg_writtenGrade, vg_practicalGrade, vg_attendanceGrade;
-        EXIT WHEN vcursor%NOTFOUND;
-        DBMS_OUTPUT.PUT_LINE('수강생이름: ' || vt_name || '  과목명: ' || vs_name || '  과목시작일: ' || vosl_startdate || ' 과목종료일: ' || vosl_enddate ||
-                             ' 필기날짜: ' || vg_writtenDate || ' 실기날짜: ' || vg_practicalDate || ' 필기점수: ' || vg_writtenGrade || ' 실기점수: ' || vg_practicalGrade ||
-                             '출결점수: ' || vg_attendanceGrade);
-    END LOOP;
-    CLOSE vcursor;
-END proctg;
+is
+    vTname tblteacher.name%type;
+    vSubName tblsubject.name%type;
+    cursor vcursor is
+    select
+        distinct t.name, s.name
+    from tblteacher t
+        inner join tblAvailableSubjectList asl
+            on t.seq_teacher = asl.seq_teacher
+                inner join tblsubject s
+                    on s.seq_subject = asl.seq_subject
+                        where s.name = pname;
+begin
+    open vcursor;
+    loop
+        fetch vcursor into vTname, vSubName;
+        exit when vcursor%notfound;
+        dbms_output.put_line('-----------------------------------------------');
+        dbms_output.put_line('이름: ' || vTname || ' | 과목명: ' || vSubName);
+        dbms_output.put_line('-----------------------------------------------');
+    end loop;
+    close vcursor;
+end procTeacherWhoCan;
 /
 begin
-proctg('나백전');
-end;
-/
-begin
-proctg('곤문권');
+    procTeacherWhoCan('자바');     
 end;
 /
 
-
-
-
-
-
-
-
-
-
+--b-4
+/* 특정 개설 과정 선택 */
+--개설 교육 과정 번호를 입력하여 개설 과목 정보 확인
+create or replace procedure procCurriDetail (
+    pnum in number
+)
+is
+    vSName tblSubject.name%type;
+    vsStart tblOpensubjectlist.startdate%type;
+    vsEnd tblOpensubjectlist.enddate%type;
+    vtName tbltrainees.name%type;
+    vTel varchar2(15);
+    vRegdate date;
+    vStat varchar2(30);
     
+    cursor vcursor is
+    
+    select
+    v.s_name as "과목명",
+    v.osl_startdate as "과목시작일",
+    v.osl_enddate as "과목종료일",
+    t.name as "학생명",
+    t.tel as "전화번호",
+    t.registrationDate as "등록일",
+    (case
+        when tl.status is not null then tl.status
+        when v.seq_curriculumprogress = 1 then '강의 진행 예정'
+        when v.seq_curriculumprogress = 2 then '강의 진행 중'
+    end) as "수료 여부"
+    from vwcurriculum v
+    left outer join tbltraineelist tl
+        on tl.seq_opencurriculum = v.seq_opencurriculum
+            inner join tbltrainees t
+                on t.seq_trainee = tl.seq_trainee
+                    where v.seq_opencurriculum = pnum;
+begin
+    open vcursor;
+    loop
+        fetch vcursor into vSName, vsStart, vsEnd, vtName, vTel, vRegdate, vStat;
+        exit when vcursor%notfound;
+        dbms_output.put_line('----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------');
+        dbms_output.put_line('과목명: ' || vSName || ' | 과목시작일: ' || vsStart || ' | 과목종료일: ' || vsEnd || ' | 학생명: ' || vtName || ' | 전화번호: ' || vTel || ' | 등록일: ' || vRegdate || ' | 수료여부: ' || vStat);
+        dbms_output.put_line('----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------');
+    end loop;
+    close vcursor;
+end procCurriDetail;
+/
+begin
+    procCurriDetail(1); --개설교육과정 번호    
+end;
+/
