@@ -266,51 +266,13 @@ END;
 
 /
 
-
-/
--- B-7
--- 과목별
-CREATE OR REPLACE PROCEDURE select_curriculum_by_subject(
-    p_subject IN vwcurriculum.s_name%TYPE
-) IS
-    CURSOR c_curriculum IS
-        SELECT vc.c_name,vt.t_name,vc.s_name,vc.period,vc.r_name,vt.t_ssn,vg.writtengrade,vg.practicalgrade 
-        FROM vwcurriculum vc
-        INNER JOIN vwtrainees vt ON vt.seq_opencurriculum = vc.seq_opencurriculum
-        INNER JOIN vwgrades vg ON vg.seq_traineelist = vt.seq_traineelist
-        WHERE vc.s_name = p_subject
-        GROUP BY vc.c_name,vt.t_name,vc.s_name,vc.period,vc.r_name,vt.t_ssn,vg.writtengrade,vg.practicalgrade;
-    v_curriculum c_curriculum%ROWTYPE;
-BEGIN
-    OPEN c_curriculum;
-    LOOP
-        FETCH c_curriculum INTO v_curriculum;
-        EXIT WHEN c_curriculum%NOTFOUND;
-        DBMS_OUTPUT.PUT_LINE('과정 이름: ' || v_curriculum.c_name || ', 교육생 이름: ' || v_curriculum.t_name || ', 주제: ' || v_curriculum.s_name || ', 기간: ' || v_curriculum.period || ', 강의실 이름: ' || v_curriculum.r_name || ', 주민등록번호: ' || v_curriculum.t_ssn || ', 필기 성적: ' || v_curriculum.writtengrade || ', 실기 성적: ' || v_curriculum.practicalgrade);
-    END LOOP;
-    CLOSE c_curriculum;
-EXCEPTION
-    WHEN NO_DATA_FOUND THEN
-        DBMS_OUTPUT.PUT_LINE('해당 주제를 가진 과정 정보를 찾을 수 없습니다.');
-    WHEN OTHERS THEN
-        ROLLBACK;
-        RAISE;
-END select_curriculum_by_subject;
-/
-BEGIN
-    select_curriculum_by_subject('AWS');
-END;
-/
-
-
 --b-7 
 -- 특정 개설 과정
 /
 CREATE OR REPLACE PROCEDURE select_grades_course(
     p_course IN vwcurriculum.c_name%TYPE
 ) IS
- 
-    CURSOR c_grades IS
+ CURSOR c_grades IS
         SELECT vt.t_name, vc.c_name, vc.s_name, t.name, vg.writtengrade, vg.practicalgrade
         FROM vwgrades vg
         INNER JOIN vwtrainees vt ON vt.seq_traineelist = vg.seq_traineelist
@@ -781,4 +743,255 @@ BEGIN
     select_textbook_info('김민곤');
 END;
 /
+   
+    
+    
+    
 
+
+--혜정
+set serveroutput on;
+select * from tbltestinfo;
+select * from tblopensubjectlist osl
+    inner join tblteacher t
+        on osl.seq_teacher = t.seq_teacher;
+
+--c-2 배점 입출력
+-- 1. 교사가 강의를 마친 과목에 대한 성적 처리를 위해서 배점 입출력을 할 수 있어야 한다.
+-- 3. 출결, 필기, 실기의 배점 비중은 담당 교사가 과목별로 결정한다. 단, 출결은 최소 20점 이상이어야 하고, 출결, 필기, 실기의 합은 100점이 되도록 한다.
+
+-- 1.1. 배점 입력
+begin
+    procTestInfoIn(1, 1, 1, 40, 40, 20);
+end;
+/
+
+create or replace procedure procTestInfoIn(
+    pSeq_teacher in number,
+    pSeq_testInfo in number,
+    pSeq_openSubjectList in number,
+    pWrittenpoints in number,
+    pPracticalpoints in number,
+    pAtendancepoints in number
+) 
+is
+    vEnddate date;
+begin
+    -- tblopensubjectlist 테이블의 enddate 확인
+    select osl.enddate into vEnddate
+    from tblOpenSubjectList osl
+        inner join tblTestInfo ti
+            on ti.seq_openSubjectList = osl.seq_openSubjectList
+                where osl.seq_teacher = pSeq_teacher
+                and osl.seq_OpenSubjectList = pSeq_openSubjectList;
+
+    -- enddate가 오늘 이전인 경우에만 배점 입력
+    if vEnddate < sysdate then
+        -- 배점 입력
+        insert into tblTestInfo (seq_testInfo, seq_openSubjectList, writtenpoints, practicalpoints, attendancepoints) 
+        values (pSeq_testInfo, pSeq_openSubjectList, pWrittenpoints, pPracticalpoints, pAtendancepoints);
+
+        if sql%rowcount = 0 then
+            dbms_output.put_line('해당 시험 정보가 존재하지 않습니다.');
+        else
+            dbms_output.put_line('배점이 등록되었습니다.');
+        end if;
+    else
+        dbms_output.put_line('해당 과목은 아직 종료되지 않았습니다.');
+    end if;
+end procTestInfoIn;
+/
+
+
+-- 1.2.배점 출력
+begin
+    procTestInfoOut(1, 1);
+end;
+/
+
+create or replace procedure procTestInfoOut(
+    pSeq_teacher in number,
+    pSeq_openSubjectList in number
+) 
+is
+ cursor vcursor is
+        select 
+        ti.seq_openSubjectList, 
+        ti.writtenpoints, 
+        ti.practicalpoints, 
+        ti.attendancepoints
+        from tblTestInfo ti
+            inner join tblOpenSubjectList osl
+                on ti.seq_openSubjectList = osl.seq_openSubjectList
+                    where osl.seq_teacher = pSeq_teacher
+                    and osl.seq_OpenSubjectList = pSeq_openSubjectList
+                    and osl.enddate < sysdate;    
+    
+    vSeq_opensubjectlist tblopensubjectlist.seq_opensubjectlist%type;
+    vWrittenpoints tbltestinfo.writtenpoints%type;
+    vPracticalpoint tbltestinfo.practicalpoints%type;
+    vAttendancepoints tbltestinfo.attendancepoints%type;
+    
+begin
+    -- 배점 출력
+    open vcursor;
+    loop
+        fetch vcursor into vSeq_opensubjectlist, vWrittenpoints, vPracticalpoint, vAttendancepoints;
+        exit when vcursor%notfound;
+
+        -- 결과 출력
+        dbms_output.put_line('개설 과목 목록 번호: ' || vSeq_opensubjectlist);
+        dbms_output.put_line('필기 배점: ' || vWrittenpoints);
+        dbms_output.put_line('실기 배점: ' || vPracticalpoint);
+        dbms_output.put_line('출결 배점: ' || vAttendancepoints);
+        dbms_output.put_line('-----------------------------------------------------------------------------------');
+
+    end loop;
+    close vcursor;    
+end procTestInfoOut;
+/
+
+
+-- 2. 교사는 자신이 강의를 마친 과목의 목록 중에서 특정 과목을 선택하고 해당 과목의 배점 정보를 출결, 필기, 실기로 구분해서 등록할 수 있어야 한다.(위에서 구현 완료) 시험 날짜, 시험 문제를 추가할 수 있어야 한다.
+-- 2.5. 시험 날짜 추가
+begin
+    procTestDateIn(1, 1, TO_DATE('2023-10-03', 'YYYY-MM-DD'), TO_DATE('2023-10-04', 'YYYY-MM-DD'));
+end;
+/
+
+create or replace procedure procTestDateIn (
+    pSeq_teacher in number,
+    pSeq_testInfo in number,
+    pWrittenDate in date,
+    pPracticalDate in date
+) 
+is
+    vEnddate date;
+begin
+    -- tblopensubjectlist 테이블의 enddate 확인
+    select osl.enddate into vEnddate
+    from tblOpenSubjectList osl
+        inner join tblTestInfo ti
+            on ti.seq_openSubjectList = osl.seq_openSubjectList
+                where osl.seq_teacher = pSeq_teacher
+                and ti.seq_testinfo = pSeq_testInfo;
+
+    -- enddate가 오늘 이전인 경우에만 시험 날짜 추가
+    if vEnddate < sysdate then
+        -- 시험 날짜 추가
+        update tblTestInfo
+        set writtenDate = TO_DATE(pWrittenDate, 'YYYY-MM-DD'), 
+            practicalDate = TO_DATE(pPracticalDate, 'YYYY-MM-DD')
+        where seq_testInfo = pSeq_testInfo;
+
+        if sql%rowcount = 0 then
+            dbms_output.put_line('해당 시험 정보가 존재하지 않습니다.');
+        else
+            dbms_output.put_line('시험 날짜가 추가되었습니다.');
+        end if;
+    else
+        dbms_output.put_line('해당 과목은 아직 종료되지 않았습니다.');
+    end if;
+end procTestDateIn;
+/
+
+
+-- 2.6. 시험 문제 추가
+begin
+    procTestQuestionIn(1, 1);
+end;
+/
+
+create or replace procedure rocTestQuestionIn (
+    pSeq_teacher in number,
+    pSeq_testInfo in number,
+    pWrittenDate in date,
+    pPracticalDate in date
+) 
+is
+    vEnddate date;
+begin
+    -- tblopensubjectlist 테이블의 enddate 확인
+    select osl.enddate into vEnddate
+    from tblOpenSubjectList osl
+        inner join tblTestInfo ti
+            on ti.seq_openSubjectList = osl.seq_openSubjectList
+                where osl.seq_teacher = pSeq_teacher
+                and ti.seq_testinfo = pSeq_testInfo;
+
+    -- enddate가 오늘 이전인 경우에만 시험 날짜 추가
+    if vEnddate < sysdate then
+        -- 시험 날짜 추가
+        update tblTestInfo
+        set writtenDate = TO_DATE(pWrittenDate, 'YYYY-MM-DD'), 
+            practicalDate = TO_DATE(pPracticalDate, 'YYYY-MM-DD')
+        where seq_testInfo = pSeq_testInfo;
+
+        if sql%rowcount = 0 then
+            dbms_output.put_line('해당 시험 정보가 존재하지 않습니다.');
+        else
+            dbms_output.put_line('시험 날짜가 추가되었습니다.');
+        end if;
+    else
+        dbms_output.put_line('해당 과목은 아직 종료되지 않았습니다.');
+    end if;
+end procTestDateIn;
+/
+
+
+-- 4. 과목 목록 출력 시 과목번호, 과정명, 과정기간(시작 년월일, 끝 년월일), 강의실, 과목명, 과목기간(시작 년월일, 끝 년월일), 교재명, 출결, 필기, 실기 배점 등이 출력되고, 
+-- 특정 과목을 과목번호로 선택 시 출결 배점, 필기 배점, 실기 배점, 시험 날짜, 시험 문제를 입력할 수 있는 화면으로 연결되어야 한다.
+-- 5. 배점 등록이 안 된 과목인 경우는 과목 정보가 출력될 때 배점 부분은 null 값으로 출력한다.
+begin
+    
+end;
+/
+
+create or replace procedure procTestDateIn (
+    pSeq_teacher in number,
+    pSeq_testInfo in number,
+    pWrittenDate in date,
+    pPracticalDate in date
+) 
+is
+    vEnddate date;
+begin
+    -- tblopensubjectlist 테이블의 enddate 확인
+    select osl.enddate into vEnddate
+    from tblOpenSubjectList osl
+        inner join tblTestInfo ti
+            on ti.seq_openSubjectList = osl.seq_openSubjectList
+                where osl.seq_teacher = pSeq_teacher
+                and ti.seq_testinfo = pSeq_testInfo;
+
+    -- enddate가 오늘 이전인 경우에만 시험 날짜 추가
+    if vEnddate < sysdate then
+        -- 시험 날짜 추가
+        update tblTestInfo
+        set writtenDate = TO_DATE(pWrittenDate, 'YYYY-MM-DD'), 
+            practicalDate = TO_DATE(pPracticalDate, 'YYYY-MM-DD')
+        where seq_testInfo = pSeq_testInfo;
+
+        if sql%rowcount = 0 then
+            dbms_output.put_line('해당 시험 정보가 존재하지 않습니다.');
+        else
+            dbms_output.put_line('시험 날짜가 추가되었습니다.');
+        end if;
+    else
+        dbms_output.put_line('해당 과목은 아직 종료되지 않았습니다.');
+    end if;
+end procTestDateIn;
+/
+
+
+
+--c-3 
+
+
+--c-4 
+
+
+--c-6 
+
+
+--c-7
