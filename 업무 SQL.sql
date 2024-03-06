@@ -476,6 +476,18 @@ delete from tblEquipment where seq_equipment = 1;
 
 --b-16
 
+--b-17
+
+--1. 수료생의 출결 현황 조회
+select * from vwtrainees;
+select t_name, a_day, situation 
+from vwtrainees where a_day>(sysdate-31) and a_day<=sysdate;
+
+--2. 교육생 계좌 정보 조회와 훈련지원금 계산
+select t_name, bank, account, count(*)*10000*2 as 훈련지원금
+from vwtrainees 
+    where a_day>(sysdate-31) and a_day<=sysdate
+        group by t_name, bank, account;
 
 -- 혜정
 --c-2 배점 입출력
