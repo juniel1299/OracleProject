@@ -148,7 +148,7 @@ end;
 
 -- B-6 
 --입력 
-CREATE OR REPLACE PROCEDURE insert_trainees(
+CREATE OR REPLACE PROCEDURE procAddTrainees(
     p_seq_trainee IN tbltrainees.seq_trainee%TYPE,
     p_name IN tbltrainees.name%TYPE,
     p_id IN tbltrainees.id%TYPE,
@@ -170,16 +170,16 @@ EXCEPTION
     WHEN OTHERS THEN
         ROLLBACK;
         RAISE;
-END insert_trainees;
+END procAddTrainees;
 
 /
 BEGIN
-    insert_trainees(1, '이채린', 'linear99', '2049178', '01012345678', sysdate, '우리은행', '012-592-384171');
+    procAddTrainees(1, '이채린', 'linear99', '2049178', '01012345678', sysdate, '우리은행', '012-592-384171');
 END;
 /
 --수정
 /
-CREATE OR REPLACE PROCEDURE update_trainees_ssn(
+CREATE OR REPLACE PROCEDURE procUpdateTraineesSsn(
     p_ssn IN tblTrainees.ssn%TYPE,
     p_name IN tblTrainees.name%TYPE
 ) IS
@@ -198,15 +198,15 @@ EXCEPTION
     WHEN OTHERS THEN
         ROLLBACK;
         RAISE;
-END update_trainees_ssn;
+END procUpdateTraineesSsn;
 /
 BEGIN
-    update_trainees_ssn('2050692', '이채린');
+    procUpdateTraineesSsn('2050692', '이채린');
 END;
 /
 -- 삭제
 /
-CREATE OR REPLACE PROCEDURE delete_trainees(
+CREATE OR REPLACE PROCEDURE procDeleteTrainees(
     p_name IN tblTrainees.name%TYPE
 ) IS
 BEGIN
@@ -222,11 +222,11 @@ EXCEPTION
     WHEN OTHERS THEN
         ROLLBACK;
         RAISE;
-END delete_trainees;
+END procDeleteTrainees;
 
 /
 BEGIN
-    delete_trainees('이채린');
+    procDeleteTrainees('이채린');
 END;
 
 
@@ -235,7 +235,7 @@ END;
 
 
 -- 검색
-CREATE OR REPLACE PROCEDURE select_trainees_courses IS
+CREATE OR REPLACE PROCEDURE procTraineesCoursesInfo IS
     CURSOR c_trainees IS
         SELECT t.name,t.ssn,t.tel,t.registrationdate,COUNT(CASE WHEN tl.status = '수료' THEN 1 END ) AS "수강횟수"
         FROM tbltraineelist tl
@@ -256,12 +256,12 @@ EXCEPTION
     WHEN OTHERS THEN
         ROLLBACK;
         RAISE;
-END select_trainees_courses;
+END procTraineesCoursesInfo;
 
 
 /
 BEGIN
-    select_trainees_courses;
+    procTraineesCoursesInfo;
 END;
 
 /
@@ -302,7 +302,7 @@ END;
 
 -- 특정 개설 과정
 /
-CREATE OR REPLACE PROCEDURE select_grades_course(
+CREATE OR REPLACE PROCEDURE procGradesCourseInfo(
     p_course IN vwcurriculum.c_name%TYPE
 ) IS
  
@@ -329,19 +329,19 @@ EXCEPTION
     WHEN OTHERS THEN
         ROLLBACK;
         RAISE;
-END select_grades_course;
+END procGradesCourseInfo;
 
 
 
 /
 BEGIN
-    select_grades_course('AWS와 Docker를 활용한 Java Full-Stack 과정(B)'); 
+    procGradesCourseInfo('AWS와 Docker를 활용한 Java Full-Stack 과정(B)'); 
 END;
 
 /
 
   --교육생 개인 별
-CREATE OR REPLACE PROCEDURE select_trainee_info(
+CREATE OR REPLACE PROCEDURE procTraineeInfo(
     p_name IN vwtrainees.t_name%TYPE
 ) IS
     CURSOR c_trainee IS
@@ -368,11 +368,11 @@ EXCEPTION
     WHEN OTHERS THEN
         ROLLBACK;
         RAISE;
-END select_trainee_info;
+END procTraineeInfo;
 
 /
 BEGIN
-    select_trainee_info('천유서');
+    procTraineeInfo('천유서');
 END;
 
 
@@ -381,7 +381,7 @@ END;
 -- b-8
 --출결관리
 --1. 개설 과정 별
-CREATE OR REPLACE PROCEDURE select_course_info(
+CREATE OR REPLACE PROCEDURE procCourseInfo(
     p_course IN tblCurriculum.name%TYPE
 ) IS
     CURSOR c_course IS
@@ -411,12 +411,12 @@ EXCEPTION
     WHEN OTHERS THEN
         ROLLBACK;
         RAISE;
-END select_course_info;
+END procCourseInfo;
 
 
 /
 BEGIN
-    select_course_info('AWS 클라우드와 Elasticsearch를 활용한 Java Full-Stack 과정(B)');
+    procCourseInfo('AWS 클라우드와 Elasticsearch를 활용한 Java Full-Stack 과정(B)');
 END;
 
 
@@ -424,7 +424,7 @@ END;
 
 -- 2. 특정 인원
 
-CREATE OR REPLACE PROCEDURE select_trainee_attendance(
+CREATE OR REPLACE PROCEDURE procTraineeAttendanceInfo(
     p_name IN vwtrainees.t_name%TYPE
 ) IS
     CURSOR c_attendance IS
@@ -448,17 +448,17 @@ EXCEPTION
     WHEN OTHERS THEN
         ROLLBACK;
         RAISE;
-END select_trainee_attendance;
+END procTraineeAttendanceInfo;
 /
 
 BEGIN
-    select_trainee_attendance('제류혁');
+    procTraineeAttendanceInfo('제류혁');
 END;
 /
 
 
 -- b-9
-CREATE OR REPLACE PROCEDURE select_curriculum_evaluation IS
+CREATE OR REPLACE PROCEDURE procCurriculumEvaluation IS
     CURSOR c_evaluation IS
         SELECT t.name, ce.grade, ce.content 
         FROM tblcurriculumevaluation ce
@@ -481,17 +481,17 @@ EXCEPTION
     WHEN OTHERS THEN
         ROLLBACK;
         RAISE;
-END select_curriculum_evaluation;
+END procCurriculumEvaluation;
 /
 BEGIN
-    select_curriculum_evaluation;
+    procCurriculumEvaluation;
 END;
 /
 
 -- b-10
 
 --교육 희망자 정보 조회 
-CREATE OR REPLACE PROCEDURE select_trainee_schedule IS
+CREATE OR REPLACE PROCEDURE procTraineeScheduleInfo IS
     CURSOR c_schedule IS
         SELECT t.name, t.id, t.ssn, t.tel 
         FROM tbltrainees t
@@ -511,15 +511,15 @@ EXCEPTION
     WHEN OTHERS THEN
         ROLLBACK;
         RAISE;
-END select_trainee_schedule;
+END procTraineeScheduleInfo;
 /
 BEGIN
-    select_trainee_schedule;
+    procTraineeScheduleInfo;
 END;
 /
 -- 합격자 불합격자 구분
 
-CREATE OR REPLACE PROCEDURE select_trainee_results IS
+CREATE OR REPLACE PROCEDURE procTraineeResultsInfo IS
     CURSOR c_results IS
         SELECT t.name, r.status 
         FROM tbltrainees t
@@ -541,16 +541,16 @@ EXCEPTION
     WHEN OTHERS THEN
         ROLLBACK;
         RAISE;
-END select_trainee_results;
+END procTraineeResultsInfo;
 /
 BEGIN
-    select_trainee_results;
+    procTraineeResultsInfo;
 END;
 /
 
 -- b-11 
 --관리자가 교재 정보 추가하는 기능
-CREATE OR REPLACE PROCEDURE insert_textbook(
+CREATE OR REPLACE PROCEDURE procAddTextbook(
     p_seq_textbook IN tblTextbook.seq_textbook%TYPE,
     p_name IN tblTextbook.name%TYPE,
     p_publisher IN tblTextbook.publisher%TYPE
@@ -564,16 +564,16 @@ EXCEPTION
         ROLLBACK;
         DBMS_OUTPUT.PUT_LINE('교재 정보 추가에 실패하였습니다.');
         RAISE;
-END insert_textbook;
+END procAddTextbook;
 /
 BEGIN
-    insert_textbook(20, 'OpenCV-Python으로 배우는 영상처리 및 응용', '생능');
+    procAddTextbook(20, 'OpenCV-Python으로 배우는 영상처리 및 응용', '생능');
 END;
 /
 
 -- 관리자가 교재 정보 수정 
 /
-CREATE OR REPLACE PROCEDURE update_textbook_publisher(
+CREATE OR REPLACE PROCEDURE procUpdateTextbookPublisher(
     p_new_publisher IN tblTextbook.publisher%TYPE,
     p_name IN tblTextbook.name%TYPE
 ) AS
@@ -592,16 +592,16 @@ EXCEPTION
         ROLLBACK;
         DBMS_OUTPUT.PUT_LINE('교재 정보 업데이트에 실패하였습니다.');
         RAISE;
-END update_textbook_publisher;
+END procUpdateTextbookPublisher;
 /
 BEGIN
-    update_textbook_publisher('에이콘', 'OpenCV-Python으로 배우는 영상처리 및 응용');
+    procUpdateTextbookPublisher('에이콘', 'OpenCV-Python으로 배우는 영상처리 및 응용');
 END;
 
 
 -- 관리자가 교재 정보 삭제 
 /
-CREATE OR REPLACE PROCEDURE delete_textbook(
+CREATE OR REPLACE PROCEDURE procDeleteTextbook(
     p_name IN tblTextbook.name%TYPE
 ) AS
 BEGIN
@@ -617,10 +617,10 @@ EXCEPTION
         ROLLBACK;
         DBMS_OUTPUT.PUT_LINE('교재 정보 삭제에 실패하였습니다.');
         RAISE;
-END delete_textbook;
+END procDeleteTextbook;
 /
 BEGIN
-    delete_textbook('OpenCV-Python으로 배우는 영상처리 및 응용');
+    procDeleteTextbook('OpenCV-Python으로 배우는 영상처리 및 응용');
 END;
 /
 
@@ -628,7 +628,7 @@ END;
 
 -- 성적조회
     /
-CREATE OR REPLACE PROCEDURE select_trainee_info(
+CREATE OR REPLACE PROCEDURE procTraineeInfo(
     p_name IN vwtrainees.t_name%TYPE
 ) IS
     CURSOR c_info IS
@@ -653,11 +653,11 @@ EXCEPTION
     WHEN OTHERS THEN
         ROLLBACK;
         RAISE;
-END select_trainee_info;
+END procTraineeInfo;
 /
 
 BEGIN
-    select_trainee_info('모백양');
+    procTraineeInfo('모백양');
 END;
 /
 
@@ -666,7 +666,7 @@ END;
 
 --출석 기록
 /
-CREATE OR REPLACE PROCEDURE select_attendance_info IS
+CREATE OR REPLACE PROCEDURE procAttendanceInfo IS
     CURSOR c_attendance IS
         SELECT t.name, ad.situation, a.day, COUNT(
             CASE 
@@ -694,10 +694,10 @@ EXCEPTION
     WHEN OTHERS THEN
         ROLLBACK;
         RAISE;
-END select_attendance_info;
+END procAttendanceInfo;
 /
 BEGIN
-    select_attendance_info;
+    procAttendanceInfo;
 END;
 /
 
@@ -710,7 +710,7 @@ END;
 --교사 평가 (수료 학생만 가능) 
 
 /
-CREATE OR REPLACE PROCEDURE insert_curriculum_evaluation(
+CREATE OR REPLACE PROCEDURE procAddCurriculumEvaluation(
     p_seq_curriculum IN tblCurriculumEvaluation.seq_opencurriculum%TYPE,
     p_seq_opencurriculum IN tblCurriculumEvaluation.seq_opencurriculum%TYPE,
     p_seq_trainee IN tblCurriculumEvaluation.seq_traineelist%TYPE,
@@ -738,17 +738,17 @@ EXCEPTION
         ROLLBACK;
         DBMS_OUTPUT.PUT_LINE('교육 평가 정보 추가에 실패하였습니다.');
         RAISE;
-END insert_curriculum_evaluation;
+END procAddCurriculumEvaluation;
 
 /
 BEGIN
-    insert_curriculum_evaluation(1, 1, 1, 5, '설명을 자세하게 해주신다.');
+    procAddCurriculumEvaluation(1, 1, 1, 5, '설명을 자세하게 해주신다.');
 END;
 /
 
 --D-4 
 --교사 추천 도서 조회 
-CREATE OR REPLACE PROCEDURE select_textbook_info(p_teacher_name IN VARCHAR2) IS
+CREATE OR REPLACE PROCEDURE procTextbookInfo(p_teacher_name IN VARCHAR2) IS
     CURSOR c_textbook IS
         SELECT ta.name, rt.grade, tb.name AS textbook_name
         FROM tblRecommendTextbook rt
@@ -772,11 +772,11 @@ EXCEPTION
     WHEN OTHERS THEN
         ROLLBACK;
         RAISE;
-END select_textbook_info;
+END procTextbookInfo;
 
 /
 BEGIN
-    select_textbook_info('김민곤');
+    procTextbookInfo('김민곤');
 END;
 /
    
