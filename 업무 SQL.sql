@@ -838,9 +838,74 @@ from tblCurriculumEvaluation ce
 
 
 --c-1 
-
+select distinct
+tr.name as 교육생이름,
+c.name as 과정명,
+s.name as 과목명,
+os.startdate as 과목시작일,
+os.enddate as 과목종료일,
+r.name as 강의실명
+from tblTrainees tr
+    inner join tblTraineeList tl
+        on tr.seq_trainee = tl.seq_trainee
+            inner join tblOpenCurriculum oc
+                on oc.seq_openCurriculum = tl.seq_openCurriculum
+                    inner join tblCurriculum c
+                        on c.seq_curriculum = oc.seq_curriculum
+                            inner join tblroom r
+                                on r.seq_room = oc.seq_room
+                                    inner join tblOpenSubjectList os
+                                        on  oc.seq_openCurriculum = os.seq_openCurriculum
+                                            inner join tblSubjectList sl
+                                                on sl.seq_subjectList = os.seq_subjectList
+                                                    inner join tblsubject s
+                                                        on s.seq_subject = sl.seq_subject
+                                                            where tr.name = '지엄홍';
+                                                           
+                
+                       
+select distinct
+tr.name as 교육생이름,
+c.name as 과정명,
+s.name as 과목명,
+os.startdate as 과목시작일,
+os.enddate as 과목종료일,
+r.name as 강의실명,
+tif.writtenDate as 필기날짜,
+tif.practicalDate as 실기 날짜
+from tblTrainees tr
+    inner join tblTraineeList tl
+        on tr.seq_trainee = tl.seq_trainee
+            inner join tblOpenCurriculum oc
+                on oc.seq_openCurriculum = tl.seq_openCurriculum
+                    inner join tblCurriculum c
+                        on c.seq_curriculum = oc.seq_curriculum
+                            inner join tblroom r
+                                on r.seq_room = oc.seq_room
+                                    inner join tblOpenSubjectList os
+                                        on  oc.seq_openCurriculum = os.seq_openCurriculum
+                                            inner join tblSubjectList sl
+                                                on sl.seq_subjectList = os.seq_subjectList
+                                                    inner join tblsubject s
+                                                        on s.seq_subject = sl.seq_subject
+                                                            inner join tblExamPaper ep
+                                                                on s.seq_subject = ep.seq_subject
+                                                                    inner join tblQuestion q
+                                                                        on q.seq_question = ep.seq_question
+                                                                            inner join tblTestInfo tif
+                                                                                on os.seq_openSubjectList = tif.seq_openSubjectList;
+                                                                                
 --c-5
-
+--교사가 자신의 강의평가를 조회 할 수 있다.
+select
+te.grade as 점수,
+te.content as 평가내용,
+c.name as 과정명
+from  tblTeacherEvaluation te
+    inner join tblOpenCurriculum oc
+        on te.seq_opencurriculum = oc.seq_opencurriculum
+            inner join tblCurriculum c
+                on c.seq_curriculum = oc.seq_curriculum;
 -- D-1
 -- 성적조회
 
