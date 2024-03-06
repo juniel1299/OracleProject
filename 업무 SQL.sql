@@ -479,15 +479,27 @@ delete from tblEquipment where seq_equipment = 1;
 --b-17
 
 --1. 수료생의 출결 현황 조회
-select * from vwtrainees;
 select t_name, a_day, situation 
 from vwtrainees where a_day>(sysdate-31) and a_day<=sysdate;
 
---2. 교육생 계좌 정보 조회와 훈련지원금 계산
-select t_name, bank, account, count(*)*10000*2 as 훈련지원금
+--2. 교육생 계좌 정보 조회와 훈련장려금 계산
+select distinct t_name, bank, account,
+    case
+        when 출석여부 = -1 and count(출석여부) >= 4 then 0
+        when 출석여부 = 2 and count(출석여부) < 3 then 0
+        when 출석여부 = 1 and count(출석여부) > 3 then 200000-10000
+        else 200000
+    end as 훈련장려금
+from
+(select t_name, bank, account,
+    case
+        when situation = '정상' then 2
+        when situation = '결석' then -1
+        else 1
+    end as 출석여부
 from vwtrainees 
-    where a_day>(sysdate-31) and a_day<=sysdate
-        group by t_name, bank, account;
+    where a_day>(sysdate-31) and a_day<=sysdate)
+        group by t_name, bank, account,출석여부;
 
 -- 혜정
 --c-2 배점 입출력
