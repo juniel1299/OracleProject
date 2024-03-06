@@ -79,3 +79,80 @@ update tblTeacher set tel = '01055554444'
 delete from tblTeacher
 	where seq_teacher = 1;
     
+/
+
+
+
+
+
+--교육생 이름으로 성적 검색 프로시저
+CREATE OR REPLACE PROCEDURE proctg(
+    ptname VARCHAR2
+)
+IS
+    vt_name VARCHAR2(500);
+    vs_name VARCHAR2(500);
+    vosl_startdate DATE;
+    vosl_enddate DATE;
+    vg_writtenDate DATE;
+    vg_practicalDate DATE;
+    vg_writtenGrade NUMBER;
+    vg_practicalGrade NUMBER;
+    vg_attendanceGrade NUMBER;
+
+    CURSOR vcursor IS
+        SELECT DISTINCT
+            t.name AS 교육생이름,
+            g.s_name AS 과목명,
+            osl.startdate AS 과목시작일,
+            osl.enddate AS 과목종료일,
+            g.writtenDate AS 필기날짜,
+            g.practicalDate AS 실기날짜,
+            g.writtenGrade AS 필기점수,
+            g.practicalGrade AS 실기점수,
+            g.attendanceGrade AS 출결점수
+        FROM
+            vwgrades g
+            INNER JOIN tbltraineelist tl ON g.seq_traineelist = tl.seq_traineelist
+            INNER JOIN tbltrainees t ON tl.seq_trainee = t.seq_trainee
+            INNER JOIN tblteacher tc ON g.seq_teacher = tc.seq_teacher
+            INNER JOIN tblopensubjectlist osl ON g.seq_opensubjectlist = osl.seq_opensubjectlist
+            INNER JOIN tbltextbook b ON osl.seq_textbook = b.seq_textbook
+            INNER JOIN tblopencurriculum oc ON g.seq_opencurriculum = oc.seq_opencurriculum
+            INNER JOIN tblroom r ON oc.seq_room = r.seq_room
+            INNER JOIN tblexampaper ep ON g.seq_subject = ep.seq_subject
+            INNER JOIN tblquestion q ON ep.seq_question = q.seq_question
+        WHERE
+            t.name = ptname;
+
+BEGIN
+    OPEN vcursor;
+    LOOP
+        FETCH vcursor INTO vt_name, vs_name, vosl_startdate, vosl_enddate, vg_writtenDate, vg_practicalDate, vg_writtenGrade, vg_practicalGrade, vg_attendanceGrade;
+        EXIT WHEN vcursor%NOTFOUND;
+        DBMS_OUTPUT.PUT_LINE('수강생이름: ' || vt_name || '  과목명: ' || vs_name || '  과목시작일: ' || vosl_startdate || ' 과목종료일: ' || vosl_enddate ||
+                             ' 필기날짜: ' || vg_writtenDate || ' 실기날짜: ' || vg_practicalDate || ' 필기점수: ' || vg_writtenGrade || ' 실기점수: ' || vg_practicalGrade ||
+                             '출결점수: ' || vg_attendanceGrade);
+    END LOOP;
+    CLOSE vcursor;
+END proctg;
+/
+begin
+proctg('나백전');
+end;
+/
+begin
+proctg('곤문권');
+end;
+/
+
+
+
+
+
+
+
+
+
+
+    

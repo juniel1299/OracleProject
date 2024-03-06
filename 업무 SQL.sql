@@ -838,7 +838,99 @@ from tblCurriculumEvaluation ce
 
 
 --c-1 
-select distinct
+select distinct 
+s.seq_subject as 과목번호,
+s.name as 과목명,
+os.startdate as 과목시작일,
+os.enddate as 과목종료일,
+tb.name as 교재명
+from tblTeacher t
+    inner join tblOpenSubjectList os
+        on t.seq_teacher = os.seq_teacher
+            inner join tblOpenCurriculum oc
+                on oc.seq_openCurriculum = os.seq_openCurriculum
+                    inner join tblCurriculumProgress cp
+                        on cp.seq_curriculumProgress = oc.seq_curriculumProgress
+                            inner join tblTraineeList tl
+                                on oc.seq_openCurriculum = tl.seq_openCurriculum
+                                    inner join tblTrainees tr
+                                        on tr.seq_trainee = tl.seq_trainee
+                                            inner join tblsubjectlist sl
+                                                on sl.seq_subjectList = os.seq_subjectList
+                                                 inner join tblsubject s 
+                                                    on s.seq_subject = sl.seq_subject
+                                                        inner join tblRoom r
+                                                            on r.seq_room = oc.seq_room
+                                                                inner join tblCurriculum c 
+                                                                    on c.seq_Curriculum = oc.seq_Curriculum
+                                                                     inner join tblCoursePeriod cp
+                                                                        on cp.seq_coursePeriod = c.seq_coursePeriod
+                                                                            inner join tblTextBook tb 
+                                                                                on tb.seq_textbook = os.seq_textbook
+                                                                where t.name = '김민곤'
+                                                                    order by s.seq_subject asc;
+                                                           
+select distinct 
+c.name as 과정명,
+cp.status as 과정상태,
+oc.startDate as 시작일,
+oc.endDate as 종료일,
+r.name as 강의실,
+r.capacity as 등록인원,
+tr.name as 교육생이름,
+tr.tel as 교육생전화번호,
+tr.registrationDate as 교육생등록일,
+tl.status as 교육생상태
+from tblTeacher t
+    inner join tblOpenSubjectList os
+        on t.seq_teacher = os.seq_teacher
+            inner join tblOpenCurriculum oc
+                on oc.seq_openCurriculum = os.seq_openCurriculum
+                    inner join tblCurriculumProgress cp
+                        on cp.seq_curriculumProgress = oc.seq_curriculumProgress
+                            inner join tblTraineeList tl
+                                on oc.seq_openCurriculum = tl.seq_openCurriculum
+                                    inner join tblTrainees tr
+                                        on tr.seq_trainee = tl.seq_trainee
+                                            inner join tblsubjectlist sl
+                                                on sl.seq_subjectList = os.seq_subjectList
+                                                 inner join tblsubject s 
+                                                    on s.seq_subject = sl.seq_subject
+                                                        inner join tblRoom r
+                                                            on r.seq_room = oc.seq_room
+                                                                inner join tblCurriculum c 
+                                                                    on c.seq_Curriculum = oc.seq_Curriculum
+                                                                     inner join tblCoursePeriod cp
+                                                                        on cp.seq_coursePeriod = c.seq_coursePeriod
+                                                                            inner join tblTextBook tb 
+                                                                                on tb.seq_textbook = os.seq_textbook
+                                                                where t.name = '김민곤'
+                                                                    ;                
+                       
+                                                                                
+--c-5
+--교사가 자신의 강의평가를 조회 할 수 있다.
+
+select distinct 
+t.name as 강사명,
+ce.grade as 점수,
+ce.content as 내용
+from tblCurriculumEvaluation ce
+    inner join tblTraineeList tl
+        on tl.seq_traineeList = ce.seq_traineeList
+            inner join tblOpenCurriculum oc 
+                on oc.seq_openCurriculum = tl.seq_openCurriculum
+                    inner join tblOpenSubjectList sl 
+                        on oc.seq_openCurriculum = sl.seq_openCurriculum
+                            inner join tblTeacher t 
+                                on t.seq_teacher = sl.seq_teacher
+                                    where t.name = '김민곤';
+
+
+
+-- D-1
+-- 성적조회
+select distinct 
 tr.name as 교육생이름,
 c.name as 과정명,
 s.name as 과목명,
@@ -852,62 +944,60 @@ from tblTrainees tr
                 on oc.seq_openCurriculum = tl.seq_openCurriculum
                     inner join tblCurriculum c
                         on c.seq_curriculum = oc.seq_curriculum
-                            inner join tblroom r
+                            inner join tblroom r 
                                 on r.seq_room = oc.seq_room
                                     inner join tblOpenSubjectList os
                                         on  oc.seq_openCurriculum = os.seq_openCurriculum
-                                            inner join tblSubjectList sl
+                                            inner join tblSubjectList sl 
                                                 on sl.seq_subjectList = os.seq_subjectList
                                                     inner join tblsubject s
                                                         on s.seq_subject = sl.seq_subject
                                                             where tr.name = '지엄홍';
-                                                           
-                
-                       
-select distinct
-tr.name as 교육생이름,
-c.name as 과정명,
-s.name as 과목명,
-os.startdate as 과목시작일,
-os.enddate as 과목종료일,
+
+select * from tblquestion;
+select * from vwgrades;
+
+select distinct 
+t.name as 교육생이름,
+tc.name as 강사명,
+g.s_name as 과목명,
+g.seq_subject as 과목번호,
+b.name as 교재명,
+osl.startdate as 과목시작일,
+osl.enddate as 과목종료일,
 r.name as 강의실명,
-tif.writtenDate as 필기날짜,
-tif.practicalDate as 실기 날짜
-from tblTrainees tr
-    inner join tblTraineeList tl
-        on tr.seq_trainee = tl.seq_trainee
-            inner join tblOpenCurriculum oc
-                on oc.seq_openCurriculum = tl.seq_openCurriculum
-                    inner join tblCurriculum c
-                        on c.seq_curriculum = oc.seq_curriculum
-                            inner join tblroom r
-                                on r.seq_room = oc.seq_room
-                                    inner join tblOpenSubjectList os
-                                        on  oc.seq_openCurriculum = os.seq_openCurriculum
-                                            inner join tblSubjectList sl
-                                                on sl.seq_subjectList = os.seq_subjectList
-                                                    inner join tblsubject s
-                                                        on s.seq_subject = sl.seq_subject
-                                                            inner join tblExamPaper ep
-                                                                on s.seq_subject = ep.seq_subject
-                                                                    inner join tblQuestion q
-                                                                        on q.seq_question = ep.seq_question
-                                                                            inner join tblTestInfo tif
-                                                                                on os.seq_openSubjectList = tif.seq_openSubjectList;
-                                                                                
---c-5
---교사가 자신의 강의평가를 조회 할 수 있다.
-select
-te.grade as 점수,
-te.content as 평가내용,
-c.name as 과정명
-from  tblTeacherEvaluation te
-    inner join tblOpenCurriculum oc
-        on te.seq_opencurriculum = oc.seq_opencurriculum
-            inner join tblCurriculum c
-                on c.seq_curriculum = oc.seq_curriculum;
--- D-1
--- 성적조회
+g.writtenDate as 필기날짜,
+g.practicalDate as 실기날짜,
+g.writtenPoints as 필기배점,
+g.practicalPoints as 실기배점,
+g.attendancePoints as 출결배점,
+g.writtenGrade as 필기점수,
+g.practicalGrade as 실기점수,
+g.attendanceGrade as 출결점수,
+q.question as 문제
+
+from vwgrades g
+    inner join tbltraineelist tl
+        on g.seq_traineelist = tl.seq_traineelist
+            inner join tbltrainees t
+                on tl.seq_trainee = t.seq_trainee
+                    inner join tblteacher tc
+                        on g.seq_teacher = tc.seq_teacher
+                            inner join tblopensubjectlist osl
+                                on g.seq_opensubjectlist = osl.seq_opensubjectlist
+                                    inner join tbltextbook b
+                                        on osl.seq_textbook = b.seq_textbook
+                                            inner join tblopencurriculum oc
+                                                on g.seq_opencurriculum = oc.seq_opencurriculum
+                                                    inner join tblroom r
+                                                        on oc.seq_room = r.seq_room
+                                                            inner join tblexampaper ep
+                                                                on g.seq_subject = ep.seq_subject
+                                                                    inner join tblquestion q
+                                                                        on ep.seq_question = q.seq_question
+                                                                            
+                                                                            order by 강사명;
+
 
 select distinct vt.t_name,vt.t_id,vt.t_ssn,vt.t_tel,vc.s_name,vc.osl_startdate,vc.osl_enddate from vwtrainees vt
 inner join vwgrades vg
