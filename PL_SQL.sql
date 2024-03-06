@@ -5,7 +5,7 @@
 set serveroutput on;
 select * from tblAvailableSubjectList;
 rollback;
---2.2 특정 교사 정보 출력   
+--특정 교사 정보 출력   
 create or replace procedure procTeacherInfo (
     pname in varchar2  
 )
@@ -62,7 +62,7 @@ begin
 end;
 /
 
---2.3 강의 과목별로 가능한 교사 정보 출력
+--입력한 과목을 강의 가능한 교사 정보 출력 > b-5 한번에 해결
 create or replace procedure procTeacherWhoCan(
     pname in varchar2
 )
@@ -96,3 +96,59 @@ end;
 /
 
 --b-4
+/* 특정 개설 과정 선택 */
+--개설 교육 과정 번호를 입력하여 개설 과목 정보 확인
+create or replace procedure procCurriDetail (
+    pnum in number
+)
+is
+    vSName tblSubject.name%type;
+    vsStart tblOpensubjectlist.startdate%type;
+    vsEnd tblOpensubjectlist.enddate%type;
+    vtName tbltrainees.name%type;
+    vTel varchar2(15);
+    vRegdate date;
+    vStat varchar2(30);
+    
+    cursor vcursor is
+    
+    select
+    v.s_name as "과목명",
+    v.osl_startdate as "과목시작일",
+    v.osl_enddate as "과목종료일",
+    t.name as "학생명",
+    t.tel as "전화번호",
+    t.registrationDate as "등록일",
+    (case
+        when tl.status is not null then tl.status
+        when v.seq_curriculumprogress = 1 then '강의 진행 예정'
+        when v.seq_curriculumprogress = 2 then '강의 진행 중'
+    end) as "수료 여부"
+    from vwcurriculum v
+    left outer join tbltraineelist tl
+        on tl.seq_opencurriculum = v.seq_opencurriculum
+            inner join tbltrainees t
+                on t.seq_trainee = tl.seq_trainee
+                    where v.seq_opencurriculum = pnum;
+begin
+    open vcursor;
+    loop
+        fetch vcursor into vSName, vsStart, vsEnd, vtName, vTel, vRegdate, vStat;
+        exit when vcursor%notfound;
+        dbms_output.put_line('----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------');
+        dbms_output.put_line('과목명: ' || vSName || ' | 과목시작일: ' || vsStart || ' | 과목종료일: ' || vsEnd || ' | 학생명: ' || vtName || ' | 전화번호: ' || vTel || ' | 등록일: ' || vRegdate || ' | 수료여부: ' || vStat);
+        dbms_output.put_line('----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------');
+    end loop;
+    close vcursor;
+end procCurriDetail;
+/
+begin
+    procCurriDetail(1); --개설교육과정 번호    
+end;
+/
+
+--특정 개설 과정이 수료한 경우 등록된 교육생 전체에 대해서 수료날짜를 지정할 수 있어야 한다. 단, 중도 탈락자는 제외한다.
+	
+select * from vwcurriculum;
+select * from tblopencurriculum;
+select * from tblcurriculumprogress;
