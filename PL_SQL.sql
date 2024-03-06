@@ -1,10 +1,8 @@
 --PL/SQL
 
 --b-3
-
 set serveroutput on;
-select * from tblAvailableSubjectList;
-rollback;
+
 --특정 교사 정보 출력   
 create or replace procedure procTeacherInfo (
     pname in varchar2  
@@ -146,9 +144,3 @@ begin
     procCurriDetail(1); --개설교육과정 번호    
 end;
 /
-
---특정 개설 과정이 수료한 경우 등록된 교육생 전체에 대해서 수료날짜를 지정할 수 있어야 한다. 단, 중도 탈락자는 제외한다.
-	
-select * from vwcurriculum;
-select * from tblopencurriculum;
-select * from tblcurriculumprogress;
