@@ -492,7 +492,6 @@ from vwtrainees
 -- 혜정
 --c-2 배점 입출력
 
--- 강의를 마친 과목에 대한 성적 처리이기 때문에 pl/sql 사용해야할 듯
 -- 1. 교사가 강의를 마친 과목에 대한 성적 처리를 위해서 배점 입출력을 할 수 있어야 한다.
 -- 1.1. 배점 입력
 INSERT INTO tblTestInfo
@@ -500,15 +499,18 @@ VALUES (1, 1, TO_DATE('2023-10-03', 'YYYY-MM-DD'), TO_DATE('2023-10-04', 'YYYY-M
 
 -- 1.2. 배점 출력
 select 
-seq_openSubjectList "과목 목록 번호",
-writtenPoints "필기 배점",
-practicalPoints "실기 배점",
-attendancePoints "출결 배점"
-from tblTestInfo;
+ti.seq_openSubjectList "과목 목록 번호",
+ti.writtenPoints "필기 배점",
+ti.practicalPoints "실기 배점",
+ti.attendancePoints "출결 배점"
+from tblTestInfo ti
+    inner join tblOpenSubjectList osl
+        on ti.seq_openSubjectList = osl.seq_openSubjectList
+            where osl.endDate < sysdate;
 
 
 -- 특정 과목이기 때문에 pl/sql 필요
---2. 교사는 자신이 강의를 마친 과목의 목록 중에서 특정 과목을 선택하고 해당 과목의 배점 정보를 출결, 필기, 실기로 구분해서 등록할 수 있어야 한다. 시험 날짜, 시험 문제를 추가할 수 있어야 한다.
+-- 2. 교사는 자신이 강의를 마친 과목의 목록 중에서 특정 과목을 선택하고 해당 과목의 배점 정보를 출결, 필기, 실기로 구분해서 등록할 수 있어야 한다. 시험 날짜, 시험 문제를 추가할 수 있어야 한다.
 -- 2.1. 특정 과목 선택
 insert into tblTestInfo(seq_testInfo, seq_openSubjectList) 
 values (1, 1);
@@ -529,8 +531,10 @@ set attendancegrade = 20
 where seq_openSubjectList = 1;
 
 -- 2.5. 시험 날짜 추가
-INSERT INTO tblTestInfo
-VALUES (1, 1, TO_DATE('2023-10-03', 'YYYY-MM-DD'), TO_DATE('2023-10-04', 'YYYY-MM-DD'));
+update tblTestInfo
+set writtenDate = TO_DATE('2023-10-03', 'YYYY-MM-DD'), 
+    practicalDate = TO_DATE('2023-10-04', 'YYYY-MM-DD')
+where seq_openSubjectList = 1;
 
 
 -- 2.6. 시험 문제 추가
