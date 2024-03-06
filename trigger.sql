@@ -26,12 +26,13 @@ END;
 --6번
 
 /
+
 CREATE OR REPLACE TRIGGER trgCheckPoints
 BEFORE INSERT ON tblTestInfo
 FOR EACH ROW
 BEGIN
-    IF :NEW.writtenpoints >= 30 THEN
-        RAISE_APPLICATION_ERROR(-20001, '최대 30까지 입력 가능합니다.');
+    IF :NEW.writtenpoints >= 40 THEN
+        RAISE_APPLICATION_ERROR(-20001, '최대 40까지 입력 가능합니다.');
     END IF;
     
     IF :NEW.practicalpoints >= 40 THEN
@@ -41,6 +42,10 @@ BEGIN
     IF :NEW.attendancepoints >= 30 THEN
         RAISE_APPLICATION_ERROR(-20003, '최대 30까지 입력 가능합니다.');
     END IF;
+    
+    IF :NEW.attenattendancepoints + NEW.practicalpoints + NEW.writtenpoints > 100 then
+        RAISE_APPLICATION_ERROR(-20004, '점수의 합은 100입니다.');
+    
 END;
 /
 select * from tbltrainees;
