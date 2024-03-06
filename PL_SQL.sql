@@ -265,14 +265,48 @@ BEGIN
 END;
 
 /
+-- b-7
+-- 과목별
+CREATE OR REPLACE PROCEDURE select_curriculum_by_subject(
+    p_subject IN vwcurriculum.s_name%TYPE
+) IS
+    CURSOR c_curriculum IS
+        SELECT vc.c_name,vt.t_name,vc.s_name,vc.period,vc.r_name,vt.t_ssn,vg.writtengrade,vg.practicalgrade 
+        FROM vwcurriculum vc
+        INNER JOIN vwtrainees vt ON vt.seq_opencurriculum = vc.seq_opencurriculum
+        INNER JOIN vwgrades vg ON vg.seq_traineelist = vt.seq_traineelist
+        WHERE vc.s_name = p_subject
+        GROUP BY vc.c_name,vt.t_name,vc.s_name,vc.period,vc.r_name,vt.t_ssn,vg.writtengrade,vg.practicalgrade;
+    v_curriculum c_curriculum%ROWTYPE;
+BEGIN
+    OPEN c_curriculum;
+    LOOP
+        FETCH c_curriculum INTO v_curriculum;
+        EXIT WHEN c_curriculum%NOTFOUND;
+        DBMS_OUTPUT.PUT_LINE('과정 이름: ' || v_curriculum.c_name || ', 교육생 이름: ' || v_curriculum.t_name || ', 주제: ' || v_curriculum.s_name || ', 기간: ' || v_curriculum.period || ', 강의실 이름: ' || v_curriculum.r_name || ', 주민등록번호: ' || v_curriculum.t_ssn || ', 필기 성적: ' || v_curriculum.writtengrade || ', 실기 성적: ' || v_curriculum.practicalgrade);
+    END LOOP;
+    CLOSE c_curriculum;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        DBMS_OUTPUT.PUT_LINE('해당 주제를 가진 과정 정보를 찾을 수 없습니다.');
+    WHEN OTHERS THEN
+        ROLLBACK;
+        RAISE;
+END select_curriculum_by_subject;
+/
+BEGIN
+    select_curriculum_by_subject('AWS');
+END;
+/
 
---b-7 
+
 -- 특정 개설 과정
 /
 CREATE OR REPLACE PROCEDURE select_grades_course(
     p_course IN vwcurriculum.c_name%TYPE
 ) IS
- CURSOR c_grades IS
+ 
+    CURSOR c_grades IS
         SELECT vt.t_name, vc.c_name, vc.s_name, t.name, vg.writtengrade, vg.practicalgrade
         FROM vwgrades vg
         INNER JOIN vwtrainees vt ON vt.seq_traineelist = vg.seq_traineelist
@@ -340,6 +374,8 @@ END select_trainee_info;
 BEGIN
     select_trainee_info('천유서');
 END;
+
+
 /
 
 -- b-8
