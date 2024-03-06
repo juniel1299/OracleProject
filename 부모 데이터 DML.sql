@@ -1278,568 +1278,643 @@ insert into tblQuestion
 values(
 140,' 데이터베이스 정규화(Database Normalization) 올바른것?','1');
 
-insert into tblQuestion
+insert into tblquestion
 values(
-141,'Java의 ''인터페이스(Interface)''의 역할은 무엇인가요?','클래스나 프로그램이 어떤 서비스를 제공하는지, 어떤 메서드를 호출할 수 있는지를 명시하는 계약 역할.');
+141,'AWS의 IAM(Identity and Access Management)에서 정책(Policy)이란 무엇이며 어떻게 작동하나요?','1');
+insert into tblquestion
+values(
+142,'AWS EC2 인스턴스와 Lambda 함수의 차이점은 무엇인가요?','2');
+insert into tblquestion
+values(
+143,'AWS S3 버킷의 버킷 정책(Bucket Policy)과 객체 ACL(Object ACL)의 차이점은 무엇인가요?','2');
+insert into tblquestion
+values(
+144,'AWS의 Auto Scaling이란 무엇이며 어떻게 사용되나요?','3');
+insert into tblquestion
+values(
+145,'AWS RDS와 DynamoDB의 주요 차이점은 무엇인가요?','4');
+insert into tblquestion
+values(
+146,'AWS Lambda 함수의 실행 시간 제한은 어떻게 작동하며 어떤 영향을 미치나요?','3');
+insert into tblquestion
+values(
+147,'AWS VPC(Virtual Private Cloud)에서 퍼블릭 서브넷과 프라이빗 서브넷의 차이는 무엇인가요?','1');
+insert into tblquestion
+values(
+148,'AWS CloudFormation이란 무엇이며 어떻게 사용되는가요?','5');
+insert into tblquestion
+values(
+149,'AWS Elastic Beanstalk과 AWS Lambda의 주요 차이점은 무엇인가요?','1');
+insert into tblquestion
+values(
+150,'AWS CloudWatch와 AWS CloudTrail의 주요 차이점은 무엇인가요?','2');
+
+
+
 
 insert into tblQuestion
 values(
-142,'Java에서 ''예외 처리(Exception Handling)''란 무엇이며, try-catch 문의 역할은 무엇인가요?','클래스나 프로그램이 어떤 서비스를 제공하는지, 어떤 메서드를 호출할 수 있는지를 명시하는 계약 역할.');
+151,'Java의 ''인터페이스(Interface)''의 역할은 무엇인가요?','클래스나 프로그램이 어떤 서비스를 제공하는지, 어떤 메서드를 호출할 수 있는지를 명시하는 계약 역할.');
 
 insert into tblQuestion
 values(
-143,'Java에서 ''예외 처리(Exception Handling)''란 무엇이며, try-catch 문의 역할은 무엇인가요?','프로그램 실행 중에 발생할 수 있는 예외 상황을 미리 예측하여 처리하는 것');
+152,'Java에서 ''예외 처리(Exception Handling)''란 무엇이며, try-catch 문의 역할은 무엇인가요?','클래스나 프로그램이 어떤 서비스를 제공하는지, 어떤 메서드를 호출할 수 있는지를 명시하는 계약 역할.');
 
 insert into tblQuestion
 values(
-144,'Java에서 ''제네릭(Generic)''이란 무엇인가요?',' 클래스 내부에서 사용할 데이터 타입을 외부에서 지정하는 기법.');
+153,'Java에서 ''예외 처리(Exception Handling)''란 무엇이며, try-catch 문의 역할은 무엇인가요?','프로그램 실행 중에 발생할 수 있는 예외 상황을 미리 예측하여 처리하는 것');
 
 insert into tblQuestion
 values(
-145,'Java에서 ''쓰레드(Thread)''의 개념과 사용법에 대해 설명해주세요.','Runnable 인터페이스를 구현하여 생성.');
+154,'Java에서 ''제네릭(Generic)''이란 무엇인가요?',' 클래스 내부에서 사용할 데이터 타입을 외부에서 지정하는 기법.');
 
 insert into tblQuestion
 values(
-146,'Java에서 ''자바 메모리 관리(Garbage Collection)''의 역할은 무엇인가요?','동적으로 할당된 메모리 영역 중 사용되지 않는 영역을 자동으로 회수하는 메모리 관리 기법.');
+155,'Java에서 ''쓰레드(Thread)''의 개념과 사용법에 대해 설명해주세요.','Runnable 인터페이스를 구현하여 생성.');
 
 insert into tblQuestion
 values(
-147,'Java에서 ''캡슐화(Encapsulation)''의 개념과 장점에 대해 설명해주세요.','객체의 속성과 행동을 하나로 묶고, 실제 구현 내용을 감추는 것. 코드의 안전성을 높이는 데 도움.');
+156,'Java에서 ''자바 메모리 관리(Garbage Collection)''의 역할은 무엇인가요?','동적으로 할당된 메모리 영역 중 사용되지 않는 영역을 자동으로 회수하는 메모리 관리 기법.');
 
 insert into tblQuestion
 values(
-148,' ''정적 메서드(Static Method)''와 ''정적 변수(Static Variable)''의 특징은 무엇인가요?','클래스에 속하며, 객체를 생성하지 않고 사용할 수 있는 메서드와 변수.');
+157,'Java에서 ''캡슐화(Encapsulation)''의 개념과 장점에 대해 설명해주세요.','객체의 속성과 행동을 하나로 묶고, 실제 구현 내용을 감추는 것. 코드의 안전성을 높이는 데 도움.');
 
 insert into tblQuestion
 values(
-149,' ''생성자(Constructor)''의 역할은 무엇인가요?','클래스의 인스턴스를 생성하고 초기화하는 역할.');
+158,' ''정적 메서드(Static Method)''와 ''정적 변수(Static Variable)''의 특징은 무엇인가요?','클래스에 속하며, 객체를 생성하지 않고 사용할 수 있는 메서드와 변수.');
 
 insert into tblQuestion
 values(
-150,'Java에서 ''오버로딩(Overloading)''과 ''오버라이딩(Overriding)''의 차이점은 무엇인가요?','오버로딩은 같은 이름의 메서드를 여러 개 정의하되, 매개변수의 타입이나 개수를 다르게 하는 것.');
+159,' ''생성자(Constructor)''의 역할은 무엇인가요?','클래스의 인스턴스를 생성하고 초기화하는 역할.');
 
 insert into tblQuestion
 values(
-151,'Oracle 데이터베이스에서 PL/SQL이란 무엇인가요?','Oracle 데이터베이스에서 사용하는 프로시저 언어');
+160,'Java에서 ''오버로딩(Overloading)''과 ''오버라이딩(Overriding)''의 차이점은 무엇인가요?','오버로딩은 같은 이름의 메서드를 여러 개 정의하되, 매개변수의 타입이나 개수를 다르게 하는 것.');
 
 insert into tblQuestion
 values(
-152,'Oracle에서 ''커밋(Commit)''의 역할은 무엇인가요?',' 데이터베이스에 트랜잭션의 변경 사항을 영구적으로 반영하는 작업.');
+161,'Oracle 데이터베이스에서 PL/SQL이란 무엇인가요?','Oracle 데이터베이스에서 사용하는 프로시저 언어');
 
 insert into tblQuestion
 values(
-153,'Oracle에서 ''롤백(Rollback)''의 역할은 무엇인가요?','트랜잭션의 작업을 취소하고 데이터베이스를 이전 상태로 되돌리는 작업.');
+162,'Oracle에서 ''커밋(Commit)''의 역할은 무엇인가요?',' 데이터베이스에 트랜잭션의 변경 사항을 영구적으로 반영하는 작업.');
 
 insert into tblQuestion
 values(
-154,'Oracle에서 ''시퀀스(Sequence)''의 역할은 무엇인가요?','일련번호를 자동으로 생성하는 객체.');
+163,'Oracle에서 ''롤백(Rollback)''의 역할은 무엇인가요?','트랜잭션의 작업을 취소하고 데이터베이스를 이전 상태로 되돌리는 작업.');
 
 insert into tblQuestion
 values(
-155,'Oracle에서 ''인덱스(Index)''의 역할은 무엇인가요?','데이터 검색 속도를 빠르게 하기 위한 데이터베이스 객체.');
+164,'Oracle에서 ''시퀀스(Sequence)''의 역할은 무엇인가요?','일련번호를 자동으로 생성하는 객체.');
 
 insert into tblQuestion
 values(
-156,'Oracle에서 ''뷰(View)''의 역할은 무엇인가요?','하나 이상의 테이블에서 얻은 결과를 하나의 테이블처럼 보여주는 가상 테이블.');
+165,'Oracle에서 ''인덱스(Index)''의 역할은 무엇인가요?','데이터 검색 속도를 빠르게 하기 위한 데이터베이스 객체.');
 
 insert into tblQuestion
 values(
-157,'Oracle에서 ''트리거(Trigger)''의 역할은 무엇인가요?','특정 이벤트 발생 시 자동으로 실행되는 프로시저.');
+166,'Oracle에서 ''뷰(View)''의 역할은 무엇인가요?','하나 이상의 테이블에서 얻은 결과를 하나의 테이블처럼 보여주는 가상 테이블.');
 
 insert into tblQuestion
 values(
-158,'Oracle에서 ''프로시저(Procedure)''와 ''함수(Function)''의 차이점은 무엇인가요?','프로시저는 특정 작업을 수행하지만 반환값이 없고, 함수는 특정 작업을 수행하고 결과값을 반환.');
+167,'Oracle에서 ''트리거(Trigger)''의 역할은 무엇인가요?','특정 이벤트 발생 시 자동으로 실행되는 프로시저.');
 
 insert into tblQuestion
 values(
-159,'Oracle에서 ''조인(Join)''의 역할은 무엇인가요?',' 두 개 이상의 테이블에서 관련 있는 데이터를 결합하여 조회하는 것.');
+168,'Oracle에서 ''프로시저(Procedure)''와 ''함수(Function)''의 차이점은 무엇인가요?','프로시저는 특정 작업을 수행하지만 반환값이 없고, 함수는 특정 작업을 수행하고 결과값을 반환.');
 
 insert into tblQuestion
 values(
-160,'Oracle에서 ''데이터베이스 정규화(Database Normalization)''의 목적은 무엇인가요?','데이터 중복을 최소화하고 데이터 무결성을 향상시키기 위한 과정.');
+169,'Oracle에서 ''조인(Join)''의 역할은 무엇인가요?',' 두 개 이상의 테이블에서 관련 있는 데이터를 결합하여 조회하는 것.');
 
 insert into tblQuestion
 values(
-161,'HTML이란 무엇인가요?','웹 페이지를 구조화하고 의미를 부여하는 마크업 언어.');
+170,'Oracle에서 ''데이터베이스 정규화(Database Normalization)''의 목적은 무엇인가요?','데이터 중복을 최소화하고 데이터 무결성을 향상시키기 위한 과정.');
 
 insert into tblQuestion
 values(
-162,'CSS의 역할은 무엇인가요?','웹 페이지의 디자인과 레이아웃을 담당하는 스타일시트 언어.');
+171,'HTML이란 무엇인가요?','웹 페이지를 구조화하고 의미를 부여하는 마크업 언어.');
 
 insert into tblQuestion
 values(
-163,'JavaScript의 역할은 무엇인가요?','웹 페이지에 동적인 요소를 추가하고 사용자와 상호작용하는 프로그래밍 언어.');
+172,'CSS의 역할은 무엇인가요?','웹 페이지의 디자인과 레이아웃을 담당하는 스타일시트 언어.');
 
 insert into tblQuestion
 values(
-164,'HTML에서 ''시맨틱 태그(Semantic Tag)''의 역할은 무엇인가요?','웹 페이지의 콘텐츠에 의미를 부여하여 검색 엔진과 개발자에게 정보를 제공.');
+173,'JavaScript의 역할은 무엇인가요?','웹 페이지에 동적인 요소를 추가하고 사용자와 상호작용하는 프로그래밍 언어.');
 
 insert into tblQuestion
 values(
-165,'CSS에서 ''선택자(Selector)''의 역할은 무엇인가요?','스타일을 적용할 HTML 요소를 선택하는 역할.');
+174,'HTML에서 ''시맨틱 태그(Semantic Tag)''의 역할은 무엇인가요?','웹 페이지의 콘텐츠에 의미를 부여하여 검색 엔진과 개발자에게 정보를 제공.');
 
 insert into tblQuestion
 values(
-166,'JavaScript에서 ''이벤트(Event)''의 역할은 무엇인가요?','사용자의 행동(클릭, 스크롤 등)에 반응하여 특정 코드를 실행.');
+175,'CSS에서 ''선택자(Selector)''의 역할은 무엇인가요?','스타일을 적용할 HTML 요소를 선택하는 역할.');
 
 insert into tblQuestion
 values(
-167,'HTML에서 ''Form'' 태그의 역할은 무엇인가요?','사용자의 데이터를 입력받아 서버로 전송하는 역할.');
+176,'JavaScript에서 ''이벤트(Event)''의 역할은 무엇인가요?','사용자의 행동(클릭, 스크롤 등)에 반응하여 특정 코드를 실행.');
 
 insert into tblQuestion
 values(
-168,'CSS에서 ''박스 모델(Box Model)''의 구성 요소는 무엇인가요?','콘텐츠, 패딩, 보더, 마진.');
+177,'HTML에서 ''Form'' 태그의 역할은 무엇인가요?','사용자의 데이터를 입력받아 서버로 전송하는 역할.');
 
 insert into tblQuestion
 values(
-169,'JavaScript에서 ''변수(Variable)''의 역할은 무엇인가요?','데이터를 저장하고 참조하는 역할.');
+178,'CSS에서 ''박스 모델(Box Model)''의 구성 요소는 무엇인가요?','콘텐츠, 패딩, 보더, 마진.');
 
 insert into tblQuestion
 values(
-170,'HTML, CSS, JavaScript 사이의 관계를 설명해주세요.','HTML은 웹 페이지의 구조를, CSS는 디자인과 레이아웃을, JavaScript는 동적인 요소와 상호작용을 담당.');
+179,'JavaScript에서 ''변수(Variable)''의 역할은 무엇인가요?','데이터를 저장하고 참조하는 역할.');
 
 insert into tblQuestion
 values(
-171,'JSP란 무엇인가요?','HTML 내에 자바 코드를 삽입하여 웹 페이지를 동적으로 생성하는 서버 사이드 스크립트 언어.');
+180,'HTML, CSS, JavaScript 사이의 관계를 설명해주세요.','HTML은 웹 페이지의 구조를, CSS는 디자인과 레이아웃을, JavaScript는 동적인 요소와 상호작용을 담당.');
 
 insert into tblQuestion
 values(
-172,'JSP에서 ''스크립트릿(Scriptlet)''의 역할은 무엇인가요?','HTML 내에 자바 코드를 삽입하여 웹 페이지를 동적으로 생성하는 서버 사이드 스크립트 언어.');
+181,'JSP란 무엇인가요?','HTML 내에 자바 코드를 삽입하여 웹 페이지를 동적으로 생성하는 서버 사이드 스크립트 언어.');
 
 insert into tblQuestion
 values(
-173,'JSP에서 ''디렉티브(Directive)''의 역할은 무엇인가요?','JSP 페이지가 웹 컨테이너에서 실행될 때 필요한 여러 가지 설정 정보를 제공.');
+182,'JSP에서 ''스크립트릿(Scriptlet)''의 역할은 무엇인가요?','HTML 내에 자바 코드를 삽입하여 웹 페이지를 동적으로 생성하는 서버 사이드 스크립트 언어.');
 
 insert into tblQuestion
 values(
-174,'JSP에서 ''액션태그(Action Tag)''의 역할은 무엇인가요?','JSP 페이지에서 특정 기능을 수행하는 컴포넌트를 사용하는 방법.');
+183,'JSP에서 ''디렉티브(Directive)''의 역할은 무엇인가요?','JSP 페이지가 웹 컨테이너에서 실행될 때 필요한 여러 가지 설정 정보를 제공.');
 
 insert into tblQuestion
 values(
-175,'JSP에서 ''EL(Expression Language의 역할은 무엇인가요?','JSP 페이지에서 데이터를 쉽 출력하거나, JSP 스코프에 저장된 객체에 접근하는 방법.');
+184,'JSP에서 ''액션태그(Action Tag)''의 역할은 무엇인가요?','JSP 페이지에서 특정 기능을 수행하는 컴포넌트를 사용하는 방법.');
 
 insert into tblQuestion
 values(
-176,'JSP에서 ''JSTL(JSP Standard Tag Library)''의 역할은엇인가요?','JSP 페이지에서 일반적으로 사용하는 기능들을 태그 형태로 제공하는 라이브러리.');
+185,'JSP에서 ''EL(Expression Language의 역할은 무엇인가요?','JSP 페이지에서 데이터를 쉽 출력하거나, JSP 스코프에 저장된 객체에 접근하는 방법.');
 
 insert into tblQuestion
 values(
-177,'JSP에서 ''포워드(Forward)''와 ''리다이렉트(Redirect)''의 차이점은 무엇인가요?','포워드는 요청을 다른 자원에 전달하며 주소는 변하지 않고, 리다이렉트는 새로운 요청을 만들어 서버에 보내며 주소가 변함.');
+186,'JSP에서 ''JSTL(JSP Standard Tag Library)''의 역할은엇인가요?','JSP 페이지에서 일반적으로 사용하는 기능들을 태그 형태로 제공하는 라이브러리.');
 
 insert into tblQuestion
 values(
-178,'JSP에서 ''세션(Session)''의 역할은 무엇인가요?','서버에 사용자 정보를 저장하여 사용자의 상태를 유지하는 방법.');
+187,'JSP에서 ''포워드(Forward)''와 ''리다이렉트(Redirect)''의 차이점은 무엇인가요?','포워드는 요청을 다른 자원에 전달하며 주소는 변하지 않고, 리다이렉트는 새로운 요청을 만들어 서버에 보내며 주소가 변함.');
 
 insert into tblQuestion
 values(
-179,'JSP와 Servlet의 차이점은 무엇인가요?','JSP는 HTML 코드 안에 자바 코드를 삽입하고 Servlet은 자바 코드 안에 HTML 코드를 삽입.');
+188,'JSP에서 ''세션(Session)''의 역할은 무엇인가요?','서버에 사용자 정보를 저장하여 사용자의 상태를 유지하는 방법.');
 
 insert into tblQuestion
 values(
-180,'JSP 페이지에서 ''스코프(Scope)''의 역할은 무엇인가요?','변수나 객체가 접근 가능한 범위와 생존 주기를 결정.');
+189,'JSP와 Servlet의 차이점은 무엇인가요?','JSP는 HTML 코드 안에 자바 코드를 삽입하고 Servlet은 자바 코드 안에 HTML 코드를 삽입.');
 
 insert into tblQuestion
 values(
-181,'Spring Framework란 무엇인가요?','자바 플랫폼을 위한 오픈 소스 어플리케이션 프레임워크.');
+190,'JSP 페이지에서 ''스코프(Scope)''의 역할은 무엇인가요?','변수나 객체가 접근 가능한 범위와 생존 주기를 결정.');
 
 insert into tblQuestion
 values(
-182,'Spring Framework에서 ''IoC(Inversion of Control)''의 역할은 무엇인가요?','객체의 생성과 생명주기를 관리하며 의존성을 관리하는 기능.');
+191,'Spring Framework란 무엇인가요?','자바 플랫폼을 위한 오픈 소스 어플리케이션 프레임워크.');
 
 insert into tblQuestion
 values(
-183,'Spring Framework에서 ''DI(Dependency Injection)''의 역할은 무엇인가요?','클래스 간의 의존 관계를 스프링 컨테이너가 자동으로 연결해주는 것.');
+192,'Spring Framework에서 ''IoC(Inversion of Control)''의 역할은 무엇인가요?','객체의 생성과 생명주기를 관리하며 의존성을 관리하는 기능.');
 
 insert into tblQuestion
 values(
-184,'Spring에서 ''AOP(Aspect Oriented Programming)''의 역할은 무엇인가요?','공통 기능을 재사용하고 비즈니스 로직에서 분리하여 관리하는 기능.');
+193,'Spring Framework에서 ''DI(Dependency Injection)''의 역할은 무엇인가요?','클래스 간의 의존 관계를 스프링 컨테이너가 자동으로 연결해주는 것.');
 
 insert into tblQuestion
 values(
-185,'Spring에서 ''MVC(Model-View-Controller)''의 역할은 무엇인가요?','어플리케이션을 Model, View, Controller 세 부분으로 나누어 관리하는 디자인 패턴.');
+194,'Spring에서 ''AOP(Aspect Oriented Programming)''의 역할은 무엇인가요?','공통 기능을 재사용하고 비즈니스 로직에서 분리하여 관리하는 기능.');
 
 insert into tblQuestion
 values(
-186,'Spring에서 ''트랜잭션(Transaction)''의 역할은 무엇인가요?','데이터의 일관성을 유지하며 여러 개의 작업을 하나의 작업 단위로 묶는 기능.
+195,'Spring에서 ''MVC(Model-View-Controller)''의 역할은 무엇인가요?','어플리케이션을 Model, View, Controller 세 부분으로 나누어 관리하는 디자인 패턴.');
+
+insert into tblQuestion
+values(
+196,'Spring에서 ''트랜잭션(Transaction)''의 역할은 무엇인가요?','데이터의 일관성을 유지하며 여러 개의 작업을 하나의 작업 단위로 묶는 기능.
 ');
 
 insert into tblQuestion
 values(
-187,'Spring에서 ''DAO(Data Access Object)''의 역할은 무엇인가요?',' 데이터베이스 연결과 CRUD 작업을 추상화하는 객체.');
+197,'Spring에서 ''DAO(Data Access Object)''의 역할은 무엇인가요?',' 데이터베이스 연결과 CRUD 작업을 추상화하는 객체.');
 
 insert into tblQuestion
 values(
-188,'Spring에서 ''DTO(Data Transfer Object)''의 역할은 무엇인가요?','계층 간 데이터 교환을 담당하는 객체.');
+198,'Spring에서 ''DTO(Data Transfer Object)''의 역할은 무엇인가요?','계층 간 데이터 교환을 담당하는 객체.');
 
 insert into tblQuestion
 values(
-189,'Spring에서 ''Bean''이란 무엇인가요?','스프링 IoC 컨테이너가 관리하는 객체.');
+199,'Spring에서 ''Bean''이란 무엇인가요?','스프링 IoC 컨테이너가 관리하는 객체.');
 
 insert into tblQuestion
 values(
-190,'Spring Boot란 무엇인가요?','스프링 기반의 어플리케이션을 빠르고 쉽게 개발할 수 있는 프레임워크.');
+200,'Spring Boot란 무엇인가요?','스프링 기반의 어플리케이션을 빠르고 쉽게 개발할 수 있는 프레임워크.');
 
 insert into tblQuestion
 values(
-191,'Python이란 무엇인가요?','간결하고 읽기 쉬운 구문을 가진 고수준 프로그래밍 언어.');
+201,'Python이란 무엇인가요?','간결하고 읽기 쉬운 구문을 가진 고수준 프로그래밍 언어.');
 
 insert into tblQuestion
 values(
-192,'Python에서 ''리스트(List)''의 역할은 무엇인가요?','여러 데이터를 순서대로 저장하고 관리하는 자료형.');
+202,'Python에서 ''리스트(List)''의 역할은 무엇인가요?','여러 데이터를 순서대로 저장하고 관리하는 자료형.');
 
 insert into tblQuestion
 values(
-193,'Python에서 ''딕셔너리(Dictionary)''의 역할은 무엇인가요?','키와 값의 쌍으로 데이터를 저장하고 관리하는 자료형.');
+203,'Python에서 ''딕셔너리(Dictionary)''의 역할은 무엇인가요?','키와 값의 쌍으로 데이터를 저장하고 관리하는 자료형.');
 
 insert into tblQuestion
 values(
-194,'Python에서 ''튜플(Tuple)''의 특징은 무엇인가요?','변경 불가능한 순서가 있는 자료형.');
+204,'Python에서 ''튜플(Tuple)''의 특징은 무엇인가요?','변경 불가능한 순서가 있는 자료형.');
 
 insert into tblQuestion
 values(
-195,'Python에서 ''함수(Function)''의 역할은 무엇인가요?','특정 작업을 수행하는 코드의 묶음.');
+205,'Python에서 ''함수(Function)''의 역할은 무엇인가요?','특정 작업을 수행하는 코드의 묶음.');
 
 insert into tblQuestion
 values(
-196,'Python에서 ''클래스(Class)''와 ''객체(Object)''의 관계는 무엇인가요?','클래스는 객체를 생성하기 위한 템플릿이고, 객체는 클래스에 정의된 대로 생성된 실체.');
+206,'Python에서 ''클래스(Class)''와 ''객체(Object)''의 관계는 무엇인가요?','클래스는 객체를 생성하기 위한 템플릿이고, 객체는 클래스에 정의된 대로 생성된 실체.');
 
 insert into tblQuestion
 values(
-197,'Python에서 ''모듈(Module)''의 역할은 무엇인가요?','관련된 함수, 클래스, 변수들을 모아놓은 파일.');
+207,'Python에서 ''모듈(Module)''의 역할은 무엇인가요?','관련된 함수, 클래스, 변수들을 모아놓은 파일.');
 
 insert into tblQuestion
 values(
-198,'Python에서 ''예외 처리(Exception Handling)''의 역할은 무엇인가요?','프로그램 실행 중 발생할 수 있는 오류를 처리하는 과정.');
+208,'Python에서 ''예외 처리(Exception Handling)''의 역할은 무엇인가요?','프로그램 실행 중 발생할 수 있는 오류를 처리하는 과정.');
 
 insert into tblQuestion
 values(
-199,'Python에서 ''리스트 컴프리헨션(List Comprehension)''의 역할은 무엇인가요?','리스트를 생성하는 간결하고 효율적인 방법.');
+209,'Python에서 ''리스트 컴프리헨션(List Comprehension)''의 역할은 무엇인가요?','리스트를 생성하는 간결하고 효율적인 방법.');
 
 insert into tblQuestion
 values(
-200,'Python에서 ''람다 함수(Lambda Function)''의 특징은 무엇인가요?','이름 없이 정의하고 사용하는 일회용 함수.');
+210,'Python에서 ''람다 함수(Lambda Function)''의 특징은 무엇인가요?','이름 없이 정의하고 사용하는 일회용 함수.');
 
 insert into tblQuestion
 values(
-201,'Flask란 무엇인가요?','파이썬으로 작성된 마이크로 웹 프레임워크.');
+211,'Flask란 무엇인가요?','파이썬으로 작성된 마이크로 웹 프레임워크.');
 
 insert into tblQuestion
 values(
-202,'Flask에서 ''라우팅(Routing)''의 역할은 무엇인가요?','URL을 특정 함수에 연결하는 역할.');
+212,'Flask에서 ''라우팅(Routing)''의 역할은 무엇인가요?','URL을 특정 함수에 연결하는 역할.');
 
 insert into tblQuestion
 values(
-203,'Flask에서 ''템플릿 엔진(Template Engine)''의 역할은 무엇인가요?','동적 데이터를 HTML에 삽입하여 웹 페이지를 생성하는 역할.');
+213,'Flask에서 ''템플릿 엔진(Template Engine)''의 역할은 무엇인가요?','동적 데이터를 HTML에 삽입하여 웹 페이지를 생성하는 역할.');
 
 insert into tblQuestion
 values(
-204,'Flask에서 ''요청(Request)''과 ''응답(Response)''의 역할은 무엇인가요?','클라이언트에서 서버로 정보를 보내는 것이 요청, 서버에서 클라이언트로 결과를 보내는 것이 응답.');
+214,'Flask에서 ''요청(Request)''과 ''응답(Response)''의 역할은 무엇인가요?','클라이언트에서 서버로 정보를 보내는 것이 요청, 서버에서 클라이언트로 결과를 보내는 것이 응답.');
 
 insert into tblQuestion
 values(
-205,'Flask에서 ''세션(Session)''의 역할은 무엇인가요?','사용자의 상태를 유지하기 위해 서버에서 관리하는 정보.');
+215,'Flask에서 ''세션(Session)''의 역할은 무엇인가요?','사용자의 상태를 유지하기 위해 서버에서 관리하는 정보.');
 
 insert into tblQuestion
 values(
-206,'Flask에서 ''쿠키(Cookie)''의 역할은 무엇인가요?','사용자의 상태를 유지하기 위해 클라이언트에서 관리하는 정보.');
+216,'Flask에서 ''쿠키(Cookie)''의 역할은 무엇인가요?','사용자의 상태를 유지하기 위해 클라이언트에서 관리하는 정보.');
 
 insert into tblQuestion
 values(
-207,'Flask에서 ''블루프린트(Blueprint)''의 역할은 무엇인가요?','라우트를 모듈화하여 관리하는 방법.');
+217,'Flask에서 ''블루프린트(Blueprint)''의 역할은 무엇인가요?','라우트를 모듈화하여 관리하는 방법.');
 
 insert into tblQuestion
 values(
-208,'Flask에서 ''Flask-SQLAlchemy''의 역할은 무엇인가요?','Flask에서 SQLAlchemy를 쉽게 사용할 수 있도록 도와주는 확장 패키지.');
+218,'Flask에서 ''Flask-SQLAlchemy''의 역할은 무엇인가요?','Flask에서 SQLAlchemy를 쉽게 사용할 수 있도록 도와주는 확장 패키지.');
 
 insert into tblQuestion
 values(
-209,'Flask에서 ''WTForms''의 역할은 무엇인가요?','웹 폼을 쉽게 다룰 수 있도록 도와주는 확장 패키지.');
+219,'Flask에서 ''WTForms''의 역할은 무엇인가요?','웹 폼을 쉽게 다룰 수 있도록 도와주는 확장 패키지.');
 
 insert into tblQuestion
 values(
-210,'Flask에서 ''Flask-Migrate''의 역할은 무엇인가요?','데이터베이스 스키마 마이그레이션을 쉽게 다룰 수 있도록 도와주는 확장 패키지.');
+220,'Flask에서 ''Flask-Migrate''의 역할은 무엇인가요?','데이터베이스 스키마 마이그레이션을 쉽게 다룰 수 있도록 도와주는 확장 패키지.');
 
 insert into tblQuestion
 values(
-211,'Django란 무엇인가요?','파이썬으로 작성된 고수준 웹 프레임워크.');
+221,'Django란 무엇인가요?','파이썬으로 작성된 고수준 웹 프레임워크.');
 
 insert into tblQuestion
 values(
-212,'Django에서 ''MTV(Model-Template-View)'' 아키텍처란 무엇인가요?','데이터를 다루는 Model, 사용자가 보는 Template, 중간 관리를 담당하는 View로 구성된 디자인 패턴.');
+222,'Django에서 ''MTV(Model-Template-View)'' 아키텍처란 무엇인가요?','데이터를 다루는 Model, 사용자가 보는 Template, 중간 관리를 담당하는 View로 구성된 디자인 패턴.');
 
 insert into tblQuestion
 values(
-213,'Django에서 ''ORM(Object-Relational Mapping)''의 역할은 무엇인가요?','데이터베이스를 객체 지향적으로 다루게 해주는 기능.');
+223,'Django에서 ''ORM(Object-Relational Mapping)''의 역할은 무엇인가요?','데이터베이스를 객체 지향적으로 다루게 해주는 기능.');
 
 insert into tblQuestion
 values(
-214,'Django에서 ''미들웨어(Middleware)''의 역할은 무엇인가요?','Request와 Response 과정에서 추가 처리를 담당하는 컴포넌트.');
+224,'Django에서 ''미들웨어(Middleware)''의 역할은 무엇인가요?','Request와 Response 과정에서 추가 처리를 담당하는 컴포넌트.');
 
 insert into tblQuestion
 values(
-215,'Django에서 ''관리자 사이트(Admin Site)''의 장점은 무엇인가요?',' 데이터베이스의 내용을 쉽게 확인하고 수정할 수 있는 웹 인터페이스 제공.');
+225,'Django에서 ''관리자 사이트(Admin Site)''의 장점은 무엇인가요?',' 데이터베이스의 내용을 쉽게 확인하고 수정할 수 있는 웹 인터페이스 제공.');
 
 insert into tblQuestion
 values(
-216,'Django에서 ''Form''의 역할은 무엇인가요?','사용자로부터 데이터를 안전하게 입력받고 검증하는 역할.');
+226,'Django에서 ''Form''의 역할은 무엇인가요?','사용자로부터 데이터를 안전하게 입력받고 검증하는 역할.');
 
 insert into tblQuestion
 values(
-217,'Django에서 ''세션(Session)''의 역할은 무엇인가요?','사용자의 상태 정보를 일정 시간 동안 저장하고 유지하는 기능.');
+227,'Django에서 ''세션(Session)''의 역할은 무엇인가요?','사용자의 상태 정보를 일정 시간 동안 저장하고 유지하는 기능.');
 
 insert into tblQuestion
 values(
-218,'Django에서 ''CSRF(Cross Site Request Forgery)'' 방어 기능의 역할은 무엇인가요?',' 웹 애플리케이션의 취약점을 이용한 공격을 방어하는 기능.');
+228,'Django에서 ''CSRF(Cross Site Request Forgery)'' 방어 기능의 역할은 무엇인가요?',' 웹 애플리케이션의 취약점을 이용한 공격을 방어하는 기능.');
 
 insert into tblQuestion
 values(
-219,'Django에서 ''마이그레이션(Migration)''의 역할은 무엇인가요?','데이터베이스 스키마의 변경 사항을 관리하고 반영하는 기능.');
+229,'Django에서 ''마이그레이션(Migration)''의 역할은 무엇인가요?','데이터베이스 스키마의 변경 사항을 관리하고 반영하는 기능.');
 
 insert into tblQuestion
 values(
-220,'Django에서 ''Generic View''의 장점은 무엇인가요?','공통적인 웹 개발 패턴을 빠르게 구현할 수 있도록 돕는 기능.');
+230,'Django에서 ''Generic View''의 장점은 무엇인가요?','공통적인 웹 개발 패턴을 빠르게 구현할 수 있도록 돕는 기능.');
 
 insert into tblQuestion
 values(
-221,'Swift란 무엇인가요?','애플이 iOS와 macOS 앱 개발을 위해 만든 강력하고 직관적인 프로그래밍 언어.');
+231,'Swift란 무엇인가요?','애플이 iOS와 macOS 앱 개발을 위해 만든 강력하고 직관적인 프로그래밍 언어.');
 
 insert into tblQuestion
 values(
-222,'Swift에서 ''옵셔널(Optional)''의 역할은 무엇인가요?','값이 있을 수도 있고 없을 수도 있는 상황을 안전하게 처리하는 기능.');
+232,'Swift에서 ''옵셔널(Optional)''의 역할은 무엇인가요?','값이 있을 수도 있고 없을 수도 있는 상황을 안전하게 처리하는 기능.');
 
 insert into tblQuestion
 values(
-223,'Swift에서 ''클로저(Closure)''의 역할은 무엇인가요?','이름 없이 사용할 수 있는 독립적인 코드 블록.');
+233,'Swift에서 ''클로저(Closure)''의 역할은 무엇인가요?','이름 없이 사용할 수 있는 독립적인 코드 블록.');
 
 insert into tblQuestion
 values(
-224,'Swift에서 ''프로토콜(Protocol)''의 역할은 무엇인가요?','특정 역할을 수행하기 위한 메서드, 프로퍼티, 기타 요구사항 등을 정의.');
+234,'Swift에서 ''프로토콜(Protocol)''의 역할은 무엇인가요?','특정 역할을 수행하기 위한 메서드, 프로퍼티, 기타 요구사항 등을 정의.');
 
 insert into tblQuestion
 values(
-225,'Swift에서 ''익스텐션(Extension)''의 역할은 무엇인가요?','기존 클래스, 구조체, 열거형에 새로운 기능을 추가하는 기능.');
+235,'Swift에서 ''익스텐션(Extension)''의 역할은 무엇인가요?','기존 클래스, 구조체, 열거형에 새로운 기능을 추가하는 기능.');
 
 insert into tblQuestion
 values(
-226,'Swift에서 ''Enum(Enumeration)''의 역할은 무엇인가요?','특정 그룹의 공통 타입을 안전하게 정의하고 사용하는 기능.');
+236,'Swift에서 ''Enum(Enumeration)''의 역할은 무엇인가요?','특정 그룹의 공통 타입을 안전하게 정의하고 사용하는 기능.');
 
 insert into tblQuestion
 values(
-227,'Swift에서 ''클래스(Class)''와 ''구조체(Struct)''의 차이점은 무엇인가요?','클래스는 참조 타입이고, 구조체는 값 타입. 클래스는 상속이 가능하지만, 구조체는 불가능.');
+237,'Swift에서 ''클래스(Class)''와 ''구조체(Struct)''의 차이점은 무엇인가요?','클래스는 참조 타입이고, 구조체는 값 타입. 클래스는 상속이 가능하지만, 구조체는 불가능.');
 
 insert into tblQuestion
 values(
-228,'Swift에서 ''가변(Mutable)''과 ''불변(Immutable)''의 차이점은 무엇인가요?','가변은 값이 변경 가능한 변수를 말하고, 불변은 값이 변경 불가능한 상수를 말함.');
+238,'Swift에서 ''가변(Mutable)''과 ''불변(Immutable)''의 차이점은 무엇인가요?','가변은 값이 변경 가능한 변수를 말하고, 불변은 값이 변경 불가능한 상수를 말함.');
 
 insert into tblQuestion
 values(
-229,'Swift에서 ''타입 추론(Type Inference)''의 역할은 무엇인가요?','컴파일러가 초기값을 기반으로 변수 또는 상수의 타입을 결정하는 기능.');
+239,'Swift에서 ''타입 추론(Type Inference)''의 역할은 무엇인가요?','컴파일러가 초기값을 기반으로 변수 또는 상수의 타입을 결정하는 기능.');
 
 insert into tblQuestion
 values(
-230,'Swift에서 ''ARC(Automatic Reference Counting)''의 역할은 무엇인가요?','메모리를 자동으로 관리해주는 기능.');
+240,'Swift에서 ''ARC(Automatic Reference Counting)''의 역할은 무엇인가요?','메모리를 자동으로 관리해주는 기능.');
 
 insert into tblQuestion
 values(
-231,'Kotlin이란 무엇인가요?','자바 플랫폼을 위한 정적 타입의 프로그래밍 언어.');
+241,'Kotlin이란 무엇인가요?','자바 플랫폼을 위한 정적 타입의 프로그래밍 언어.');
 
 insert into tblQuestion
 values(
-232,'Kotlin에서 ''Null 안전성(Null Safety)''의 역할은 무엇인가요?','null 참조로 인한 런타임 오류를 방지하는 기능.');
+242,'Kotlin에서 ''Null 안전성(Null Safety)''의 역할은 무엇인가요?','null 참조로 인한 런타임 오류를 방지하는 기능.');
 
 insert into tblQuestion
 values(
-233,'Kotlin에서 ''익스텐션 함수(Extension Function)''의 역할은 무엇인가요?','기존 클래스에 새로운 함수를 추가하는 기능.');
+243,'Kotlin에서 ''익스텐션 함수(Extension Function)''의 역할은 무엇인가요?','기존 클래스에 새로운 함수를 추가하는 기능.');
 
 insert into tblQuestion
 values(
-234,'Kotlin에서 ''람다식(Lambda Expression)''의 역할은 무엇인가요?','이름 없이 사용할 수 있는 함수.');
+244,'Kotlin에서 ''람다식(Lambda Expression)''의 역할은 무엇인가요?','이름 없이 사용할 수 있는 함수.');
 
 insert into tblQuestion
 values(
-235,'Kotlin에서 ''데이터 클래스(Data Class)''의 역할은 무엇인가요?','데이터를 보유하기 위한 클래스를 간결하게 생성하는 기능.');
+245,'Kotlin에서 ''데이터 클래스(Data Class)''의 역할은 무엇인가요?','데이터를 보유하기 위한 클래스를 간결하게 생성하는 기능.');
 
 insert into tblQuestion
 values(
-236,'Kotlin에서 ''코루틴(Coroutines)''의 역할은 무엇인가요?','비동기 프로그래밍을 간편하게 처리하기 위한 기능.');
+246,'Kotlin에서 ''코루틴(Coroutines)''의 역할은 무엇인가요?','비동기 프로그래밍을 간편하게 처리하기 위한 기능.');
 
 insert into tblQuestion
 values(
-237,'Kotlin에서 ''컬렉션(Collection)''의 역할은 무엇인가요?','여러 데이터를 저장하고 관리하는 객체.');
+247,'Kotlin에서 ''컬렉션(Collection)''의 역할은 무엇인가요?','여러 데이터를 저장하고 관리하는 객체.');
 
 insert into tblQuestion
 values(
-238,'Kotlin에서 ''컴패니언 객체(Companion Object)''의 역할은 무엇인가요?','클래스 내부에서만 사용할 수 있는 싱글톤 객체.');
+248,'Kotlin에서 ''컴패니언 객체(Companion Object)''의 역할은 무엇인가요?','클래스 내부에서만 사용할 수 있는 싱글톤 객체.');
 
 insert into tblQuestion
 values(
-239,'Kotlin에서 ''조건 표현식(Conditional Expression)''의 역할은 무엇인가요?','조건에 따라 다른 값을 반환하는 표현식.');
+249,'Kotlin에서 ''조건 표현식(Conditional Expression)''의 역할은 무엇인가요?','조건에 따라 다른 값을 반환하는 표현식.');
 
 insert into tblQuestion
 values(
-240,'Kotlin에서 ''스마트 캐스팅(Smart Casting)''의 역할은 무엇인가요?','타입 검사 후 자동으로 타입 변환을 수행하는 기능.');
+250,'Kotlin에서 ''스마트 캐스팅(Smart Casting)''의 역할은 무엇인가요?','타입 검사 후 자동으로 타입 변환을 수행하는 기능.');
 
 insert into tblQuestion
 values(
-241,'React란 무엇인가요?','사용자 인터페이스를 구축하기 위한 자바스크립트 라이브러리.');
+251,'React란 무엇인가요?','사용자 인터페이스를 구축하기 위한 자바스크립트 라이브러리.');
 
 insert into tblQuestion
 values(
-242,'React에서 ''컴포넌트(Component)''의 역할은 무엇인가요?','재사용 가능한 독립적인 코드 블록.');
+252,'React에서 ''컴포넌트(Component)''의 역할은 무엇인가요?','재사용 가능한 독립적인 코드 블록.');
 
 insert into tblQuestion
 values(
-243,'React에서 ''props''의 역할은 무엇인가요?','부모 컴포넌트로부터 자식 컴포넌트로 데이터를 전달하는 역할.');
+253,'React에서 ''props''의 역할은 무엇인가요?','부모 컴포넌트로부터 자식 컴포넌트로 데이터를 전달하는 역할.');
 
 insert into tblQuestion
 values(
-244,'React에서 ''state''의 역할은 무엇인가요?','컴포넌트 내에서 관리되는 동적 데이터.');
+254,'React에서 ''state''의 역할은 무엇인가요?','컴포넌트 내에서 관리되는 동적 데이터.');
 
 insert into tblQuestion
 values(
-245,'React에서 ''JSX''의 역할은 무엇인가요?',' 자바스크립트 내에서 HTML 코드를 작성할 수 있게 하는 문법.');
+255,'React에서 ''JSX''의 역할은 무엇인가요?',' 자바스크립트 내에서 HTML 코드를 작성할 수 있게 하는 문법.');
 
 insert into tblQuestion
 values(
-246,'React에서 ''Virtual DOM''의 역할은 무엇인가요?','실제 DOM을 추상화한 개념으로, 효율적인 렌더링을 위해 사용됨.');
+256,'React에서 ''Virtual DOM''의 역할은 무엇인가요?','실제 DOM을 추상화한 개념으로, 효율적인 렌더링을 위해 사용됨.');
 
 insert into tblQuestion
 values(
-247,'React에서 ''라이프사이클 메서드(Lifecycle Methods)''의 역할은 무엇인가요?','컴포넌트가 생성, 업데이트, 제거되는 과정에서 실행되는 메서드.');
+257,'React에서 ''라이프사이클 메서드(Lifecycle Methods)''의 역할은 무엇인가요?','컴포넌트가 생성, 업데이트, 제거되는 과정에서 실행되는 메서드.');
 
 insert into tblQuestion
 values(
-248,'React에서 ''Hooks''의 역할은 무엇인가요?',' 함수형 컴포넌트에서 상태 관리 및 라이프사이클 기능을 사용할 수 있게 하는 기능.');
+258,'React에서 ''Hooks''의 역할은 무엇인가요?',' 함수형 컴포넌트에서 상태 관리 및 라이프사이클 기능을 사용할 수 있게 하는 기능.');
 
 insert into tblQuestion
 values(
-249,'React에서 ''Redux''의 역할은 무엇인가요?','JavaScript 앱의 상태를 예측 가능하게 관리하는 라이브러리.  ');
+259,'React에서 ''Redux''의 역할은 무엇인가요?','JavaScript 앱의 상태를 예측 가능하게 관리하는 라이브러리.  ');
 
 insert into tblQuestion
 values(
-250,'React에서 ''Context API''의 역할은 무엇인가요?','컴포넌트 트리 안에서 전역적으로 데이터를 공유할 수 있게 하는 API.');
+260,'React에서 ''Context API''의 역할은 무엇인가요?','컴포넌트 트리 안에서 전역적으로 데이터를 공유할 수 있게 하는 API.');
 
 insert into tblQuestion
 values(
-251,'ElasticSearch란 무엇인가요?','실시간 분산 검색 및 분석 엔진으로, 정형 및 비정형 데이터를 처리하는 데 사용됩니다.   ');
+261,'ElasticSearch란 무엇인가요?','실시간 분산 검색 및 분석 엔진으로, 정형 및 비정형 데이터를 처리하는 데 사용됩니다.   ');
 
 insert into tblQuestion
 values(
-252,'ElasticSearch에서 ''인덱스(Index)''란 무엇인가요?','유사한 특성을 가진 문서들의 집합.');
+262,'ElasticSearch에서 ''인덱스(Index)''란 무엇인가요?','유사한 특성을 가진 문서들의 집합.');
 
 insert into tblQuestion
 values(
-253,'ElasticSearch에서 ''샤딩(Sharding)''의 역할은 무엇인가요?',' 데이터를 여러 부분으로 분할하여 처리 성능을 향상시키는 기능.');
+263,'ElasticSearch에서 ''샤딩(Sharding)''의 역할은 무엇인가요?',' 데이터를 여러 부분으로 분할하여 처리 성능을 향상시키는 기능.');
 
 insert into tblQuestion
 values(
-254,'ElasticSearch에서 ''복제(Replication)''의 역할은 무엇인가요?','데이터의 안정성을 보장하고 복원력을 높이기 위해 데이터를 복제하는 기능.');
+264,'ElasticSearch에서 ''복제(Replication)''의 역할은 무엇인가요?','데이터의 안정성을 보장하고 복원력을 높이기 위해 데이터를 복제하는 기능.');
 
 insert into tblQuestion
 values(
-255,'ElasticSearch에서 ''매핑(Mapping)''이란 무엇인가요?','인덱스에 저장된 문서와 그 필드가 어떻게 저장되고 색인되어야 하는지를 정의하는 과정.');
+265,'ElasticSearch에서 ''매핑(Mapping)''이란 무엇인가요?','인덱스에 저장된 문서와 그 필드가 어떻게 저장되고 색인되어야 하는지를 정의하는 과정.');
 
 insert into tblQuestion
 values(
-256,'ElasticSearch에서 ''분석기(Analyzer)''의 역할은 무엇인가요?','텍스트를 분석하여 검색을 위한 토큰으로 변환하는 역할.');
+266,'ElasticSearch에서 ''분석기(Analyzer)''의 역할은 무엇인가요?','텍스트를 분석하여 검색을 위한 토큰으로 변환하는 역할.');
 
 insert into tblQuestion
 values(
-257,'ElasticSearch에서 ''집계(Aggregations)''의 역할은 무엇인가요?','데이터를 집계하고 분석하는 기능.');
+267,'ElasticSearch에서 ''집계(Aggregations)''의 역할은 무엇인가요?','데이터를 집계하고 분석하는 기능.');
 
 insert into tblQuestion
 values(
-258,'ElasticSearch에서 ''클러스터(Cluster)''란 무엇인가요?','하나 이상의 노드로 이루어진 ElasticSearch의 서버 집합.');
+268,'ElasticSearch에서 ''클러스터(Cluster)''란 무엇인가요?','하나 이상의 노드로 이루어진 ElasticSearch의 서버 집합.');
 
 insert into tblQuestion
 values(
-259,'ElasticSearch에서 ''노드(Node)''란 무엇인가요?','클러스터의 일부로, 데이터를 저장하고 클러스터의 인덱싱 및 검색 기능에 참여하는 단일 서버.');
+269,'ElasticSearch에서 ''노드(Node)''란 무엇인가요?','클러스터의 일부로, 데이터를 저장하고 클러스터의 인덱싱 및 검색 기능에 참여하는 단일 서버.');
 
 insert into tblQuestion
 values(
-260,'ElasticSearch에서 ''문서(Document)''란 무엇인가요?','인덱스 내에 저장된 기본 데이터 단위.');
+270,'ElasticSearch에서 ''문서(Document)''란 무엇인가요?','인덱스 내에 저장된 기본 데이터 단위.');
 
 insert into tblQuestion
 values(
-261,'데이터 구조란 무엇인가요?','데이터를 효율적으로 저장하고 처리하기 위한 방식.
+271,'데이터 구조란 무엇인가요?','데이터를 효율적으로 저장하고 처리하기 위한 방식.
 ');
 
 insert into tblQuestion
 values(
-262,'배열(Array)과 연결 리스트(Linked List)의 차이점은 무엇인가요?',' 배열은 고정된 크기를 가지며 연속적인 메모리 공간에 데이터를 저장하지만, 연결 리스트는 각 노드가 데이터와 다음 노드를 가리키는 포인터를 가지며 메모리의 어디에서나 노드를 생성할 수 있습니다.');
+272,'배열(Array)과 연결 리스트(Linked List)의 차이점은 무엇인가요?',' 배열은 고정된 크기를 가지며 연속적인 메모리 공간에 데이터를 저장하지만, 연결 리스트는 각 노드가 데이터와 다음 노드를 가리키는 포인터를 가지며 메모리의 어디에서나 노드를 생성할 수 있습니다.');
 
 insert into tblQuestion
 values(
-263,'스택(Stack)과 큐(Queue)의 차이점은 무엇인가요?','스택은 후입선출(LIFO: Last In First Out) 방식으로 접근하고, 큐는 선입선출(FIFO: First In First Out) 방식으로 접근합니다.');
+273,'스택(Stack)과 큐(Queue)의 차이점은 무엇인가요?','스택은 후입선출(LIFO: Last In First Out) 방식으로 접근하고, 큐는 선입선출(FIFO: First In First Out) 방식으로 접근합니다.');
 
 insert into tblQuestion
 values(
-264,'이진 검색 트리(Binary Search Tree)의 특징은 무엇인가요?','모든 노드에 대해 그 노드의 왼쪽 하위 트리에는 해당 노드의 값보다 작은 값을 가진 노드만 존재하고, 오른쪽 하위 트리에는 해당 노드의 값보다 큰 값을 가진 노드만 존재합니다.');
+274,'이진 검색 트리(Binary Search Tree)의 특징은 무엇인가요?','모든 노드에 대해 그 노드의 왼쪽 하위 트리에는 해당 노드의 값보다 작은 값을 가진 노드만 존재하고, 오른쪽 하위 트리에는 해당 노드의 값보다 큰 값을 가진 노드만 존재합니다.');
 
 insert into tblQuestion
 values(
-265,'해시 테이블(Hash Table)의 역할은 무엇인가요?','키를 값에 매핑하여, 키를 통해 데이터를 빠르게 검색하는 구조입니다.');
+275,'해시 테이블(Hash Table)의 역할은 무엇인가요?','키를 값에 매핑하여, 키를 통해 데이터를 빠르게 검색하는 구조입니다.');
 
 insert into tblQuestion
 values(
-266,'그래프(Graph)란 무엇인가요?','노드(Node)와 이 노드들을 연결하는 간선(Edge)으로 구성된 비선형 자료구조입니다.');
+276,'그래프(Graph)란 무엇인가요?','노드(Node)와 이 노드들을 연결하는 간선(Edge)으로 구성된 비선형 자료구조입니다.');
 
 insert into tblQuestion
 values(
-267,'정렬 알고리즘 중 버블 정렬(Bubble Sort)의 원리는 무엇인가요?','인접한 두 항목을 비교하여 필요에 따라 위치를 교환하는 방식으로 동작합니다.');
+277,'정렬 알고리즘 중 버블 정렬(Bubble Sort)의 원리는 무엇인가요?','인접한 두 항목을 비교하여 필요에 따라 위치를 교환하는 방식으로 동작합니다.');
 
 insert into tblQuestion
 values(
-268,'퀵 정렬(Quick Sort) 알고리즘의 원리는 무엇인가요?','분할 정복(Divide and Conquer) 방법을 이용하여 정렬하는 알고리즘으로, 한 요소를 선택하고(피벗이라 함) 피벗보다 작은 요소는 모두 피벗의 왼쪽으로, 큰 요소는 모두 피벗의 오른쪽으로 이동시킵니다.');
+278,'퀵 정렬(Quick Sort) 알고리즘의 원리는 무엇인가요?','분할 정복(Divide and Conquer) 방법을 이용하여 정렬하는 알고리즘으로, 한 요소를 선택하고(피벗이라 함) 피벗보다 작은 요소는 모두 피벗의 왼쪽으로, 큰 요소는 모두 피벗의 오른쪽으로 이동시킵니다.');
 
 insert into tblQuestion
 values(
-269,'이진 검색(Binary Search) 알고리즘의 원리는 무엇인가요?','정렬된 데이터 집합의 중간 요소와 찾고자 하는 값을 비교하여 찾고자 하는 값의 위치를 좁혀나가는 알고리즘입니다');
+279,'이진 검색(Binary Search) 알고리즘의 원리는 무엇인가요?','정렬된 데이터 집합의 중간 요소와 찾고자 하는 값을 비교하여 찾고자 하는 값의 위치를 좁혀나가는 알고리즘입니다');
 
 insert into tblQuestion
 values(
-270,'그리디 알고리즘(Greedy Algorithm)의 원리는 무엇인가요?','각 단계에서 최적의 해를 선택하는 방식으로, 전체적인 최적해를 구하는데 사용하는 알고리즘입니다.');
+280,'그리디 알고리즘(Greedy Algorithm)의 원리는 무엇인가요?','각 단계에서 최적의 해를 선택하는 방식으로, 전체적인 최적해를 구하는데 사용하는 알고리즘입니다.');
 
 insert into tblQuestion
 values(
-271,'컴퓨터의 기본 구성요소는 무엇인가요?','CPU, 메모리, 입출력 장치.');
+281,'컴퓨터의 기본 구성요소는 무엇인가요?','CPU, 메모리, 입출력 장치.');
 
 insert into tblQuestion
 values(
-272,'CPU의 역할은 무엇인가요?','컴퓨터의 모든 명령을 제어하고 연산하는 중추 처리 장치.');
+282,'CPU의 역할은 무엇인가요?','컴퓨터의 모든 명령을 제어하고 연산하는 중추 처리 장치.');
 
 insert into tblQuestion
 values(
-273,'RAM과 ROM의 차이는 무엇인가요?','RAM은 휘발성 메모리로서 전원이 꺼지면 데이터가 사라지고, ROM은 비휘발성 메모리로서 전원이 꺼져도 데이터가 유지됩니다.');
+283,'RAM과 ROM의 차이는 무엇인가요?','RAM은 휘발성 메모리로서 전원이 꺼지면 데이터가 사라지고, ROM은 비휘발성 메모리로서 전원이 꺼져도 데이터가 유지됩니다.');
 
 insert into tblQuestion
 values(
-274,'운영체제의 역할은 무엇인가요?','컴퓨터 하드웨어와 소프트웨어 리소스를 관리하고 사용자와 컴퓨터 사이의 인터페이스 역할을 하는 시스템 소프트웨어.');
+284,'운영체제의 역할은 무엇인가요?','컴퓨터 하드웨어와 소프트웨어 리소스를 관리하고 사용자와 컴퓨터 사이의 인터페이스 역할을 하는 시스템 소프트웨어.');
 
 insert into tblQuestion
 values(
-275,'컴퓨터 네트워크란 무엇인가요?',' 데이터를 공유하기 위해 컴퓨터들이 연결된 구조.');
+285,'컴퓨터 네트워크란 무엇인가요?',' 데이터를 공유하기 위해 컴퓨터들이 연결된 구조.');
 
 insert into tblQuestion
 values(
-276,'클라우드 컴퓨팅의 장점은 무엇인가요?','접근성, 비용 효율성, 확장성 등.');
+286,'클라우드 컴퓨팅의 장점은 무엇인가요?','접근성, 비용 효율성, 확장성 등.');
 
 insert into tblQuestion
 values(
-277,'알고리즘이란 무엇인가요?','문제를 해결하기 위한 명확한 절차나 방법.');
+287,'알고리즘이란 무엇인가요?','문제를 해결하기 위한 명확한 절차나 방법.');
 
 insert into tblQuestion
 values(
-278,'데이터베이스의 역할은 무엇인가요?',' 관련된 데이터를 효율적으로 저장하고 관리하는데 사용됩니다.');
+288,'데이터베이스의 역할은 무엇인가요?',' 관련된 데이터를 효율적으로 저장하고 관리하는데 사용됩니다.');
 
 insert into tblQuestion
 values(
-279,'컴퓨터 보안의 중요성은 무엇인가요?','비인가자에 의한 데이터 유출이나 시스템 손상을 방지하여 정보와 시스템의 무결성을 유지하기 위함입니다.');
+289,'컴퓨터 보안의 중요성은 무엇인가요?','비인가자에 의한 데이터 유출이나 시스템 손상을 방지하여 정보와 시스템의 무결성을 유지하기 위함입니다.');
 
 insert into tblQuestion
 values(
-280,'빅 데이터란 무엇인가요?','전통적인 데이터베이스 시스템으로 처리하기 어려울 정도로 방대한 양의 데이터를 의미합니다.');
+290,'빅 데이터란 무엇인가요?','전통적인 데이터베이스 시스템으로 처리하기 어려울 정도로 방대한 양의 데이터를 의미합니다.');
 
+insert into tblQuestion
+values(
+291,'IAM(Identity and Access Management)의 역할은 무엇인가요?','AWS 리소스에 대한 액세스를 관리하고 보안을 강화하는 서비스.');
+
+
+insert into tblQuestion
+values(
+292,'AWS Lambda 함수의 특징은 무엇인가요??','서버리스 컴퓨팅, 이벤트 기반 실행, 코드 관리 및 실행환경 프로비저닝 불필요.');
+
+
+insert into tblQuestion
+values(
+293,'AWS Lambda 함수의 특징은 무엇인가요??','버킷 정책: 버킷 전체 액세스 권한, 객체 ACL: 개별 객체 액세스 권한..');
+
+insert into tblQuestion
+values(
+294,'AWS Auto Scaling의 목적은 무엇인가요?','수요에 따라 자동으로 인프라 확장 또는 축소하여 애플리케이션의 가용성 유지 및 비용 절감.');
+
+insert into tblQuestion
+values(
+295,'AWS RDS와 DynamoDB의 주요 차이점은 무엇인가요?','RDS: 관계형 데이터베이스, DynamoDB: NoSQL 데이터베이스.');
+
+insert into tblQuestion
+values(
+296,'AWS Lambda 함수의 실행 시간 제한은 어떻게 작동하나요?','최대 15분까지 실행 가능, 제한 초과 시 함수 종료.');
+
+insert into tblQuestion
+values(
+297,'AWS VPC의 퍼블릭 서브넷과 프라이빗 서브넷의 차이점은 무엇인가요?','퍼블릭 서브넷: 외부 접근 가능, 프라이빗 서브넷: 외부 접근 불가능.');
+
+insert into tblQuestion
+values(
+298,'AWS CloudFormation의 목적은 무엇인가요?','인프라를 코드로 정의하고 자동으로 프로비저닝하여 일관성 유지 및 시간 절약.');
+
+insert into tblQuestion
+values(
+299,'AWS Elastic Beanstalk과 AWS Lambda의 주요 차이점은 무엇인가요?','Elastic Beanstalk: 애플리케이션 배포 및 관리, Lambda: 서버리스 컴퓨팅.');
+
+insert into tblQuestion
+values(
+300,'AWS CloudWatch와 AWS CloudTrail의 주요 차이점은 무엇인가요?','CloudWatch: 리소스 모니터링, CloudTrail: API 활동 로깅 및 모니터링.');
 -- 공휴일
 insert into tblPublicHoliday (seq_publicHoliday, name, holiday)
 values (1, '추석', TO_DATE('2023-09-28', 'YYYY-MM-DD'));
