@@ -486,9 +486,10 @@ from vwtrainees where a_day>(sysdate-31) and a_day<=sysdate;
 select distinct t_name, bank, account,
     case
         when 출석여부 = -1 and count(출석여부) >= 4 then 0
-        when 출석여부 = 2 and count(출석여부) < 3 then 0
-        when 출석여부 = 1 and count(출석여부) > 3 then 200000-10000
-        else 200000
+        when 출석여부 = 1 and (count(출석여부)/3) >= 1 then 200000-(10000*floor(count(출석여부)/3))
+        when 출석여부 = 1 and (count(출석여부)/3) < 1 then 200000
+        when 출석여부 = 2 and count(출석여부) <= 3 then 0
+        when 출석여부 = 2 and count(출석여부) > 3 then 200000
     end as 훈련장려금
 from
 (select t_name, bank, account,
