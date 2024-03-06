@@ -2,8 +2,16 @@
 
 
 -- 2. 강의 종료시 학생들 수료 상태로 변경 + 수료날짜 자동 업데이트
+create or replace procedure procUpdateCurriCompletionDate 
+is
+    cusor vcursor is
+        select * from 
+end;
+/
 
-
+select * 
+from tblTraineeList tl
+;
 -- 4. 결석생은 자동으로 출결 테이블에 결석 데이터 들어가게 만들기
 
 
