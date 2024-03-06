@@ -143,4 +143,247 @@ end procCurriDetail;
 begin
     procCurriDetail(1); --개설교육과정 번호    
 end;
+
+
+--교사명 입력시 강의 스케줄 출력 프로시저
+--과목번호, 과정명, 과정기간,강의실과 과목명, 과목기간(시작 년월일, 끝 년월일), 교재명, 교육생 등록 인원
 /
+CREATE OR REPLACE PROCEDURE proctschedule(
+    ptname VARCHAR2
+)
+IS
+   
+    vc_name VARCHAR2(200);
+    vcp_status varchar2(30);
+    voc_startdate date;
+    voc_enddate date;
+    vs_seq_subject NUMBER;
+    vs_name varchar2(200);
+    vos_startdate DATE;
+    vos_enddate DATE;
+    vtb_name VARCHAR2(200);
+    vr_capacity number;
+    
+    CURSOR vcursor IS
+        select distinct 
+c.name as 과정명,
+cp.status as 과정상태,
+oc.startDate as 시작일,
+oc.endDate as 종료일,
+s.seq_subject as 과목번호,
+s.name as 과목명,
+os.startdate as 과목시작일,
+os.enddate as 과목종료일,
+tb.name as 교재명,
+r.capacity as 인원수
+from tblTeacher t
+    inner join tblOpenSubjectList os
+        on t.seq_teacher = os.seq_teacher
+            inner join tblOpenCurriculum oc
+                on oc.seq_openCurriculum = os.seq_openCurriculum
+                    inner join tblCurriculumProgress cp
+                        on cp.seq_curriculumProgress = oc.seq_curriculumProgress
+                            inner join tblTraineeList tl
+                                on oc.seq_openCurriculum = tl.seq_openCurriculum
+                                    inner join tblTrainees tr
+                                        on tr.seq_trainee = tl.seq_trainee
+                                            inner join tblsubjectlist sl
+                                                on sl.seq_subjectList = os.seq_subjectList
+                                                 inner join tblsubject s 
+                                                    on s.seq_subject = sl.seq_subject
+                                                        inner join tblRoom r
+                                                            on r.seq_room = oc.seq_room
+                                                                inner join tblCurriculum c 
+                                                                    on c.seq_Curriculum = oc.seq_Curriculum
+                                                                     inner join tblCoursePeriod cop
+                                                                        on cop.seq_coursePeriod = c.seq_coursePeriod
+                                                                            inner join tblTextBook tb 
+                                                                                on tb.seq_textbook = os.seq_textbook
+                                                                where t.name = '김민곤'
+                                                                    ;         
+
+BEGIN
+    OPEN vcursor;
+    LOOP
+        FETCH vcursor INTO  vc_name,vcp_status, voc_startdate,voc_enddate,vs_seq_subject, vs_name, vos_startdate, vos_enddate, vtb_name,vr_capacity;
+        EXIT WHEN vcursor%NOTFOUND;
+       dbms_output.put_line ('----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------');
+        DBMS_OUTPUT.PUT_LINE( '과정명: ' || vc_name || '| 과정상태'  || vcp_status|| '| 과정시작일: ' || voc_startdate || ' | 과정종료일: ' ||  voc_enddate ||
+                                               '| 과목번호'||vs_seq_subject|| '| 과목명: ' ||vs_name ||'| 과목시작일: ' || vos_startdate || '| 과목종료일: ' ||  vos_enddate ||
+                                                '| 교재명'|| vtb_name||'| 등록인원' || vr_capacity);
+      dbms_output.put_line ('----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------');         
+    END LOOP;
+    CLOSE vcursor;
+END proctschedule;
+/
+begin
+proctschedule('김민곤');
+end;
+/
+--교육중인 과정에 등록된 교육생 정보(교육생 이름, 전화번호, 등록일, 수료 또는 중도탈락)을 확인할 수 있어야 한다.
+CREATE OR REPLACE PROCEDURE proctinfo(
+    ptname VARCHAR2
+)
+IS
+ vc_name varchar2(200);
+ vtr_name varchar2(10);
+ vtr_tel varchar2(15);
+ vtr_registrationDate date;
+ vtl_status varchar2(15);
+CURSOR vcursor IS
+select distinct 
+
+c.name as 과정명,
+tr.name as 교육생이름,
+tr.tel as 교육생전화번호,
+tr.registrationDate as 교육생등록일,
+tl.status as 교육생상태
+from tblTeacher t
+    inner join tblOpenSubjectList os
+        on t.seq_teacher = os.seq_teacher
+            inner join tblOpenCurriculum oc
+                on oc.seq_openCurriculum = os.seq_openCurriculum
+                    inner join tblCurriculumProgress cp
+                        on cp.seq_curriculumProgress = oc.seq_curriculumProgress
+                            inner join tblTraineeList tl
+                                on oc.seq_openCurriculum = tl.seq_openCurriculum
+                                    inner join tblTrainees tr
+                                        on tr.seq_trainee = tl.seq_trainee
+                                            inner join tblsubjectlist sl
+                                                on sl.seq_subjectList = os.seq_subjectList
+                                                 inner join tblsubject s 
+                                                    on s.seq_subject = sl.seq_subject
+                                                        inner join tblRoom r
+                                                            on r.seq_room = oc.seq_room
+                                                                inner join tblCurriculum c 
+                                                                    on c.seq_Curriculum = oc.seq_Curriculum
+                                                                     inner join tblCoursePeriod cp
+                                                                        on cp.seq_coursePeriod = c.seq_coursePeriod
+                                                                            inner join tblTextBook tb 
+                                                                                on tb.seq_textbook = os.seq_textbook
+                                                                where t.name = ptname;
+                                                                    
+BEGIN
+    OPEN vcursor;
+    LOOP
+        FETCH vcursor INTO  vc_name, vtr_name,vtr_tel, vtr_registrationDate, vtl_status;
+        EXIT WHEN vcursor%NOTFOUND;
+       dbms_output.put_line ('----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------');
+        DBMS_OUTPUT.PUT_LINE( '과정명: ' || vc_name || '| 교육생이름: '  || vtr_name|| '| 전화번호: ' || vtr_tel || ' | 등록일: ' ||  vtr_registrationDate ||
+                                               '| 상태:'||vtl_status);
+      dbms_output.put_line ('----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------');         
+    END LOOP;
+    CLOSE vcursor;
+END proctinfo;
+/
+begin
+proctinfo('김민곤');
+end;
+/
+--교육생 이름으로 성적 검색 프로시저
+CREATE OR REPLACE PROCEDURE proctg(
+    ptname VARCHAR2
+)
+IS
+    vt_name VARCHAR2(500);
+    vs_name VARCHAR2(500);
+    vosl_startdate DATE;
+    vosl_enddate DATE;
+    vg_writtenDate DATE;
+    vg_practicalDate DATE;
+    vg_writtenGrade NUMBER;
+    vg_practicalGrade NUMBER;
+    vg_attendanceGrade NUMBER;
+
+    CURSOR vcursor IS
+        SELECT DISTINCT
+            t.name AS 교육생이름,
+            g.s_name AS 과목명,
+            osl.startdate AS 과목시작일,
+            osl.enddate AS 과목종료일,
+            g.writtenDate AS 필기날짜,
+            g.practicalDate AS 실기날짜,
+            g.writtenGrade AS 필기점수,
+            g.practicalGrade AS 실기점수,
+            g.attendanceGrade AS 출결점수
+        FROM
+            vwgrades g
+            INNER JOIN tbltraineelist tl ON g.seq_traineelist = tl.seq_traineelist
+            INNER JOIN tbltrainees t ON tl.seq_trainee = t.seq_trainee
+            INNER JOIN tblteacher tc ON g.seq_teacher = tc.seq_teacher
+            INNER JOIN tblopensubjectlist osl ON g.seq_opensubjectlist = osl.seq_opensubjectlist
+            INNER JOIN tbltextbook b ON osl.seq_textbook = b.seq_textbook
+            INNER JOIN tblopencurriculum oc ON g.seq_opencurriculum = oc.seq_opencurriculum
+            INNER JOIN tblroom r ON oc.seq_room = r.seq_room
+            INNER JOIN tblexampaper ep ON g.seq_subject = ep.seq_subject
+            INNER JOIN tblquestion q ON ep.seq_question = q.seq_question
+        WHERE
+            t.name = ptname;
+
+BEGIN
+    OPEN vcursor;
+    LOOP
+        FETCH vcursor INTO vt_name, vs_name, vosl_startdate, vosl_enddate, vg_writtenDate, vg_practicalDate, vg_writtenGrade, vg_practicalGrade, vg_attendanceGrade;
+        EXIT WHEN vcursor%NOTFOUND;
+
+                DBMS_OUTPUT.PUT_LINE('수강생이름: ' || vt_name || '  과목명: ' || vs_name || '  과목시작일: ' || vosl_startdate || ' 과목종료일: ' || vosl_enddate ||
+                             ' 필기날짜: ' || vg_writtenDate || ' 실기날짜: ' || vg_practicalDate || ' 필기점수: ' || vg_writtenGrade || ' 실기점수: ' || vg_practicalGrade ||
+                             '출결점수: ' || vg_attendanceGrade);
+               
+    END LOOP;
+    CLOSE vcursor;
+END proctg;
+/
+begin
+proctg('나백전');
+end;
+/
+begin
+proctg('곤문권');
+end;
+
+/ --강사가 자신의 이름 검색 하면 수료한 학생들이 작성한 평가 확인 하는 프로시저
+create or replace procedure procTce(
+    ptname varchar2
+)
+is
+vt_name varchar2(10);
+vce_grade number;
+vce_content varchar2(10000);
+
+CURSOR vcursor IS
+select distinct 
+t.name as 강사명,
+ce.grade as 점수,
+ce.content as 내용
+from tblCurriculumEvaluation ce
+    inner join tblTraineeList tl
+        on tl.seq_traineeList = ce.seq_traineeList
+            inner join tblOpenCurriculum oc 
+                on oc.seq_openCurriculum = tl.seq_openCurriculum
+                    inner join tblOpenSubjectList sl 
+                        on oc.seq_openCurriculum = sl.seq_openCurriculum
+                            inner join tblTeacher t 
+                                on t.seq_teacher = sl.seq_teacher
+                                    where t.name = ptname;
+begin
+    open vcursor;
+    loop
+    fetch vcursor into vt_name, vce_grade, vce_content;
+    exit when vcursor%notfound;
+      DBMS_OUTPUT.PUT_LINE('강사이름: ' || vt_name || '| 점수: ' || vce_grade || '| 내용: ' || vce_content);
+    end loop;
+    close vcursor;
+end procTce;
+/
+begin
+proctce('김민곤');
+end;
+/
+
+
+
+
+
+
+    
