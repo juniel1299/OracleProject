@@ -280,6 +280,7 @@ begin
 proctinfo('김민곤');
 end;
 /
+
 --교육생 이름으로 성적 검색 프로시저
 CREATE OR REPLACE PROCEDURE proctg(
     ptname VARCHAR2
@@ -315,7 +316,7 @@ IS
             INNER JOIN tbltextbook b ON osl.seq_textbook = b.seq_textbook
             INNER JOIN tblopencurriculum oc ON g.seq_opencurriculum = oc.seq_opencurriculum
             INNER JOIN tblroom r ON oc.seq_room = r.seq_room
-            INNER JOIN tblexampaper ep ON g.seq_subject = ep.seq_subject
+            INNER JOIN tblexampaper ep ON osl.seq_opensubjectlist = ep.seq_opensubjectlist
             INNER JOIN tblquestion q ON ep.seq_question = q.seq_question
         WHERE
             t.name = ptname;
@@ -325,11 +326,12 @@ BEGIN
     LOOP
         FETCH vcursor INTO vt_name, vs_name, vosl_startdate, vosl_enddate, vg_writtenDate, vg_practicalDate, vg_writtenGrade, vg_practicalGrade, vg_attendanceGrade;
         EXIT WHEN vcursor%NOTFOUND;
-
-                DBMS_OUTPUT.PUT_LINE('수강생이름: ' || vt_name || '  과목명: ' || vs_name || '  과목시작일: ' || vosl_startdate || ' 과목종료일: ' || vosl_enddate ||
-                             ' 필기날짜: ' || vg_writtenDate || ' 실기날짜: ' || vg_practicalDate || ' 필기점수: ' || vg_writtenGrade || ' 실기점수: ' || vg_practicalGrade ||
-                             '출결점수: ' || vg_attendanceGrade);
-               
+       
+        dbms_output.put_line('----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------');
+        DBMS_OUTPUT.PUT_LINE('수강생이름: ' || vt_name || ' | 과목명: ' || vs_name || '|  과목시작일: ' || vosl_startdate || '| 과목종료일: ' || vosl_enddate ||
+                             '| 필기날짜: ' || vg_writtenDate || '| 실기날짜: ' || vg_practicalDate || '| 필기점수: ' || vg_writtenGrade || '| 실기점수: ' || vg_practicalGrade ||
+                             '| 출결점수: ' || vg_attendanceGrade);
+         dbms_output.put_line('----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------');
     END LOOP;
     CLOSE vcursor;
 END proctg;
@@ -341,8 +343,8 @@ end;
 begin
 proctg('곤문권');
 end;
-
-/ --강사가 자신의 이름 검색 하면 수료한 학생들이 작성한 평가 확인 하는 프로시저
+ --강사가 자신의 이름 검색 하면 수료한 학생들이 작성한 평가 확인 하는 프로시저
+/
 create or replace procedure procTce(
     ptname varchar2
 )

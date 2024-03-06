@@ -850,6 +850,7 @@ from tblCurriculumEvaluation ce
 
 
 --c-1 
+--교사는 강의 스케줄,과목 정보를 조회한다
 select distinct 
 s.seq_subject as 과목번호,
 s.name as 과목명,
@@ -881,7 +882,7 @@ from tblTeacher t
                                                                                 on tb.seq_textbook = os.seq_textbook
                                                                 where t.name = '김민곤'
                                                                     order by s.seq_subject asc;
-                                                           
+ --교사는 교육생 정보를 조회 한다.                                                          
 select distinct 
 c.name as 과정명,
 cp.status as 과정상태,
@@ -941,7 +942,7 @@ from tblCurriculumEvaluation ce
 
 
 -- D-1
--- 성적조회
+-- 성적 조회 :개인 정보와 수강한 과정명, 과목기간(시작 년월일, 끝 년월일), 강의실이 타이틀로 출력된다.
 select distinct 
 tr.name as 교육생이름,
 c.name as 과정명,
@@ -966,9 +967,8 @@ from tblTrainees tr
                                                         on s.seq_subject = sl.seq_subject
                                                             where tr.name = '지엄홍';
 
-select * from tblquestion;
-select * from vwgrades;
-
+--과목번호, 과목명, 과목기간(시작 년월일, 끝 년월일), 교재명, 교사명, 과목별 배점 정보(출결, 필기, 실기 배점),
+--과목별 성적 정보(출결, 필기, 실기 점수), 과목별 시험날짜, 시험문제가 출력되어야 한다.
 select distinct 
 t.name as 교육생이름,
 tc.name as 강사명,
@@ -1004,7 +1004,7 @@ from vwgrades g
                                                     inner join tblroom r
                                                         on oc.seq_room = r.seq_room
                                                             inner join tblexampaper ep
-                                                                on g.seq_subject = ep.seq_subject
+                                                                on osl.seq_openSubjectList = ep.seq_openSubjectList
                                                                     inner join tblquestion q
                                                                         on ep.seq_question = q.seq_question
                                                                             
