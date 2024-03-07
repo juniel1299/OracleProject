@@ -489,7 +489,7 @@ s.name as 과목명,
 os.startdate as 과목시작일,
 os.enddate as 과목종료일,
 tb.name as 교재명,
-count(tl.seq_opencurriculum) as "교육생 등록 인원" --(수정필요!)
+count(tl.seq_opencurriculum) as "교육생 등록 인원" 
 from tblTeacher t
     inner join tblOpenSubjectList os
         on t.seq_teacher = os.seq_teacher

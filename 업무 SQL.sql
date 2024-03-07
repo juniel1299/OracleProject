@@ -573,7 +573,7 @@ cp.status as 과정상태,
 oc.startDate as "과정 시작일",
 oc.endDate as "과정 종료일",
 r.name as 강의실명,
-count(tl.seq_opencurriculum) as "교육생 등록 인원", --(수정필요!)
+count(tl.seq_opencurriculum) as "교육생 등록 인원",
 s.name as 과목명,
 os.startdate as 과목시작일,
 os.enddate as 과목종료일,
