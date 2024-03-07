@@ -39,7 +39,63 @@ end;
 
 
 -- 4. 결석생은 자동으로 출결 테이블에 결석 데이터 들어가게 만들기
+create or replace procedure procUpdateAbsent
+is
+    vHoliday date;
+    vtrue number;
+    vStart date;
+    vEnd date;
+    vStatus varchar2(30);
+    vSeq number;  
+    vcnt number;
+    vcnt1 number;
+    
+    cursor vcursor1 is
+        select holiday
+        from tblPublicHoliday;       
+    
+    cursor vcursor2 is
+        select oc.startdate, oc.enddate, tl.status, tl.seq_traineelist
+        from tblOpenCurriculum oc
+            inner join tblTraineeList tl
+                on oc.seq_opencurriculum = tl.seq_opencurriculum;       
+begin
+    vtrue := 0;
+    open vcursor1;
+    loop
+        fetch vcursor1 into vHoliday;
+        exit when vcursor1%notfound;
 
+        -- 오늘이 휴일이나 주말이면 vtrue가 0 이상
+        if vholiday = sysdate or to_char(sysdate, 'd') = '1' or to_char(sysdate, 'd') = '7'
+            then vtrue := vtrue + 1;
+        end if;
+    end loop;
+    close vcursor1;
+    
+    -- 오늘이 평일이면 vtrue = 0
+    if vtrue = 0 then    
+        open vcursor2;
+            loop
+                fetch vcursor2 into vStart, vEnd, vStatus, vSeq;
+                exit when vcursor2%notfound;
+
+                select count(*) into vcnt from tblAttendance 
+                    where to_char(day, 'yyyy-mm-dd') = to_char(sysdate, 'yyyy-mm-dd') and seq_traineelist = vseq;                              
+                -- 오늘 아무기록이 없고 수강중일 때 결석 입력
+                if (sysdate between vstart and vend) and vcnt = 0 and vstatus is null
+                    then insert into tblAttendance values ((select max(seq_attendance) from tblAttendance) + 1, vseq, 7, to_date(sysdate, 'yyyy-mm-dd'), null, null);
+                end if;
+            end loop;
+        close vcursor2;    
+    end if;   
+    
+end procUpdateAbsent;
+/
+begin
+    procUpdateAbsent();
+end;
+/
 
 -- 5. 출결인정 서류 내고 허가 받으면 출결 인정으로 자동 업데이트
 
