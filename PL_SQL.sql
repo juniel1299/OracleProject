@@ -259,11 +259,14 @@ END;
 /
 
 
--- b-8 (수정필요!) 두개 모두 기간 별로 조회할 매개 변수 추가 필요
--- 출결관리 
--- 1. 개설 과정별
+-- b-8 
+
 CREATE OR REPLACE PROCEDURE procCourseInfo(
-    p_course IN tblCurriculum.name%TYPE
+    p_course IN tblCurriculum.name%TYPE,
+    p_start_date IN DATE,
+    p_end_date IN DATE
+    
+   
 ) IS
     CURSOR c_course IS
         SELECT t.name AS trainee_name, a.day, c.name AS course_name, ad.situation 
@@ -273,7 +276,8 @@ CREATE OR REPLACE PROCEDURE procCourseInfo(
         INNER JOIN tblCurriculum c ON c.seq_curriculum = oc.seq_opencurriculum
         INNER JOIN tblattendancestatus ad ON ad.seq_attendancestatus = a.seq_attendancestatus
         INNER JOIN tblTrainees t ON t.seq_trainee = tl.seq_trainee
-        WHERE c.name = p_course
+        WHERE c.name = p_course 
+        AND a.day BETWEEN p_start_date AND p_end_date
         GROUP BY t.name, a.day, c.name, ad.situation;
     
     v_course c_course%ROWTYPE;
@@ -298,7 +302,7 @@ END procCourseInfo;
 /
 
 BEGIN
-    procCourseInfo('AWS 클라우드와 Elasticsearch를 활용한 Java Full-Stack 과정(B)');
+    procCourseInfo('AWS 클라우드와 Elasticsearch를 활용한 Java Full-Stack 과정(B)', TO_DATE('2023-11-01', 'YYYY-MM-DD'), TO_DATE('2023-12-30', 'YYYY-MM-DD'));
 END;
 /
 
