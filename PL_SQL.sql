@@ -461,10 +461,6 @@ begin
 end;
 /
 
-
--- b-17 (수정필요!) 추가 구현 필요
-
-
 --c-1.1 강의 스케줄 
 CREATE OR REPLACE PROCEDURE proctschedule(
     ptname VARCHAR2
@@ -791,18 +787,17 @@ end;
 /
 
 
--- (수정필요!) 교사 번호를 입력하면 본인이 수강 중인 과목 목록 다 출력되야한다.
+-- 교사 번호를 입력하면 본인이 수강 중인 과목 목록 다 출력
 -- 4. 과목 목록 출력 시 과목번호, 과정명, 과정기간(시작 년월일, 끝 년월일), 강의실, 과목명, 과목기간(시작 년월일, 끝 년월일), 교재명, 출결, 필기, 실기 배점 등이 출력되고, 
 -- 특정 과목을 과목번호로 선택 시 출결 배점, 필기 배점, 실기 배점, 시험 날짜, 시험 문제를 입력할 수 있는 화면으로 연결되어야 한다. (자바에서 구현해야할 듯)
 -- 5. 배점 등록이 안 된 과목인 경우는 과목 정보가 출력될 때 배점 부분은 null 값으로 출력한다.
--- 4.1. 특정 교사가 개설 과목 목록 번호로 선택하면 정보 출력
 create or replace procedure procSubjectListOut (
-    pSeq_teacher in number,
-    pSeq_openSubjectList in number
+    pSeq_teacher in number
 ) 
 is
  cursor vcursor is
         select 
+        vc.seq_openSubjectList "과정 번호",
         vc.seq_subject "과목 번호",
         vc.c_name "과정명",
         vc.oc_startDate "과정 시작일",
@@ -821,7 +816,6 @@ is
                     inner join tblTestInfo ti
                         on ti.seq_openSubjectList = vc.seq_openSubjectList
                             where vc.seq_teacher = pSeq_teacher
-                            and vc.seq_openSubjectList = pSeq_openSubjectList
                             and vc.osl_enddate < sysdate;
                             
     vrecord vcursor%rowtype;
@@ -832,7 +826,7 @@ begin
     loop
         fetch vcursor into vrecord;
         exit when vcursor%notfound;
-        dbms_output.put_line('-----------------------------------------------------------------------------------');
+        dbms_output.put_line('과정 번호: ' || vrecord."과정 번호");
         dbms_output.put_line('과목 번호: ' || vrecord."과목 번호");
         dbms_output.put_line('과정명: ' || vrecord."과정명");
         dbms_output.put_line('과정 시작일: ' || vrecord."과정 시작일");
@@ -857,7 +851,7 @@ end procSubjectListOut;
 /
 
 begin
-    procSubjectListOut(1, 1);
+    procSubjectListOut(1);
 end;
 /
 
@@ -1428,38 +1422,53 @@ END;
 /
 
 
---D-4 
---교사 추천 도서 조회 
-CREATE OR REPLACE PROCEDURE procTextbookInfo(
-p_teacher_name IN VARCHAR2) 
-IS
-    CURSOR c_textbook IS
-        SELECT ta.name, rt.grade, tb.name AS textbook_name
-        FROM tblRecommendTextbook rt
-        INNER JOIN tbltextbook tb ON rt.seq_textbook = tb.seq_textbook
-        INNER JOIN tblteacher ta ON ta.seq_teacher = rt.seq_teacher
-        WHERE ta.name = p_teacher_name;
+-- D-4 
+-- 교사 추천 도서 조회 
+create or replace procedure procTextbookInfo(
+    pSeq_trainee in varchar2
+) 
+is
+    cursor vcursor is
+        select 
+        distinct osl.seq_opencurriculum 교육과정명,
+        tea.name 교사명,
+        rb.grade 별점,
+        b.name "책 제목",
+        b.publisher "출판사명"
+        from tblrecommendtextbook rb
+            inner join tblopensubjectlist osl
+                on rb.seq_teacher = osl.seq_teacher
+                    inner join tbltraineelist tl
+                        on tl.seq_opencurriculum = osl.seq_opencurriculum
+                            inner join tblteacher tea
+                                on tea.seq_teacher = osl.seq_teacher
+                                    inner join tbltextbook b
+                                        on b.seq_textbook = rb.seq_textbook
+                                            where osl.seq_teacher = rb.seq_teacher
+                                            and tl.seq_trainee = pSeq_trainee;
 
-    v_textbook c_textbook%ROWTYPE;
-BEGIN
-    OPEN c_textbook;
-    LOOP
-        FETCH c_textbook INTO v_textbook;
-        EXIT WHEN c_textbook%NOTFOUND;
+    vrecord vcursor%rowtype;
+begin
+    open vcursor;
+    loop
+        fetch vcursor into vrecord;
+        exit when vcursor%notfound;
         
-        DBMS_OUTPUT.PUT_LINE('이름: ' || v_textbook.name || ', 등급: ' || v_textbook.grade || ', 교과서 이름: ' || v_textbook.textbook_name);
-    END LOOP;
-    CLOSE c_textbook;
-EXCEPTION
-    WHEN NO_DATA_FOUND THEN
-        DBMS_OUTPUT.PUT_LINE('교과서 정보를 찾을 수 없습니다.');
-    WHEN OTHERS THEN
-        ROLLBACK;
-        RAISE;
-END procTextbookInfo;
+                dbms_output.put_line('교육과정명: ' || vrecord.교육과정명 || ', 교사명: ' || vrecord.교사명 || ', 별점: ' || vrecord.별점 || ', 책 제목: ' || vrecord."책 제목" || ', 출판사명: ' || vrecord."출판사명");
+                dbms_output.put_line('----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------');
+    end loop;
+    close vcursor;
+exception
+    when no_data_found then
+        dbms_output.put_line('교과서 정보를 찾을 수 없습니다.');
+    when others then
+        rollback;
+        raise;
+end procTextbookInfo;
 /
 
-BEGIN
-    procTextbookInfo('김민곤');
-END;
+begin
+    procTextbookInfo(1);
+end;
 /
+
