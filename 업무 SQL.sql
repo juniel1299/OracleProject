@@ -1041,14 +1041,26 @@ from vwgrades g
                                                                             order by 강사명;
 
 
-select distinct vt.t_name,vt.t_id,vt.t_ssn,vt.t_tel,vc.s_name,vc.osl_startdate,vc.osl_enddate from vwtrainees vt
-inner join vwgrades vg
-on vt.seq_opencurriculum = vg.seq_opencurriculum
-inner join vwCurriculum vc
-on vc.seq_opensubjectlist = vg.seq_opensubjectlist
-where vt.t_name ='모백양'
-order by vt.t_name,vt.t_id,vt.t_ssn,vt.t_tel,vc.s_name,vc.osl_startdate,vc.osl_enddate;
 
+--시험을 안본 학생의 점수는 null로
+select
+c.c_name as 과정명,
+c.s_name as 과목명,
+t.name as 학생명,
+g.writtenGrade as 필기점수,
+g.practicalGrade as 실기점수,
+g.attendanceGrade as 출결점수
+from vwcurriculum c
+    join tblTraineeList tl
+        on c.seq_openCurriculum = tl.seq_openCurriculum
+            left outer join tblTestInfo ti
+                on c.seq_opensubjectlist = ti.seq_opensubjectlist
+                    left outer join tblGrades g
+                        on ti.seq_TestInfo = g.seq_TestInfo and tl.seq_traineelist = g.seq_traineelist
+                            inner join tblTrainees t
+                                on tl.seq_trainee = t.seq_trainee
+                                    order by 학생명;
+                                        
 -- D-2
 -- 출결 관리 및 조회 
 
@@ -1058,6 +1070,9 @@ order by vt.t_name,vt.t_id,vt.t_ssn,vt.t_tel,vc.s_name,vc.osl_startdate,vc.osl_e
 --성적이 등록되지 않은 과목이 있는 경우 과목 정보는 출력되고 점수는 null 값으로 출력되도록 한다.
 
 
+
+                                                  
+                                                                    
 select t.name,ad.situation,a.day,count(case when to_date(substr(a.intime,1,8),'yyyy-mm-dd') = to_date(substr(a.outtime,1,8),'yyyy-mm-dd') then 1
 end) from tblAttendance a
 inner join tblTraineelist tl
