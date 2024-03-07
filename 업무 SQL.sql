@@ -397,33 +397,22 @@ delete from tblTextbook where name ='OpenCV-Python으로 배우는 영상처리 
 
 -- 원혁
 --b-12 
---온라인 강의 수강 여부 
--- 1. 온라인 강의 수강 여부 조회
-select * from tblOnlineCourseList;
-select * from tblOnlineLecture;
-select * from tblTraineeList;
-select * from tblTrainees;
-
-select * from tblOnlineLecture ol
-    inner join tblOnlineCourseList oc
-    on ol.seq_onlineLecture = oc.seq_onlineLecture
-    order by ol.seq_onlinelecture;
-    
-    inner join tblTraineeList tl
-    on tl.seq_traineeList = oc.seq_traineeList;
-    
-    select t.name, ol.title, oc.status from tblTrainees t
-    inner join tblTraineeList tl
-    on t.seq_trainee = tl.seq_trainee
-    inner join tblOnlineCourseList oc
-    on tl.seq_traineeList = oc.seq_traineeList
-    inner join tblOnlineLecture ol
-    on oc.seq_onlineLecture = ol.seq_onlineLecture
-    where t.name = '박고제';
+--온라인 강의 수강 여부 조회
+select 
+t.name as "이름", 
+ol.title as "온라인 강의명", 
+oc.status as "수강 여부"
+    from tblTrainees t
+        inner join tblTraineeList tl
+            on t.seq_trainee = tl.seq_trainee
+                inner join tblOnlineCourseList oc
+                    on tl.seq_traineeList = oc.seq_traineeList
+                        inner join tblOnlineLecture ol
+                            on oc.seq_onlineLecture = ol.seq_onlineLecture
+                                where oc.status = '수강 미완료';
     
 --b-13 
 -- 출결 인정 서류 관리
--- 조회, 교육생이 제출한 출결 인정 서류를 조회한다. (지각, 조퇴, 외출, 병가, 기타)
 
 -- 제출 서류 등록
 insert into tblAttendancePapers (seq_attendancePapers, seq_traineeList, status, day, document, admitattendance)
@@ -435,21 +424,25 @@ update tblAttendancePapers
         where seq_attendancePapers = 1;
 
 -- 출결 인정 서류 조회
-    select t.name, ap.document, ap.admitattendance, ap.status from tblTrainees t
+select 
+t.name as "이름", 
+ap.document "제출 서류", 
+ap.admitattendance as "출석 인정 여부", 
+ap.status "출결" 
+from tblTrainees t
     inner join tblTraineeList tl
-    on t.seq_trainee = tl.seq_trainee
-    inner join tblAttendancePapers ap
-    on tl.seq_traineeList = ap.seq_traineeList
-    where t.name = '모진백';
+        on t.seq_trainee = tl.seq_trainee
+            inner join tblAttendancePapers ap
+                on tl.seq_traineeList = ap.seq_traineeList
+                    where t.name = '모진백';
 
 -- 삭제
 delete from tblAttendancePapers where seq_attendancePapers = 1;
 
 --b-14 
--- 기자재 & 사물함 관리
--- 1. 기자재 현황 관리
+-- 1. 기자재 관리
 
--- 비어있는 사물함 등록
+-- 기자재 등록
 insert into tblEquipment (seq_equipment, name, importDate, expectedExportDate, amount, brokenAmount) 
     values (1, '사물함', to_date('2016-01-17', 'yyyy-mm-dd'), null,176,0);
 
@@ -459,25 +452,98 @@ update tblEquipment set amount = 100 where seq_equipment = 1;
 -- 기자재 갯수 조회
 select * from tblEquipment;
 
--- 삭제
+-- 기자재 수량 삭제
 delete from tblEquipment where seq_equipment = 1;
- 
+
 -- 2. 사물함 배정 및 관리
-
 -- 등록
+insert into tblLocker(seq_locker, seq_equipment, seq_traineelist) 
+    values (132, 1, 132);
+    
+-- 배정된 사물함을 빈 사물함으로 수정
+update tblLocker set seq_traineeList = null where seq_locker = 132;
 
--- 수정
-
--- 조회
-
--- 삭제
+-- 조회 
+select e.name as "기자재명", 
+l.seq_locker as "사물함 번호",
+l.seq_traineelist as "교육생 목록 번호", 
+t.name as "교육생 이름", 
+tl.status as "수료 및 중도퇴사", 
+tl.day as "수료 및 중도퇴사 날짜"
+from tblEquipment e
+    inner join tblLocker l
+        on e.seq_equipment = l.seq_equipment
+            left outer join tblTraineeList tl
+                on tl.seq_traineeList = l.seq_traineeList
+                    left outer join tblTrainees t
+                        on t.seq_trainee = tl.seq_trainee
+                            order by l.seq_locker;
 
 --b-15 
+-- 공지사항 관리
+-- 1. 등록
+insert into tblNotice (seq,notice, seq_openCurriculum, title, content) values (1, 1, 'AWS와 Docker를 활용한 Java Full-Stack 과정(A) 공지사항', '"안녕하세요, AWS와 Docker를 활용한 Java Full-Stack 과정(A) 수강생 여러분!
+프로젝트 발표일이 7일 남았습니다. 이번 프로젝트에서도 열정적인 참여와 질문을 부탁드리며, 함께 더 나은 개발자가 되도록 노력해봅시다!"');
+
+-- 2. 삭제
+delete from tblNotice where seq_notice = 1;
+    
+-- 3. 수정
+update tblNotice set content = '수업 시간에 밖에 돌아다니지 마세요~' where seq_notice = 2;
+    
+-- 4. 조회      
+select 
+n.seq_notice as "번호", 
+n.seq_openCurriculum as "개설 교육과정 번호", 
+c.name as "과정명", 
+n.title as "제목", 
+n.content as "공지 사항" 
+from tblNotice n
+        inner join tblOpenCurriculum oc
+           on oc.seq_openCurriculum = n.seq_notice
+                right outer join tblCurriculum c
+                    on oc.seq_curriculum = c.seq_curriculum;
 
 --b-16
+-- 취업 현황 조회 및 관리
+-- 등록
+insert into tblEmploymentStatus 
+(seq_employmentStatus, seq_traineeList, status, city, company, field, salary)
+values (1, 1, '취업', '서울', '금호타이어', '프론트엔드', 36000000);
+
+-- 수정
+update tblEmploymentStatus 
+set status = '취업', 
+city = '제주', 
+company = '배달의 민족', 
+field = '프론트엔드', 
+salary = 50000000 
+where seq_employmentStatus = 2;
+
+-- 조회(교육과정별 취업현황 조회)
+select 
+es.seq_employmentStatus as "번호", 
+tl.seq_traineeList as "교육생 목록 번호", 
+oc.seq_openCurriculum as "개설 교육과정 번호", 
+c.name as "교육 과정", 
+es.status as "취업 여부", 
+es.city as "지역", 
+es.field as "분야", 
+es.salary as "연봉" 
+from tblEmploymentStatus es
+    left outer join tblTraineeList tl
+        on tl.seq_traineeList = es.seq_traineeList
+            inner join tblOpenCurriculum oc
+                on oc.seq_openCurriculum = tl.seq_openCurriculum
+                    inner join tblCurriculum c
+                        on oc.seq_curriculum = c.seq_curriculum
+                            where es.status = '취업'
+                                order by es.seq_employmentStatus;
+                  
+-- 삭제
+delete from tblEmploymentStatus where seq_employmentStatus = 1;
 
 --b-17
-
 --1. 수료생의 출결 현황 조회
 select t_name, a_day, situation 
 from vwtrainees where a_day>(sysdate-31) and a_day<=sysdate;
