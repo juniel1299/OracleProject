@@ -266,9 +266,12 @@ on oc.seq_room = r.seq_room
 where t.name = '전염유';
 
 -- 교육생 수정 (수정필요!)
-
+UPDATE tblTrainees 
+    SET ssn = p_ssn --주민번호 바꾸기 노노
+    WHERE name = p_name;
+    
 -- 교육생 삭제 (수정필요!)
-
+DELETE FROM tblTrainees WHERE name = p_name;
 
 --b-7
 -- 과목별
@@ -397,8 +400,7 @@ oc.status as "수강 여부"
                 inner join tblOnlineCourseList oc
                     on tl.seq_traineeList = oc.seq_traineeList
                         inner join tblOnlineLecture ol
-                            on oc.seq_onlineLecture = ol.seq_onlineLecture
-                                where oc.status = '수강 미완료';
+                            on oc.seq_onlineLecture = ol.seq_onlineLecture;
   
     
 --b-13 
@@ -422,8 +424,7 @@ from tblTrainees t
     inner join tblTraineeList tl
         on t.seq_trainee = tl.seq_trainee
             inner join tblAttendancePapers ap
-                on tl.seq_traineeList = ap.seq_traineeList
-                    where t.name = '모진백';
+                on tl.seq_traineeList = ap.seq_traineeList;
 
 -- 삭제
 delete from tblAttendancePapers where seq_attendancePapers = 1;
@@ -776,7 +777,7 @@ VALUES (1, 1, 1, 32, 31, 17);
 
 
 -- 3. 과목 목록 출력시 과목번호, 과정명, 과정기간(시작 년월일, 끝 년월일), 강의실, 과목명, 과목기간(시작 년월일, 끝 년월일), 교재명, 출결, 필기, 실기 배점, 성적 등록 여부 등이 출력되고, 
--- 3.1. 과목 목록 출력(성적 등록 여부?)                                            
+-- 3.1. 과목 목록 출력                                         
 select 
 vc.seq_subject "과목 번호",
 vc.c_name "과정명",
@@ -803,13 +804,14 @@ from vwCurriculum vc
                         on g.seq_testInfo = ti.seq_testInfo;
 
 
--- 특정 과목을 과목번호로 선택시 교육생 정보(이름, 전화번호, 수료 또는 중도탈락) 및 성적이 출결, 필기, 실기 점수로 구분되어서 출력되어야 한다.
--- 3.2. 특정 과목(자바) (수정필요!) 중도 탈락자 날짜
+-- 특정 과목을 과목번호로 선택시 교육생 정보(이름, 전화번호, 수료 또는 중도탈락), 날짜 및 성적이 출결, 필기, 실기 점수로 구분되어서 출력되어야 한다. 
+-- 3.2. 특정 과목(자바) 
 select 
 distinct vt.seq_traineeList "교육생 목록 번호",
 vt.t_name 이름,
 vt.t_tel 전화번호,
 vt.tl_status "상태",
+vt.tl_day "상태 날짜",
 vg.attendanceGrade "출결 점수",
 vg.writtenGrade "필기 점수",
 vg.practicalGrade "실기 점수"
@@ -818,7 +820,6 @@ from vwGrades vg
         on vt.seq_traineeList = vg.seq_traineeList
             where vg.seq_subject = 1; --특정 과목
                                             
-
 -- 4. 성적 등록 여부는 교육생 전체에 대해서 성적을 등록했는지의 여부를 출력한다.
 select 
 g.seq_testInfo "시험 정보 번호",
@@ -1000,6 +1001,7 @@ inner join tbltrainees t
 on t.seq_trainee = tl.seq_trainee
 inner join tblAttendancestatus ad
 on ad.seq_attendancestatus = a.seq_attendancestatus
+where t.name = '천유서'
 group by t.name,a.intime,a.outtime,ad.situation,a.day;
 
 

@@ -29,11 +29,13 @@ begin
     end loop;
     close vcursor;    
 end procUpdateCurriProgress;
+
 /
 begin
     procUpdateCurriProgress();
 end;
 /
+
 
 -- 2. 강의 종료시 학생들 수료 상태로 변경 + 수료날짜 자동 업데이트
 -- 테스트를 위한 null 만들기
@@ -59,12 +61,6 @@ from tblTraineeList tl
         on tl.seq_openCurriculum = oc.seq_openCurriculum;
 
 
-
---프로시저 실행
-begin
-    procUpdateCurriCompletionDate;
-end;
-/
 
 create or replace procedure procUpdateCurriCompletionDate 
 is
@@ -97,10 +93,15 @@ begin
     close vcursor;
 end procUpdateCurriCompletionDate;
 /
- 
+
+--프로시저 실행
+begin
+    procUpdateCurriCompletionDate;
+end;
+/ 
 
 
--- 4. 결석생은 자동으로 출결 테이블에 결석 데이터 들어가게 만들기
+-- 3. 결석생은 자동으로 출결 테이블에 결석 데이터 들어가게 만들기
 create or replace procedure procUpdateAbsent
 is
     vHoliday date;
@@ -154,62 +155,20 @@ begin
     
 end procUpdateAbsent;
 /
+
 begin
     procUpdateAbsent();
 end;
 /
 
--- 5. 출결인정 서류 내고 허가 받으면 출결 인정으로 자동 업데이트
-create or replace procedure procInsertattendancePapers (
-    p_seq_attendancePapers tblAttendancePapers.seq_attendancePapers%type,
-    p_document tblAttendancePapers.document%type
-)
-is
-    vdocument varchar2(50);
-begin
-    vdocument := p_document;
-    
-if (vdocument like '%코로나%' or 
-    vdocument like '%사망%' or
-    vdocument like '%입원%' or
-    vdocument like '%의사%' or
-    vdocument like '%출생 신고서%' or
-    vdocument like '%국가 자격증 시험%' or
-    vdocument like '%예비군%' or
-    vdocument like '%면접%' or
-    vdocument like '%국가%' or
-    vdocument like '%병가%') then
-    update tblAttendancePapers
-    set admitattendance = '출석 인정'
-    where seq_attendancePapers = p_seq_attendancePapers;
-    dbms_output.put_line('출석이 인정되었습니다.');
-else
-    update tblAttendancePapers
-    set admitattendance = '출석 미인정'
-    where seq_attendancePapers = p_seq_attendancePapers;
-    dbms_output.put_line('출석으로 인정되지 않는 서류입니다.');
-    end if;   
-end procInsertattendancePapers;
-/
 
-begin
-    procInsertattendancePapers();
-end;
-/
-
--- 10. 출결 상황을 자동 업데이트 하는 트리거
+-- 4. 출결 상황을 자동 업데이트 하는 트리거
 -- 정상(1), 지각(2), 조퇴(3), 외출(4), 병가(5), 기타(6), 결석(7)
-begin
-    procUpdateaAttendanceStatus;
-end;
-/
-
 select 
 to_char(inTime, 'HH24:MI:SS') "출근 시간",
 to_char(outTime, 'HH24:MI:SS') "퇴근 시간",
 seq_attendanceStatus
 from tblAttendance;
-
 
 update tblAttendance 
 set seq_attendanceStatus = null 
@@ -217,8 +176,8 @@ where seq_attendancestatus = 1
 or seq_attendancestatus = 2
 or seq_attendancestatus = 3;
 
-
 rollback;
+
 
 create or replace procedure procUpdateaAttendanceStatus
 is
@@ -269,5 +228,10 @@ begin
                 
     end loop;
     close vcursor;
+end;
+/
+
+begin
+    procUpdateaAttendanceStatus;
 end;
 /
