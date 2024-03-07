@@ -265,13 +265,13 @@ inner join tblRoom r
 on oc.seq_room = r.seq_room
 where t.name = '전염유';
 
--- 교육생 수정 (수정필요!)
+-- 교육생 수정 
 UPDATE tblTrainees 
-    SET ssn = p_ssn --주민번호 바꾸기 노노
-    WHERE name = p_name;
+    SET tel = '010-0000-0000' --주민번호 바꾸기 노노
+    WHERE seq_trainee = 1;
     
--- 교육생 삭제 (수정필요!)
-DELETE FROM tblTrainees WHERE name = p_name;
+-- 교육생 삭제
+delete from tbltrainees where name ='전염유';
 
 --b-7
 -- 과목별
@@ -316,7 +316,7 @@ select * from tbltrainees;
 
 -- B-8
 --출결 관리
---1. 개설 과정 별 (수정필요!) 기간별로 조회 가능해야한다.
+--1. 개설 과정 별
 select t.name,a.day,c.name,ad.situation from tblAttendance a
 inner join tblTraineeList tl
 on a.seq_traineeList = tl.seq_traineelist
@@ -328,7 +328,7 @@ inner join tblattendancestatus ad
 on ad.seq_attendancestatus = a.seq_attendancestatus
 inner join tblTrainees t
 on t.seq_trainee = tl.seq_trainee
-where c.name = 'AWS 클라우드와 Elasticsearch를 활용한 Java Full-Stack 과정(B)'
+where c.name = 'AWS 클라우드와 Elasticsearch를 활용한 Java Full-Stack 과정(B)' and a.day between to_date('2023-09-04', 'YYYY-MM-DD') and to_date('2024-02-04', 'YYYY-MM-DD')
 group by t.name,a.day,c.name,ad.situation;
 
 
@@ -983,7 +983,7 @@ from vwcurriculum c
                                 on tl.seq_trainee = t.seq_trainee
                                     order by 학생명;
                                     
-                                        
+                        
 -- D-2
 -- 출결 관리 및 조회 
 
@@ -1023,14 +1023,14 @@ on ad.seq_attendancestatus = a.seq_attendancestatus
 where a.day like '23%' and t.name = '천유서';
 
 
---D-3 (수정필요!) 교육 과정 평가임!!
---교사 평가 (수료 학생만 가능) 
-insert into tblTeacherEvaluation
+--D-3  
+--교육 과정 평가 (수료 학생만 가능) 
+insert into tblcurriculumEvaluation
 values(
 1,1,1,5,'설명을 자세하게 해주신다.');
 
 
---D-4 (수정필요!) 교사별로 출력되야 한다. 자기가 수강 중인 교사님의 추천 교재만 볼 수 있어야 한다.
+--D-4 교사별로 출력되야 한다. 자기가 수강 중인 교사님의 추천 교재만 볼 수 있어야 한다. (수정필요!)
 --교사 추천 도서 조회 
 -- 조회
 select * from tblRecommendTextbook;
@@ -1042,3 +1042,4 @@ select * from tblRecommendTextbook;
 insert into tblAttendancePapers
 values(
 1,1,'조퇴','2023-09-13','코로나 진단 서류','');
+
