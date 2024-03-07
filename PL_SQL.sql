@@ -624,6 +624,517 @@ BEGIN
 END;
 /
 
+-- 원혁
+-- PL/SQL
+-- B-12 
+-- 온라인 강의 수강 여부 확인
+declare 
+    vname tblTrainees.name%TYPE;
+    vtitle tblOnlineLecture.title%TYPE;
+    vstatus tblOnlineCourseList.status%TYPE;
+cursor vcursor
+is
+select
+    t.name as "이름",
+    ol.title as "온라인 강의명",
+    oc.status as "수강 여부"
+    from tblTrainees t
+        inner join tblTraineeList tl 
+            on t.seq_trainee = tl.seq_trainee
+                inner join tblOnlineCourseList oc 
+                    on tl.seq_traineeList = oc.seq_traineeList
+                        inner join tblOnlineLecture ol 
+                            on oc.seq_onlineLecture = ol.seq_onlineLecture
+                                where oc.status = '수강 완료';
+begin
+    open vcursor;
+    loop
+    fetch vcursor into vname, vtitle, vstatus;
+    exit when vcursor%notfound;
+    if vstatus = '수강 완료' then
+        dbms_output.put_line('----------------------------------------');
+        dbms_output.put_line('이름: ' || vname);
+        dbms_output.put_line('온라인 강의명: ' || vtitle);
+        dbms_output.put_line('수강 여부: ' || vstatus);
+        dbms_output.put_line('----------------------------------------');
+    elsif vstatus = '수강 미완료' THEN
+        dbms_output.put_line('----------------------------------------');
+        dbms_output.put_line(vname || ' ' || vtitle || ' ' || vstatus);
+        dbms_output.put_line('----------------------------------------');
+    else
+        dbms_output.put_line('잘못 입력했거나 조회된 데이터가 없습니다');
+    end if;
+    end loop;
+    close vcursor;
+end;
+/
+
+-- B-13
+-- 출결 서류 인정 관리
+-- 등록
+create or replace procedure procInsertattendancePapers (
+    p_seq_attendancePapers in tblAttendancePapers.seq_attendancePapers%type,
+    p_seq_traineeList in tblAttendancePapers.seq_traineeList%type,
+    p_status in tblAttendancePapers.status%type,
+    p_day in tblAttendancePapers.day%type,
+    p_document in tblAttendancePapers.document%type,
+    p_admitattendance in tblAttendancePapers.admitattendance%type
+)
+is
+begin
+    insert into tblAttendancePapers (seq_attendancePapers, seq_traineeList, status, day, document, admitattendance)
+    values (p_seq_attendancePapers, p_seq_traineeList, p_status, p_day, p_document, p_admitattendance);
+    dbms_output.put_line('출결 서류 등록이 완료되었습니다.');
+end procInsertattendancePapers;
+/
+begin
+    procInsertattendancePapers(1, 1, 조퇴, '2023-09-13', '코로나 진단 서류', '출석 인정');
+end;
+/
+
+-- 수정
+update tblAttendancePapers
+    set document = '국민취업지원제도 상담'
+        where seq_attendancePapers = 1;
+
+CREATE OR REPLACE PROCEDURE procUpdateAttendancePapers (
+    vseq_attendancePapers tblAttendancePapers.seq_attendancePapers%type,
+    vdocument tblAttendancePapers.document%type
+)
+IS
+    p_seq_attendancePapers number;
+    p_document varchar2(50);
+BEGIN
+    -- 여기에 변수 초기화 또는 값 할당 코드를 추가할 수 있습니다.
+    UPDATE tblAttendancePapers
+    SET
+        document = p_document
+    WHERE
+        seq_attendancePapers = p_seq_attendancePapers;
+    dbms_output.put_line('수정에 성공했습니다.');
+    -- 작업이 성공적으로 완료되면 여기에 추가 작업을 수행할 수 있습니다.
+
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('수정에 실패했습니다.');
+END procUpdateAttendancePapers;
+/
+begin
+    procUpdateattendancePapers(1, '국민취업지원제도상담');
+end;
+/
+
+-- 조회
+select 
+t.name as "이름", 
+ap.document "제출 서류", 
+ap.admitattendance "출석 인정 여부", 
+ap.status "출결" 
+from tblTrainees t
+    inner join tblTraineeList tl
+        on t.seq_trainee = tl.seq_trainee
+            inner join tblAttendancePapers ap
+                on tl.seq_traineeList = ap.seq_traineeList
+                    where t.name = '모진백';
+-- 호출하기                  
+create or replace procedure procSelectattendancePapers (
+    pstatus in varchar2
+)
+is
+    vname tblTrainees.name%type;
+    vdocument tblAttendancePapers.document%type;
+    vadmitattendance tblAttendancePapers.admitattendance%type;
+    vstatus tblAttendancePapers.status%type;
+cursor vcursor
+is
+select 
+t.name "이름", 
+ap.document "제출 서류", 
+ap.admitattendance "출석 인정 여부", 
+ap.status "출결" 
+from tblTrainees t
+    inner join tblTraineeList tl
+        on t.seq_trainee = tl.seq_trainee
+            inner join tblAttendancePapers ap
+                on tl.seq_traineeList = ap.seq_traineeList
+                    where ap.admitattendance = pstatus;
+                    
+begin
+open vcursor;
+loop
+    fetch vcursor into vname, vdocument, vadmitattendance, vstatus;
+    exit when vcursor%notfound;
+    dbms_output.put_line('이름 : ' || vname || ', 제출 서류 : ' || vdocument || ', 출석 인정 여부 : ' || vadmitattendance || ', 출결 : ' || vstatus);
+end loop;
+close vcursor;
+    dbms_output.put_line('조회가 완료되었습니다.');
+exception
+    when others then
+    dbms_output.put_line('잘못 입력하셨습니다.');
+end procSelectattendancePapers;
+/
+
+begin
+    procSelectattendancePapers('출석 인정');
+end;
+/
+
+-- 삭제
+create or replace procedure procDeleteattendancePapers (
+p_seq_attendancePapers in tblAttendancePapers.seq_attendancePapers%type
+)
+is
+begin
+delete from tblAttendancePapers
+where seq_attendancePapers = p_seq_attendancePapers;
+dbms_output.put_line('삭제되었습니다.');
+exception
+when others then
+dbms_output.put_line('잘못된 번호입니다');
+end procDeleteattendancePapers;
+/
+begin
+    procDeleteattendancePapers(2);
+end;
+/
+-- B-14 기자재 & 사물함 관리
+-- 기자재 조회
+select * from tblEquipment;
+
+-- 기자재 등록    
+    create or replace procedure procInsertequipment (
+        p_seq_equipment in tblEquipment.seq_equipment%type,
+        p_name in tblEquipment.name%type,
+        p_expectedExportDate in tblEquipment.expectedExportDate%type,
+        p_amount in tblEquipment.amount%type,
+        p_brokenAmount in tblEquipment.brokenAmount%type
+    )
+    is
+    begin
+        insert into tblEquipment (seq_equipment, name, expectedExportDate, amount, brokenAmount)
+            values (p_seq_equipment, p_name, p_expectedExportDate, p_amount, p_brokenAmount);
+        dbms_output.put_line('기자재 등록이 완료되었습니다.');
+    end procInsertequipment;
+    /
+begin
+    procInsertequipment(1, '사물함', to_date('2016-01-17', 'yyyy-mm-dd'), null,176,0);
+end;
+/
+-- 기자재 수정
+update tblEquipment set amount = 100 where seq_equipment = 1;
+
+create or replace procedure procUpdateequipment (
+    p_seq_equipment in tblEquipment.seq_equipment%type,
+    p_amount in tblEquipment.amount%type
+)
+is
+begin
+    update tblEquipment
+    set amount = p_amount
+    where seq_equipment = p_seq_equipment;
+end procUpdateequipment;
+/
+begin
+    procUpdateequipment(1, 100);
+end;
+/
+
+-- 삭제
+create or replace procedure procDeleteequipment (
+    p_seq_equipment in tblEquipment.seq_equipment%type
+)
+is
+begin
+    delete from tblEquipment
+    where seq_equipment = p_seq_equipment;
+    dbms_output.put_line('삭제완료되었습니다');
+    exception
+    when others then
+    dbms_output.put_line('잘못된 번호입니다.');
+end procDeleteequipment;
+/
+begin
+    procDeleteequipment(1);
+end;
+/
+
+-- 사물함 배정 및 관리
+-- 1. 등록
+create or replace procedure procInsertlocker (
+    p_seq_locker in tblLocker.seq_locker%type,
+    p_seq_equipment in tblLocker.seq_equipment%type,
+    p_seq_traineelist in tblLocker.seq_traineelist%type
+)
+is
+begin
+    insert into tblLocker(seq_locker, seq_equipment, seq_traineelist)
+        values (p_seq_locker, p_seq_equipment, p_seq_traineelist);
+        dbms_output.put_line('등록이 완료되었습니다');
+    exception
+        when others then
+        dbms_output.put_line('등록 중 오류가 발생했습니다');
+end procInsertlocker;
+/
+begin
+    procInsertlocker(132, 1, 132);
+end;
+/
+
+-- 호출하기
+-- 2. 조회
+create or replace procedure procSelectlocker (
+    vname in varchar2
+)
+is
+    p_name tblEquipment.name%type;
+    p_seq_locker tblLocker.seq_locker%type;
+    p_seq_traineelist tblLocker.seq_traineeList%type;
+    p_tname tblTrainees.name%type;
+    p_status tblTraineeList.status%type;
+    p_day tblTraineeList.day%type;
+
+cursor vcursor
+is
+select e.name as "기자재명", 
+l.seq_locker as "사물함 번호",
+l.seq_traineelist as "교육생 목록 번호", 
+t.name as "교육생 이름", 
+tl.status as "수료 및 중도퇴사", 
+tl.day as "수료 및 중도퇴사 날짜"
+from tblEquipment e
+    inner join tblLocker l
+        on e.seq_equipment = l.seq_equipment
+            left outer join tblTraineeList tl
+                on tl.seq_traineeList = l.seq_traineeList
+                    left outer join tblTrainees t
+                        on t.seq_trainee = tl.seq_trainee
+                            where t.name = vname
+                                order by l.seq_locker;
+begin
+open vcursor;
+    loop 
+    fetch vcursor into p_name, p_seq_locker, p_seq_traineelist, p_tname, p_status, p_day;
+    exit when vcursor%notfound;
+    dbms_output.put_line('기자재명: ' || p_name || ', 사물함 번호: ' || p_seq_locker || ', 교육생 목록 번호: ' || p_seq_traineelist || ', 교육생 이름: ' || p_tname || ', 수료 및 중도퇴사: ' || p_status || ', 수료 및 중도퇴사 날짜: ' || p_day);
+    end loop;
+close vcursor;
+    dbms_output.put_line('조회가 완료되었습니다');
+exception
+    when others then
+    dbms_output.put_line('잘못 입력하셨습니다.');
+end procSelectlocker;
+/
+
+begin
+    procSelectlocker('홍길동');
+end;
+/
+
+-- B-15. 공지사항 관리
+-- 조회
+select * from tblNotice;
+
+-- 등록
+insert into tblNotice (seq_notice, seq_openCurriculum, title, content) values (1, 1, 'AWS와 Docker를 활용한 Java Full-Stack 과정(A) 공지사항', '"안녕하세요, AWS와 Docker를 활용한 Java Full-Stack 과정(A) 수강생 여러분!
+프로젝트 발표일이 7일 남았습니다. 이번 프로젝트에서도 열정적인 참여와 질문을 부탁드리며, 함께 더 나은 개발자가 되도록 노력해봅시다!"');
+
+create or replace procedure procInsertnotice (
+    p_seq_notice in tblNotice.seq_notice%type,
+    p_seq_openCurriculum in tblNotice.seq_openCurriculum%type,
+    p_title in tblNotice.title%type,
+    p_content in tblNotice.content%type
+)
+is
+begin
+insert into tblNotice (seq_notice, seq_openCurriculum, title, content) values (p_seq_notice, p_seq_openCurriculum, p_title, p_content);
+dbms_output.put_line('공지사항 등록이 완료되었습니다.');
+end procInsertnotice;
+/
+begin
+    procInsertnotice(2, 2, 'AWS와 Docker를 활용한 Java Full-Stack 과정(A) 공지사항', '"안녕하세요, AWS와 Docker를 활용한 Java Full-Stack 과정(A) 수강생 여러분!
+프로젝트 발표일이 7일 남았습니다. 이번 프로젝트에서도 열정적인 참여와 질문을 부탁드리며, 함께 더 나은 개발자가 되도록 노력해봅시다!"');
+end;
+/
+
+-- 수정
+create or replace procedure procUpdatenotice (
+    p_seq_notice in number,
+    p_seq_openCurriculum in number,
+    p_title in varchar2,
+    p_content in varchar2
+)
+is
+begin
+update tblNotice
+set 
+seq_openCurriculum = p_seq_openCurriculum,
+title = p_title,
+content = p_content
+where seq_notice = p_seq_notice;
+end procUpdatenotice;
+/
+begin
+    procUpdatenotice(7, 7, 'AWS 클라우드와 Elasticsearch를 활용한 Java Full-Stack 과정(B) 공지사항', '수료 축하합니다!');
+end;
+/
+
+-- 삭제
+create or replace procedure procDeletenotice (
+    p_seq_notice in tblNotice.seq_notice%type
+)
+is
+begin
+    delete from tblNotice
+    where seq_notice = p_seq_notice;
+    dbms_output.put_line('공지사항이 삭제되었습니다');
+    exception
+    when others then
+    dbms_output.put_line('잘못된 번호입니다.');
+end procDeletenotice;
+/
+begin
+    procDeletenotice(1);
+end;
+/
+
+-- B-16. 취업현황 조회 및 관리
+-- 등록
+insert into tblEmploymentStatus 
+(seq_employmentStatus, seq_traineeList, status, city, company, field, salary)
+values (1, 1, '취업', '서울', '금호타이어', '프론트엔드', 36000000);
+
+create or replace procedure procInsertemploymentStatus (
+    p_seq_employmentStatus in tblEmploymentStatus.seq_employmentStatus%type,
+    p_seq_traineeList in tblEmploymentStatus.seq_traineeList%type,
+    p_status in tblEmploymentStatus.status%type,
+    p_city in tblEmploymentStatus.city%type,
+    p_company in tblEmploymentStatus.company%type,
+    p_field in tblEmploymentStatus.field%type,
+    p_salary in tblEmploymentStatus.salary%type
+)
+is
+begin
+    insert into tblEmploymentStatus 
+    (seq_employmentStatus, seq_traineeList, status, city, company, field, salary)
+    values (p_seq_employmentStatus, p_seq_traineeList, p_status, p_city, p_company, p_field, p_salary);
+    dbms_output.put_line('등록이 완료되었습니다');
+end procInsertemploymentStatus;
+/
+begin
+    procInsertemploymentStatus(1, 1, '취업', '서울', '금호타이어', '프론트엔드', 36000000);
+end;
+/
+
+
+-- 수정
+update tblEmploymentStatus 
+set status = '취업', 
+city = '제주', 
+company = '배달의 민족', 
+field = '프론트엔드', 
+salary = 50000000 
+where seq_employmentStatus = 2;
+
+create or replace procedure procUpdateemploymentStatus (
+    p_seq_employmentStatus in number,
+    p_status in varchar2,
+    p_city in varchar2,
+    p_company in varchar2,
+    p_field in varchar2,
+    p_salary in number
+)
+is
+begin
+    update tblEmploymentStatus
+    set
+    status = p_status,
+    city = p_city,
+    company = p_company,
+    field = p_field,
+    salary = p_salary
+    where seq_employmentStatus = p_seq_employmentStatus;
+    
+    dbms_output.put_line('수정이 완료되었습니다.');
+    
+    exception
+    when others then
+    dbms_output.put_line('수정에 실패했습니다.');
+end procUpdateemploymentStatus;
+/
+begin
+    procUpdateemploymentStatus(2, '취업', '제주', '배달의 민족', '프론트엔드', 50000000);
+end;
+/
+-- 조회
+create or replace procedure procSelectemploymentStatus (
+    p_status in varchar2
+)
+is
+    p_seq_employmentStatus tblEmploymentStatus.seq_employmentStatus%type;
+    p_seq_traineeList tblTraineeList.seq_traineeList%type;
+    p_seq_openCurriculum tblOpenCurriculum.seq_openCurriculum%type;
+    p_name tblCurriculum.name%type;
+    p_estatus tblEmploymentStatus.status%type;
+    p_city tblEmploymentStatus.city%type;
+    p_field tblEmploymentStatus.field%type;
+    p_salary tblEmploymentStatus.salary%type;
+cursor vcursor is
+select 
+es.seq_employmentStatus as "번호", 
+tl.seq_traineeList as "교육생 목록 번호", 
+oc.seq_openCurriculum as "개설 교육과정 번호", 
+c.name as "교육 과정", 
+es.status as "취업 여부", 
+es.city as "지역", 
+es.field as "분야", 
+es.salary as "연봉" 
+from tblEmploymentStatus es
+    left outer join tblTraineeList tl
+        on tl.seq_traineeList = es.seq_traineeList
+            inner join tblOpenCurriculum oc
+                on oc.seq_openCurriculum = tl.seq_openCurriculum
+                    inner join tblCurriculum c
+                        on oc.seq_curriculum = c.seq_curriculum
+                            where es.status = p_status
+                                order by es.seq_employmentStatus;
+begin
+open vcursor;
+loop
+fetch vcursor into p_seq_employmentStatus, p_seq_traineeList, p_seq_openCurriculum, p_name, p_estatus, p_city, p_field, p_salary;
+exit when vcursor%notfound;
+dbms_output.put_line('-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------');
+dbms_output.put_line('번호: ' || p_seq_employmentStatus || '| 교육생 목록 번호: ' || p_seq_traineeList || '| 교육 과정: ' || p_seq_openCurriculum || '| 취업 여부: ' || p_estatus || '| 지역: ' || p_city || '| 분야: ' || p_field || '| 연봉: ' || p_salary);
+dbms_output.put_line('-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------');
+end loop;
+close vcursor;   
+end procSelectemploymentStatus;
+/
+begin
+    procSelectemploymentStatus('취업');
+end;
+/
+
+-- 삭제
+delete from tblEmploymentStatus where seq_employmentStatus = 1;
+
+create or replace procedure procDeleteemploymentStatus (
+    p_seq_employmentStatus in tblEmploymentStatus.seq_employmentStatus%type
+)
+is
+begin
+    delete from tblEmploymentStatus
+    where seq_employmentStatus = p_seq_employmentStatus;
+    dbms_output.put_line('삭제가 완료되었습니다');
+    
+    exception
+    when others then
+    dbms_output.put_line('잘못된 번호입니다.');
+end procDeleteemploymentStatus;
+/
+begin
+    procDeleteemploymentStatus(1);
+end;
+/
 -- D-1 
 
 -- 성적조회
