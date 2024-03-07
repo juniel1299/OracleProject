@@ -479,20 +479,32 @@ delete from tblEquipment where seq_equipment = 1;
 --b-17
 
 --1. 수료생의 출결 현황 조회
-select * from vwtrainees;
 select t_name, a_day, situation 
 from vwtrainees where a_day>(sysdate-31) and a_day<=sysdate;
 
---2. 교육생 계좌 정보 조회와 훈련지원금 계산
-select t_name, bank, account, count(*)*10000*2 as 훈련지원금
+--2. 교육생 계좌 정보 조회와 훈련장려금 계산
+select distinct t_name, bank, account,
+    case
+        when 출석여부 = -1 and count(출석여부) >= 4 then 0
+        when 출석여부 = 1 and (count(출석여부)/3) >= 1 then 200000-(10000*floor(count(출석여부)/3))
+        when 출석여부 = 1 and (count(출석여부)/3) < 1 then 200000
+        when 출석여부 = 2 and count(출석여부) <= 3 then 0
+        when 출석여부 = 2 and count(출석여부) > 3 then 200000
+    end as 훈련장려금
+from
+(select t_name, bank, account,
+    case
+        when situation = '정상' then 2
+        when situation = '결석' then -1
+        else 1
+    end as 출석여부
 from vwtrainees 
-    where a_day>(sysdate-31) and a_day<=sysdate
-        group by t_name, bank, account;
+    where a_day>(sysdate-31) and a_day<=sysdate)
+        group by t_name, bank, account,출석여부;
 
 -- 혜정
 --c-2 배점 입출력
 
--- 강의를 마친 과목에 대한 성적 처리이기 때문에 pl/sql 사용해야할 듯
 -- 1. 교사가 강의를 마친 과목에 대한 성적 처리를 위해서 배점 입출력을 할 수 있어야 한다.
 -- 1.1. 배점 입력
 INSERT INTO tblTestInfo
@@ -500,15 +512,18 @@ VALUES (1, 1, TO_DATE('2023-10-03', 'YYYY-MM-DD'), TO_DATE('2023-10-04', 'YYYY-M
 
 -- 1.2. 배점 출력
 select 
-seq_openSubjectList "과목 목록 번호",
-writtenPoints "필기 배점",
-practicalPoints "실기 배점",
-attendancePoints "출결 배점"
-from tblTestInfo;
+ti.seq_openSubjectList "과목 목록 번호",
+ti.writtenPoints "필기 배점",
+ti.practicalPoints "실기 배점",
+ti.attendancePoints "출결 배점"
+from tblTestInfo ti
+    inner join tblOpenSubjectList osl
+        on ti.seq_openSubjectList = osl.seq_openSubjectList
+            where osl.endDate < sysdate;
 
 
 -- 특정 과목이기 때문에 pl/sql 필요
---2. 교사는 자신이 강의를 마친 과목의 목록 중에서 특정 과목을 선택하고 해당 과목의 배점 정보를 출결, 필기, 실기로 구분해서 등록할 수 있어야 한다. 시험 날짜, 시험 문제를 추가할 수 있어야 한다.
+-- 2. 교사는 자신이 강의를 마친 과목의 목록 중에서 특정 과목을 선택하고 해당 과목의 배점 정보를 출결, 필기, 실기로 구분해서 등록할 수 있어야 한다. 시험 날짜, 시험 문제를 추가할 수 있어야 한다.
 -- 2.1. 특정 과목 선택
 insert into tblTestInfo(seq_testInfo, seq_openSubjectList) 
 values (1, 1);
@@ -529,8 +544,10 @@ set attendancegrade = 20
 where seq_openSubjectList = 1;
 
 -- 2.5. 시험 날짜 추가
-INSERT INTO tblTestInfo
-VALUES (1, 1, TO_DATE('2023-10-03', 'YYYY-MM-DD'), TO_DATE('2023-10-04', 'YYYY-MM-DD'));
+update tblTestInfo
+set writtenDate = TO_DATE('2023-10-03', 'YYYY-MM-DD'), 
+    practicalDate = TO_DATE('2023-10-04', 'YYYY-MM-DD')
+where seq_openSubjectList = 1;
 
 
 -- 2.6. 시험 문제 추가
@@ -549,7 +566,6 @@ VALUES (1, 1, TO_DATE('2023-10-03', 'YYYY-MM-DD'), TO_DATE('2023-10-04', 'YYYY-M
 
 --4. 과목 목록 출력 시 과목번호, 과정명, 과정기간(시작 년월일, 끝 년월일), 강의실, 과목명, 과목기간(시작 년월일, 끝 년월일), 교재명, 출결, 필기, 실기 배점 등이 출력되고, 
 -- 특정 과목을 과목번호로 선택 시 출결 배점, 필기 배점, 실기 배점, 시험 날짜, 시험 문제를 입력할 수 있는 화면으로 연결되어야 한다.
--- pl/sql로 구현해야한다.
 
 -- 4.1. 과목 목록 출력
 select 
@@ -607,7 +623,7 @@ from tblTestInfo ti
 -- 강의를 마친 과목에 대한 내용은 자바에서 다룬다.
 -- 1.1. 성적 입력
 INSERT INTO tblGrades(SEQ_GRADES, SEQ_TRAINEELIST, SEQ_testInfo, WRITTENGRADE, PRACTICALGRADE, ATTENDANCEGRADE)
-VALUES (1, 1,1, 32, 31, 17);
+VALUES (1, 1, 1, 32, 31, 17);
 
 -- 1.2. 성적 출력
 select 
@@ -628,6 +644,7 @@ from vwGrades vg
 
 -- 2. 교사는 자신이 강의를 마친 과목의 목록 중에서 특정 과목을 선택하면, 교육생 정보가 출력되고, 특정 교육생 정보를 선택하면, 해당 교육생의 시험 점수를 입력할 수 있어야 한다. 이때, 출결, 필기, 실기 점수를 구분해서 입력할 수 있어야 한다.
 -- 2.1. 특정 과목 선택
+/*
 select 
 distinct sl.seq_subject "과목 번호",
 vt.seq_trainee "학생 번호",
@@ -640,6 +657,18 @@ from  vwTrainees vt
             inner join tblSubjectList sl
                 on sl.seq_subjectList = osl.seq_subjectList
                     where sl.seq_subject = 1; -- 특정과목
+*/
+
+select 
+distinct osl.seq_subjectList "과목 목록 번호",
+vt.seq_trainee "학생 번호",
+vt.t_name "이름",
+vt.t_id "아이디",
+vt.t_tel "전화번호"
+from  vwTrainees vt
+    inner join tblOpenSubjectList osl
+        on osl.seq_openCurriculum = vt.seq_openCurriculum
+            where osl.seq_subjectList = 1; -- 특정과목
                     
 -- 2.2. 특정 교육생 선택
 select 

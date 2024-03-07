@@ -117,12 +117,11 @@ create table tblPublicHoliday (
 
 -- 시험지
 create table tblExamPaper (
-    seq_attendancePapers number primary key,
+    seq_examPaper number primary key,
     seq_question references tblQuestion(seq_question),
-    seq_subject references tblSubject(seq_subject),
+    seq_openSubjectList references tblOpenSubjectList(seq_openSubjectList),
     kind varchar2(50) not null
 );
-
 
 -- 교육과정
 create table tblCurriculum (
