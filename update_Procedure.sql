@@ -42,7 +42,42 @@ end;
 
 
 -- 5. 출결인정 서류 내고 허가 받으면 출결 인정으로 자동 업데이트
+create or replace procedure procInsertattendancePapers (
+    p_seq_attendancePapers tblAttendancePapers.seq_attendancePapers%type,
+    p_document tblAttendancePapers.document%type
+)
+is
+    vdocument varchar2(50);
+begin
+    vdocument := p_document;
+    
+if (vdocument like '%코로나%' or 
+    vdocument like '%사망%' or
+    vdocument like '%입원%' or
+    vdocument like '%의사%' or
+    vdocument like '%출생 신고서%' or
+    vdocument like '%국가 자격증 시험%' or
+    vdocument like '%예비군%' or
+    vdocument like '%면접%' or
+    vdocument like '%국가%' or
+    vdocument like '%병가%') then
+    update tblAttendancePapers
+    set admitattendance = '출석 인정'
+    where seq_attendancePapers = p_seq_attendancePapers;
+    dbms_output.put_line('출석이 인정되었습니다.');
+else
+    update tblAttendancePapers
+    set admitattendance = '출석 미인정'
+    where seq_attendancePapers = p_seq_attendancePapers;
+    dbms_output.put_line('출석으로 인정되지 않는 서류입니다.');
+    end if;   
+end procInsertattendancePapers;
+/
 
+begin
+    procInsertattendancePapers();
+end;
+/
 
 -- 10. 출결 상황을 자동 업데이트 하는 트리거
 
