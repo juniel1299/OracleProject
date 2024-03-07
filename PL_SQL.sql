@@ -783,18 +783,17 @@ end;
 /
 
 
--- (수정필요!) 교사 번호를 입력하면 본인이 수강 중인 과목 목록 다 출력되야한다.
+-- 교사 번호를 입력하면 본인이 수강 중인 과목 목록 다 출력
 -- 4. 과목 목록 출력 시 과목번호, 과정명, 과정기간(시작 년월일, 끝 년월일), 강의실, 과목명, 과목기간(시작 년월일, 끝 년월일), 교재명, 출결, 필기, 실기 배점 등이 출력되고, 
 -- 특정 과목을 과목번호로 선택 시 출결 배점, 필기 배점, 실기 배점, 시험 날짜, 시험 문제를 입력할 수 있는 화면으로 연결되어야 한다. (자바에서 구현해야할 듯)
 -- 5. 배점 등록이 안 된 과목인 경우는 과목 정보가 출력될 때 배점 부분은 null 값으로 출력한다.
--- 4.1. 특정 교사가 개설 과목 목록 번호로 선택하면 정보 출력
 create or replace procedure procSubjectListOut (
-    pSeq_teacher in number,
-    pSeq_openSubjectList in number
+    pSeq_teacher in number
 ) 
 is
  cursor vcursor is
         select 
+        vc.seq_openSubjectList "과정 번호",
         vc.seq_subject "과목 번호",
         vc.c_name "과정명",
         vc.oc_startDate "과정 시작일",
@@ -813,7 +812,6 @@ is
                     inner join tblTestInfo ti
                         on ti.seq_openSubjectList = vc.seq_openSubjectList
                             where vc.seq_teacher = pSeq_teacher
-                            and vc.seq_openSubjectList = pSeq_openSubjectList
                             and vc.osl_enddate < sysdate;
                             
     vrecord vcursor%rowtype;
@@ -824,7 +822,7 @@ begin
     loop
         fetch vcursor into vrecord;
         exit when vcursor%notfound;
-        dbms_output.put_line('-----------------------------------------------------------------------------------');
+        dbms_output.put_line('과정 번호: ' || vrecord."과정 번호");
         dbms_output.put_line('과목 번호: ' || vrecord."과목 번호");
         dbms_output.put_line('과정명: ' || vrecord."과정명");
         dbms_output.put_line('과정 시작일: ' || vrecord."과정 시작일");
@@ -849,7 +847,7 @@ end procSubjectListOut;
 /
 
 begin
-    procSubjectListOut(1, 1);
+    procSubjectListOut(1);
 end;
 /
 
