@@ -1,8 +1,7 @@
 -- 희연
---b-1 
---할거 없음 :)
+-- B-1 
 
---b-2 
+-- B-2. 기초 정보 관리 기능
 /* 과정명 관리 */
 --1.입력
 --과정 기간 번호(seq_coursePeriod) : 1 - 5.5개월, 2 - 6개월, 3 - 7개월
@@ -205,12 +204,13 @@ from vwcurriculum v
                     where v.seq_opencurriculum = 1
                         order by 이름;
         
+        
 --b-5 
---1.입력
+--1.입력(개설 과목 등록
 INSERT INTO tblOpenSubjectList
 VALUES (1, 47, 7, 1, 1, TO_DATE('2023-09-04', 'YYYY-MM-DD'), TO_DATE('2023-10-02', 'YYYY-MM-DD'));
     
---2. 출력
+--2. 출력(개설 과목 보기
 select
     c_name as 과정명,
     oc_startdate as 과정시작일,
@@ -235,18 +235,16 @@ update tblOpenSubjectList set seq_teacher = 2
 --4. 삭제
 delete from tblOpenSubjectList
 	where seq_OpenSubjectList = 1; 
-
+    
+    
 -- 원준
-
 -- B-6
-
 -- 교육생 등록
 insert into tbltrainees
 values(
 1,'이채린','linear99','2049178','01012345678',sysdate,'우리은행','012-592-384171');
 
 --교육생 출력
-
 select t.name,t.ssn,t.tel,t.registrationdate,count(case
        when tl.status = '수료' then 1 
         end )as "수강횟수"
@@ -255,10 +253,7 @@ inner join tbltrainees t
 on tl.seq_trainee = t.seq_trainee
 group by t.name,t.ssn,t.tel,t.registrationdate;
 
-
-
 -- 교육생 검색
-
 select c.name,oc.startdate,oc.enddate,r.name,tl.status,tl.day from tbltrainees t
 inner join tbltraineelist tl
 on t.seq_trainee = tl.seq_trainee
@@ -270,7 +265,12 @@ inner join tblRoom r
 on oc.seq_room = r.seq_room
 where t.name = '전염유';
 
---b-7  ( 테이블 수정 중이라 못 넣음)
+-- 교육생 수정 (수정필요!)
+
+-- 교육생 삭제 (수정필요!)
+
+
+--b-7
 -- 과목별
 select vc.c_name,vt.t_name,vc.s_name,vc.period,vc.r_name,vt.t_ssn,vg.writtengrade,vg.practicalgrade from vwcurriculum vc
 inner join vwtrainees vt
@@ -282,7 +282,7 @@ inner join vwtrainees vt
     select * from tblsubject;
     
     select * from tblsubject;
-    --특정 개설 과정 (티처 있음;;)
+    --특정 개설 과정 
     select vt.t_name,vc.c_name,vc.s_name,t.name,vg.writtengrade,vg.practicalgrade 
 from vwgrades vg
 inner join vwtrainees vt
@@ -298,7 +298,7 @@ select * from vwcurriculum;
 commit;
 select * from tblgrades;
 
-  --교육생 개인 별
+--교육생 개인 별
     select vt.t_name,vt.t_ssn,vc.c_name,vc.oc_startdate,vc.oc_enddate,vc.r_name,vc.s_name,vc.period,vg.writtengrade,vg.practicalgrade 
 from vwgrades vg
 inner join vwtrainees vt
@@ -308,14 +308,12 @@ on vc.seq_subject = vg.seq_subject
     where vt.t_name = '천유서'
     group by vt.t_name,vt.t_ssn,vc.c_name,vc.oc_startdate,vc.oc_enddate,vc.r_name,vc.c_name,vc.period,vc.s_name,vg.writtengrade,vg.practicalgrade;
 select * from tbltrainees;
-/
 
 
-    -- B-8
 
-
+-- B-8
 --출결 관리
---1. 개설 과정 별 
+--1. 개설 과정 별 (수정필요!) 기간별로 조회 가능해야한다.
 select t.name,a.day,c.name,ad.situation from tblAttendance a
 inner join tblTraineeList tl
 on a.seq_traineeList = tl.seq_traineelist
@@ -338,14 +336,9 @@ on vt.seq_opencurriculum = vc.seq_opencurriculum
 where vt.t_name = '제류혁'
 group by vt.t_name, vt.a_day, vc.c_name, vt.situation;
 
--- B-9 
---교사 평가 조회 
-select * from tblopencurriculum;
-select * from tblopensubjectlist;
-select * from tblteacher;
-select * from tblsubjectlist;
-select * from tblsubject;
 
+-- B-9 
+--교육 과정 평가 기능 관리
 select t.name,ce.grade,ce.content from tblcurriculumevaluation ce
 inner join tblopencurriculum oc
 on ce.seq_opencurriculum = oc.seq_opencurriculum
@@ -355,9 +348,8 @@ inner join tblteacher t
 on t.seq_teacher = osl.seq_teacher
 group by  t.name,ce.grade,ce.content;
 
-select * from tblsubject;
--- B-10 
 
+-- B-10 
 --교육 희망자 면접 기록 
 insert into tblinterviewresults
 values(
@@ -378,21 +370,18 @@ inner join tblinterviewresults r
 on r.seq_schedule = s.seq_schedule
 order by r.status;
 
--- B.11 
 
+-- B.11 
 --교재 추가 
 insert into tblTextbook
 values(
 20,'OpenCV-Python으로 배우는 영상처리 및 응용','생능');
 
 --교재 수정
-
 update tblTextbook set publisher  = '에이콘' where name = 'OpenCV-Python으로 배우는 영상처리 및 응용';
 
 --교재 삭제
-
 delete from tblTextbook where name ='OpenCV-Python으로 배우는 영상처리 및 응용';
-
 
 
 -- 원혁
@@ -410,10 +399,10 @@ oc.status as "수강 여부"
                         inner join tblOnlineLecture ol
                             on oc.seq_onlineLecture = ol.seq_onlineLecture
                                 where oc.status = '수강 미완료';
+  
     
 --b-13 
 -- 출결 인정 서류 관리
-
 -- 제출 서류 등록
 insert into tblAttendancePapers (seq_attendancePapers, seq_traineeList, status, day, document, admitattendance)
     values (1, 1, 조퇴, '2023-09-13', '코로나 진단 서류', '출석 인정');
@@ -439,14 +428,14 @@ from tblTrainees t
 -- 삭제
 delete from tblAttendancePapers where seq_attendancePapers = 1;
 
+
 --b-14 
 -- 1. 기자재 관리
-
 -- 기자재 등록
 insert into tblEquipment (seq_equipment, name, importDate, expectedExportDate, amount, brokenAmount) 
     values (1, '사물함', to_date('2016-01-17', 'yyyy-mm-dd'), null,176,0);
 
--- 기자재 총 갯수 수정
+-- 기자재 총 개수 수정
 update tblEquipment set amount = 100 where seq_equipment = 1;
 
 -- 기자재 갯수 조회
@@ -479,6 +468,7 @@ from tblEquipment e
                         on t.seq_trainee = tl.seq_trainee
                             order by l.seq_locker;
 
+
 --b-15 
 -- 공지사항 관리
 -- 1. 등록
@@ -503,6 +493,7 @@ from tblNotice n
            on oc.seq_openCurriculum = n.seq_notice
                 right outer join tblCurriculum c
                     on oc.seq_curriculum = c.seq_curriculum;
+
 
 --b-16
 -- 취업 현황 조회 및 관리
@@ -543,6 +534,7 @@ from tblEmploymentStatus es
 -- 삭제
 delete from tblEmploymentStatus where seq_employmentStatus = 1;
 
+
 --b-17
 --1. 수료생의 출결 현황 조회
 select t_name, a_day, situation 
@@ -567,6 +559,79 @@ from
 from vwtrainees 
     where a_day>(sysdate-31) and a_day<=sysdate)
         group by t_name, bank, account,출석여부;
+
+
+-- 민곤
+--c-1 (수정필요!) 강의 진행 상태, 과정명, 과정 기간 추가 필요// 강의실 정보와, 교육생 정보 분리 필요
+--교사는 강의 스케줄,과목 정보를 조회한다 
+select distinct 
+s.seq_subject as 과목번호,
+s.name as 과목명,
+os.startdate as 과목시작일,
+os.enddate as 과목종료일,
+tb.name as 교재명
+from tblTeacher t
+    inner join tblOpenSubjectList os
+        on t.seq_teacher = os.seq_teacher
+            inner join tblOpenCurriculum oc
+                on oc.seq_openCurriculum = os.seq_openCurriculum
+                    inner join tblCurriculumProgress cp
+                        on cp.seq_curriculumProgress = oc.seq_curriculumProgress
+                            inner join tblTraineeList tl
+                                on oc.seq_openCurriculum = tl.seq_openCurriculum
+                                    inner join tblTrainees tr
+                                        on tr.seq_trainee = tl.seq_trainee
+                                            inner join tblsubjectlist sl
+                                                on sl.seq_subjectList = os.seq_subjectList
+                                                 inner join tblsubject s 
+                                                    on s.seq_subject = sl.seq_subject
+                                                        inner join tblRoom r
+                                                            on r.seq_room = oc.seq_room
+                                                                inner join tblCurriculum c 
+                                                                    on c.seq_Curriculum = oc.seq_Curriculum
+                                                                     inner join tblCoursePeriod cp
+                                                                        on cp.seq_coursePeriod = c.seq_coursePeriod
+                                                                            inner join tblTextBook tb 
+                                                                                on tb.seq_textbook = os.seq_textbook
+                                                                where t.name = '김민곤'
+                                                                    order by s.seq_subject asc;
+ --교사는 교육생 정보를 조회 한다.                                                          
+select distinct 
+c.name as 과정명,
+cp.status as 과정상태,
+oc.startDate as 시작일,
+oc.endDate as 종료일,
+r.name as 강의실,
+r.capacity as 등록인원,
+tr.name as 교육생이름,
+tr.tel as 교육생전화번호,
+tr.registrationDate as 교육생등록일,
+tl.status as 교육생상태
+from tblTeacher t
+    inner join tblOpenSubjectList os
+        on t.seq_teacher = os.seq_teacher
+            inner join tblOpenCurriculum oc
+                on oc.seq_openCurriculum = os.seq_openCurriculum
+                    inner join tblCurriculumProgress cp
+                        on cp.seq_curriculumProgress = oc.seq_curriculumProgress
+                            inner join tblTraineeList tl
+                                on oc.seq_openCurriculum = tl.seq_openCurriculum
+                                    inner join tblTrainees tr
+                                        on tr.seq_trainee = tl.seq_trainee
+                                            inner join tblsubjectlist sl
+                                                on sl.seq_subjectList = os.seq_subjectList
+                                                 inner join tblsubject s 
+                                                    on s.seq_subject = sl.seq_subject
+                                                        inner join tblRoom r
+                                                            on r.seq_room = oc.seq_room
+                                                                inner join tblCurriculum c 
+                                                                    on c.seq_Curriculum = oc.seq_Curriculum
+                                                                     inner join tblCoursePeriod cp
+                                                                        on cp.seq_coursePeriod = c.seq_coursePeriod
+                                                                            inner join tblTextBook tb 
+                                                                                on tb.seq_textbook = os.seq_textbook
+                                                                where t.name = '김민곤';                
+
 
 -- 혜정
 --c-2 배점 입출력
@@ -940,82 +1005,7 @@ from tblCurriculumEvaluation ce
 
 
 
--- 민곤
-
-
-
---c-1 
---교사는 강의 스케줄,과목 정보를 조회한다
-select distinct 
-s.seq_subject as 과목번호,
-s.name as 과목명,
-os.startdate as 과목시작일,
-os.enddate as 과목종료일,
-tb.name as 교재명
-from tblTeacher t
-    inner join tblOpenSubjectList os
-        on t.seq_teacher = os.seq_teacher
-            inner join tblOpenCurriculum oc
-                on oc.seq_openCurriculum = os.seq_openCurriculum
-                    inner join tblCurriculumProgress cp
-                        on cp.seq_curriculumProgress = oc.seq_curriculumProgress
-                            inner join tblTraineeList tl
-                                on oc.seq_openCurriculum = tl.seq_openCurriculum
-                                    inner join tblTrainees tr
-                                        on tr.seq_trainee = tl.seq_trainee
-                                            inner join tblsubjectlist sl
-                                                on sl.seq_subjectList = os.seq_subjectList
-                                                 inner join tblsubject s 
-                                                    on s.seq_subject = sl.seq_subject
-                                                        inner join tblRoom r
-                                                            on r.seq_room = oc.seq_room
-                                                                inner join tblCurriculum c 
-                                                                    on c.seq_Curriculum = oc.seq_Curriculum
-                                                                     inner join tblCoursePeriod cp
-                                                                        on cp.seq_coursePeriod = c.seq_coursePeriod
-                                                                            inner join tblTextBook tb 
-                                                                                on tb.seq_textbook = os.seq_textbook
-                                                                where t.name = '김민곤'
-                                                                    order by s.seq_subject asc;
- --교사는 교육생 정보를 조회 한다.                                                          
-select distinct 
-c.name as 과정명,
-cp.status as 과정상태,
-oc.startDate as 시작일,
-oc.endDate as 종료일,
-r.name as 강의실,
-r.capacity as 등록인원,
-tr.name as 교육생이름,
-tr.tel as 교육생전화번호,
-tr.registrationDate as 교육생등록일,
-tl.status as 교육생상태
-from tblTeacher t
-    inner join tblOpenSubjectList os
-        on t.seq_teacher = os.seq_teacher
-            inner join tblOpenCurriculum oc
-                on oc.seq_openCurriculum = os.seq_openCurriculum
-                    inner join tblCurriculumProgress cp
-                        on cp.seq_curriculumProgress = oc.seq_curriculumProgress
-                            inner join tblTraineeList tl
-                                on oc.seq_openCurriculum = tl.seq_openCurriculum
-                                    inner join tblTrainees tr
-                                        on tr.seq_trainee = tl.seq_trainee
-                                            inner join tblsubjectlist sl
-                                                on sl.seq_subjectList = os.seq_subjectList
-                                                 inner join tblsubject s 
-                                                    on s.seq_subject = sl.seq_subject
-                                                        inner join tblRoom r
-                                                            on r.seq_room = oc.seq_room
-                                                                inner join tblCurriculum c 
-                                                                    on c.seq_Curriculum = oc.seq_Curriculum
-                                                                     inner join tblCoursePeriod cp
-                                                                        on cp.seq_coursePeriod = c.seq_coursePeriod
-                                                                            inner join tblTextBook tb 
-                                                                                on tb.seq_textbook = os.seq_textbook
-                                                                where t.name = '김민곤'
-                                                                    ;                
-                       
-                                                                                
+-- 민곤                                                                           
 --c-5
 --교사가 자신의 강의평가를 조회 할 수 있다.
 
