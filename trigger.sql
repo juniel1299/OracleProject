@@ -1,21 +1,37 @@
 --1번
 CREATE OR REPLACE TRIGGER trgCheckPeriodSum
-BEFORE INSERT OR UPDATE ON tblcourseperiod
+BEFORE INSERT OR UPDATE ON tblSubjectList
 FOR EACH ROW
 DECLARE
-    v_period_sum NUMBER;
+    v_seq_curri number;
+    v_period_total NUMBER;
+    v_period_now NUMBER;
+    v_period NUMBER;
 BEGIN
-    -- tblsubject 테이블에서 period의 합을 계산합니다.
-    SELECT SUM(period) INTO v_period_sum
-    FROM tblsubject;
+    v_seq_curri := :new.seq_curriculum;
+    -- 해당 과정의 총 period를 가져옵니다.
+    SELECT period INTO v_period_total
+    from tblcurriculum c
+        inner join tblcourseperiod cp
+            on c.seq_courseperiod = cp.seq_courseperiod
+                where c.seq_curriculum = v_seq_curri;
+    
+    --현재 period 합을 가져옵니다.
+    SELECT SUM(period) into v_period_now
+    from tblSubjectList sl
+    inner join tblSubject s
+        on sl.seq_subject = s.seq_subject
+            where sl.seq_curriculum = v_seq_curri;
+            
+    --추가한 과목의 기간을 가져옵니다.
+    select period into v_period from tblsubject where seq_subject = :NEW.seq_subject;
     
     -- 새로운 코스 기간이나 업데이트된 코스 기간의 period 합이 tblsubject의 period 합과 같은지 확인합니다.
-    IF :NEW.period != v_period_sum THEN
-        RAISE_APPLICATION_ERROR(-20001, 'tblsubject 테이블의 period 값의 합과 일치해야 합니다.');
+    IF v_period_total < v_period_now+v_period THEN
+        RAISE_APPLICATION_ERROR(-20001, '과정 총 기간을 확인해주세요.');
     END IF;
 END;
 /
-
 
 --2번
 -- 점수 배점 용
@@ -106,22 +122,23 @@ BEGIN
 END;
 /
 
-
 -- 5번
 -- 성적은 종료 후 입력이 되니까 그 전에 입력 하지 못하도록 하는 트리거 
 CREATE OR REPLACE TRIGGER trgCheckEnddate
-BEFORE INSERT ON tblTestInfo
+BEFORE INSERT ON tblGrades
 FOR EACH ROW
 DECLARE
     v_enddate DATE;
 BEGIN
     -- tblOpensubjectList에서 해당 과목의 종료일(enddate)을 가져옵니다.
-    SELECT enddate INTO v_enddate
-    FROM tblOpensubjectList
-    WHERE seq_opensubjectlist = :NEW.seq_opensubjectlist;
+    SELECT osl.enddate INTO v_enddate
+    from tblTestInfo ti
+        inner join tblOpenSubjectList osl
+            on ti.seq_opensubjectlist = osl.seq_opensubjectlist
+                where ti.seq_testinfo = :NEW.seq_testInfo;
     
-    -- 종료일(enddate) 이후에만 삽입을 허용합니다.
-    IF v_enddate IS NOT NULL AND v_enddate <= SYSDATE THEN
+    -- 종료일(enddate) 이전에 성적 입력 시도시 차단
+    IF v_enddate > SYSDATE THEN
         RAISE_APPLICATION_ERROR(-20011, '과목 종료일 이후에만 시험 정보를 삽입할 수 있습니다.');
     END IF;
 EXCEPTION
@@ -130,30 +147,45 @@ EXCEPTION
 END;
 /
 
-
 -- 6번
 -- 중도탈락 된 학생은 중도탈락 날짜 이후 더 이상 성적 입력을 할 수 없음에 대한 트리거
-CREATE OR REPLACE TRIGGER trgCheckMidtermExit
-BEFORE INSERT OR UPDATE ON tblTestInfo
+CREATE OR REPLACE TRIGGER trgCheckDropout
+BEFORE INSERT OR UPDATE ON tblGrades
 FOR EACH ROW
 DECLARE
     v_status VARCHAR2(20);
     v_day DATE;
+    v_writtendate date;
+    v_practicaldate date;
 BEGIN
     -- tbltraineelist에서 해당 trainee의 status와 day 값을 가져옵니다.
     SELECT status, day INTO v_status, v_day
     FROM tbltraineelist
-    WHERE seq_traineelist = seq_traineelist;
-
-    -- status가 '중도탈락'인 경우에만 성적을 삽입할 수 있습니다.
-    IF v_status = '중도탈락' THEN
-        -- writtendate와 practicaldate 값을 가져와서 비교합니다.
-        IF (:NEW.writtendate > v_day OR :NEW.practicaldate > v_day) THEN
-            RAISE_APPLICATION_ERROR(-20013, '중도탈락 상태일 때는 해당 날짜의 성적을 삽입할 수 없습니다.');
-        END IF;
+        WHERE seq_traineelist = :new.seq_traineelist;
+        
+    --writtendate와 practicaldate 값을 가져와서 비교합니다.
+    select writtendate, practicaldate into v_writtendate, v_practicaldate from tblTestInfo where seq_testinfo = :new.seq_testinfo;
+    
+    -- status가 '중도탈락'이고, 시험 날짜가 중도탈락 날짜 이후면 성적을 삽입 불가
+    IF v_status = '중도탈락' and (v_writtendate > v_day OR v_practicaldate > v_day)
+        THEN RAISE_APPLICATION_ERROR(-20013, '중도탈락 상태일 때는 해당 날짜의 성적을 삽입할 수 없습니다.');
     END IF;
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
         RAISE_APPLICATION_ERROR(-20014, '해당 trainee_id가 tbltraineelist에 존재하지 않습니다.');
 END;
+/
+
+-- 7번 출결 인정 서류 관리 > 출석 인정 상태로 변했을 때 출결 상태의 번호가 1로 변하는 트리거
+-- 프로시저 > 트리거로 변환
+create or replace trigger trgUpdateAttendance
+after update of admitattendance on tblAttendancePapers
+for each row
+begin
+    if :new.admitattendance = '출석 인정' then
+        update tblAttendance a
+        set a.seq_attendanceStatus = 1
+        where a.seq_traineeList = :new.seq_traineeList;
+    end if;
+end;
 /
