@@ -280,7 +280,76 @@ begin
 proctinfo('김민곤');
 end;
 /
+--강사명 검색시 과목별 정보와 배점,시험문제 조회
+CREATE OR REPLACE PROCEDURE proctga(
+    ptname VARCHAR2
+)
+IS
+vtc_name VARCHAR2(15); -- 강사명
+vg_seq_subject NUMBER; -- 과목 번호
+vg_s_name VARCHAR2(100); -- 과목명
+vb_name VARCHAR2(100); -- 교재명
+vosl_startdate DATE; -- 과목 시작일
+vosl_enddate DATE; -- 과목 종료일
+vg_writtenDate DATE; -- 필기날짜
+vg_practicalDate DATE; -- 실기날짜
+vg_WRITTENPOINTS  NUMBER; -- 필기배점
+vg_practicalPoints NUMBER; -- 실기배점
+vg_attendancePoints NUMBER; -- 출결배점
+vq_question VARCHAR2(5000); -- 시험 문제
 
+CURSOR vcursor IS
+SELECT DISTINCT 
+    tc.name AS 강사명,
+    g.seq_subject AS 과목번호,
+    g.s_name AS 과목명,
+    b.name AS 교재명,
+    osl.startdate AS 과목시작일,
+    osl.enddate AS 과목종료일,
+    g.writtenPoints AS 필기배점,
+    g.practicalPoints AS 실기배점,
+    g.attendancePoints AS 출결배점,
+       g.writtenDate AS 필기날짜,
+    g.practicalDate AS 실기날짜,
+    q.question AS 문제
+FROM 
+    vwgrades g
+    INNER JOIN tbltraineelist tl ON g.seq_traineelist = tl.seq_traineelist
+    INNER JOIN tbltrainees t ON tl.seq_trainee = t.seq_trainee
+    INNER JOIN tblteacher tc ON g.seq_teacher = tc.seq_teacher
+    INNER JOIN tblopensubjectlist osl ON g.seq_opensubjectlist = osl.seq_opensubjectlist
+    INNER JOIN tbltextbook b ON osl.seq_textbook = b.seq_textbook
+    INNER JOIN tblopencurriculum oc ON g.seq_opencurriculum = oc.seq_opencurriculum
+    INNER JOIN tblroom r ON oc.seq_room = r.seq_room
+    INNER JOIN tblexampaper ep ON osl.seq_openSubjectList = ep.seq_openSubjectList
+    INNER JOIN tblquestion q ON ep.seq_question = q.seq_question
+WHERE 
+    tc.name = ptname
+ORDER BY 
+    g.seq_subject asc;
+
+BEGIN
+    OPEN vcursor;
+    LOOP
+        FETCH vcursor INTO vtc_name, vg_seq_subject, vg_s_name, vb_name, vosl_startdate, vosl_enddate, vg_writtenPoints,
+            vg_practicalPoints, vg_attendancePoints, vg_writtenDate, vg_practicalDate, vq_question;
+        EXIT WHEN vcursor%NOTFOUND;
+       
+        DBMS_OUTPUT.PUT_LINE('----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------');
+        DBMS_OUTPUT.PUT_LINE('강사명: ' || vtc_name || ' | 과목번호: ' || vg_seq_subject || '|  과목명: ' || vg_s_name || '| 교재명: ' || vb_name ||
+                             '| 과목시작일: ' || vosl_startdate || '| 과목종료일: ' || vosl_enddate || '| 필기배점: ' || vg_writtenPoints || '| 실기배점: ' || vg_practicalPoints ||
+                             '| 출결배점: ' || vg_attendancePoints || '| 필기날짜:'|| vg_writtenDate || '| 실기날짜:'|| vg_practicalDate  ||'| 시험문제:'|| vq_question);
+        DBMS_OUTPUT.PUT_LINE('----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------');
+    END LOOP;
+    CLOSE vcursor;
+
+END proctga;
+
+/
+begin
+proctga('김민곤');
+end;
+/
 --교육생 이름으로 성적 검색 프로시저
 CREATE OR REPLACE PROCEDURE proctg(
     ptname VARCHAR2

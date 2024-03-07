@@ -966,7 +966,8 @@ from tblTrainees tr
                                                     inner join tblsubject s
                                                         on s.seq_subject = sl.seq_subject
                                                             where tr.name = '지엄홍';
-
+select * from vwgrades;
+select * from tblGrades;
 --과목번호, 과목명, 과목기간(시작 년월일, 끝 년월일), 교재명, 교사명, 과목별 배점 정보(출결, 필기, 실기 배점),
 --과목별 성적 정보(출결, 필기, 실기 점수), 과목별 시험날짜, 시험문제가 출력되어야 한다.
 select distinct 
@@ -1024,6 +1025,9 @@ order by vt.t_name,vt.t_id,vt.t_ssn,vt.t_tel,vc.s_name,vc.osl_startdate,vc.osl_e
 
 --출석 기록 
 -- (출근 퇴근이 하루에 있으면 카운트) 매일 근태 관리
+
+--성적이 등록되지 않은 과목이 있는 경우 과목 정보는 출력되고 점수는 null 값으로 출력되도록 한다.
+
 
 select t.name,ad.situation,a.day,count(case when to_date(substr(a.intime,1,8),'yyyy-mm-dd') = to_date(substr(a.outtime,1,8),'yyyy-mm-dd') then 1
 end) from tblAttendance a
