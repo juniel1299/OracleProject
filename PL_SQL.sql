@@ -147,7 +147,7 @@ end;
 
 -- b-7 
 
---과목별별
+--과목별
 
 CREATE OR REPLACE PROCEDURE procCurriculumBySubject (
     p_subject_name IN VARCHAR2
