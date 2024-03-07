@@ -1,4 +1,4 @@
---출결인정서류
+tblAttendance--출결인정서류
 insert into tblAttendancePapers
 values(
 1,1,'조퇴','2023-09-13','코로나 진단 서류','출석 인정');
