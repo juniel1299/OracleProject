@@ -267,7 +267,7 @@ select c.name,oc.startdate,oc.enddate,r.name,tl.status,tl.day from tbltrainees t
 
 -- 교육생 수정 
 UPDATE tblTrainees 
-    SET tel = '010-0000-0000' --주민번호 바꾸기 노노
+    SET tel = '010-0000-0000' 
     WHERE seq_trainee = 1;
     
 -- 교육생 삭제
@@ -1019,14 +1019,14 @@ count(
 case when to_date(substr(a.intime,1,8),'yyyy-mm-dd') = to_date(substr(a.outtime,1,8),'yyyy-mm-dd') then 1
 end) "근태 등록 여부"
 from tblAttendance a
-inner join tblTraineelist tl
-on tl.seq_traineelist = a.seq_traineelist
-inner join tbltrainees t
-on t.seq_trainee = tl.seq_trainee
-inner join tblAttendancestatus ad
-on ad.seq_attendancestatus = a.seq_attendancestatus
-where t.name = '천유서'
-group by t.name,a.intime,a.outtime,ad.situation,a.day;
+	inner join tblTraineelist tl
+		on tl.seq_traineelist = a.seq_traineelist
+			inner join tbltrainees t
+				on t.seq_trainee = tl.seq_trainee
+					inner join tblAttendancestatus ad
+						on ad.seq_attendancestatus = a.seq_attendancestatus
+							where t.name = '천유서'
+								group by t.name,a.intime,a.outtime,ad.situation,a.day;
 
 
 -- 년 월 일로 보는 방법 
@@ -1035,13 +1035,13 @@ t.name 이름,
 ad.situation 상태,
 a.day 날짜
 from tblAttendance a
-inner join tblTraineelist tl
-on tl.seq_traineelist = a.seq_traineelist
-inner join tbltrainees t
-on t.seq_trainee = tl.seq_trainee
-inner join tblAttendancestatus ad
-on ad.seq_attendancestatus = a.seq_attendancestatus
-where a.day like '23%' and t.name = '천유서';
+	inner join tblTraineelist tl
+		on tl.seq_traineelist = a.seq_traineelist
+			inner join tbltrainees t
+				on t.seq_trainee = tl.seq_trainee
+					inner join tblAttendancestatus ad
+						on ad.seq_attendancestatus = a.seq_attendancestatus
+							where a.day like '23%' and t.name = '천유서';
 
 
 --D-3  
