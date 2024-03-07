@@ -457,10 +457,6 @@ begin
 end;
 /
 
-
--- b-17 (수정필요!) 추가 구현 필요
-
-
 --c-1.1 강의 스케줄 
 CREATE OR REPLACE PROCEDURE proctschedule(
     ptname VARCHAR2
