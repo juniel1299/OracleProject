@@ -946,7 +946,13 @@ from tblCurriculumEvaluation ce
 
 --c-1 
 --교사는 강의 스케줄,과목 정보를 조회한다
-select distinct 
+select distinct
+c.name as 과정명,
+cp.status as 과정상태,
+oc.startDate as 시작일,
+oc.endDate as 종료일,
+r.name as 강의실명,
+r.capacity as 강의실인원,
 s.seq_subject as 과목번호,
 s.name as 과목명,
 os.startdate as 과목시작일,
@@ -979,12 +985,6 @@ from tblTeacher t
                                                                     order by s.seq_subject asc;
  --교사는 교육생 정보를 조회 한다.                                                          
 select distinct 
-c.name as 과정명,
-cp.status as 과정상태,
-oc.startDate as 시작일,
-oc.endDate as 종료일,
-r.name as 강의실,
-r.capacity as 등록인원,
 tr.name as 교육생이름,
 tr.tel as 교육생전화번호,
 tr.registrationDate as 교육생등록일,
@@ -1040,6 +1040,7 @@ from tblCurriculumEvaluation ce
 -- 성적 조회 :개인 정보와 수강한 과정명, 과목기간(시작 년월일, 끝 년월일), 강의실이 타이틀로 출력된다.
 select distinct 
 tr.name as 교육생이름,
+tr.tel as 전화번호,
 c.name as 과정명,
 s.name as 과목명,
 os.startdate as 과목시작일,
@@ -1066,22 +1067,20 @@ select * from tblGrades;
 --과목번호, 과목명, 과목기간(시작 년월일, 끝 년월일), 교재명, 교사명, 과목별 배점 정보(출결, 필기, 실기 배점),
 --과목별 성적 정보(출결, 필기, 실기 점수), 과목별 시험날짜, 시험문제가 출력되어야 한다.
 select distinct 
-t.name as 교육생이름,
-tc.name as 강사명,
-g.s_name as 과목명,
 g.seq_subject as 과목번호,
-b.name as 교재명,
+g.s_name as 과목명,
 osl.startdate as 과목시작일,
 osl.enddate as 과목종료일,
-r.name as 강의실명,
-g.writtenDate as 필기날짜,
-g.practicalDate as 실기날짜,
+b.name as 교재명,
+tc.name as 강사명,
 g.writtenPoints as 필기배점,
 g.practicalPoints as 실기배점,
 g.attendancePoints as 출결배점,
 g.writtenGrade as 필기점수,
 g.practicalGrade as 실기점수,
 g.attendanceGrade as 출결점수,
+g.writtenDate as 필기날짜,
+g.practicalDate as 실기날짜,
 q.question as 문제
 
 from vwgrades g
