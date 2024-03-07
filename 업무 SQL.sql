@@ -564,6 +564,7 @@ from vwtrainees
 
 -- 민곤
 --c-1 
+select * from tblTraineeList;
 --교사는 강의 스케줄,과목 정보를 조회한다
 select distinct
 s.seq_subject as 과목번호,
@@ -572,7 +573,7 @@ cp.status as 과정상태,
 oc.startDate as "과정 시작일",
 oc.endDate as "과정 종료일",
 r.name as 강의실명,
-r.capacity as 강의실인원, --(수정필요!)
+count(tl.seq_opencurriculum) as "교육생 등록 인원", --(수정필요!)
 s.name as 과목명,
 os.startdate as 과목시작일,
 os.enddate as 과목종료일,
@@ -601,6 +602,8 @@ from tblTeacher t
                                                                             inner join tblTextBook tb 
                                                                                 on tb.seq_textbook = os.seq_textbook
                                                                                 where t.name = '김민곤'
+                                                                                  group by s.seq_subject,c.name,cp.status,oc.startDate,oc.endDate,r.name
+                                                                                  ,tl.seq_opencurriculum,s.name,os.startdate,os.enddate,tb.name
                                                                                 order by s.seq_subject asc;
                                                                                 
  --교사는 교육생 정보를 조회 한다.                                                          
