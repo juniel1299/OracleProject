@@ -1,5 +1,6 @@
 --Trigger
 
+
 --3번
 
 /
@@ -26,13 +27,18 @@ END;
 --6번
 
 /
-
+-- 점수 배점 용
 CREATE OR REPLACE TRIGGER trgCheckPoints
 BEFORE INSERT ON tblTestInfo
 FOR EACH ROW
+DECLARE
+    v_total_points NUMBER;
 BEGIN
-    IF :NEW.writtenpoints >= 40 THEN
-        RAISE_APPLICATION_ERROR(-20001, '최대 40까지 입력 가능합니다.');
+    -- writtenpoints, practicalpoints, attendancepoints의 합을 계산합니다.
+    v_total_points := :NEW.writtenpoints + :NEW.practicalpoints + :NEW.attendancepoints;
+
+    IF :NEW.writtenpoints >=  THEN
+        RAISE_APPLICATION_ERROR(-20001, '최대 30까지 입력 가능합니다.');
     END IF;
     
     IF :NEW.practicalpoints >= 40 THEN
@@ -42,13 +48,42 @@ BEGIN
     IF :NEW.attendancepoints >= 30 THEN
         RAISE_APPLICATION_ERROR(-20003, '최대 30까지 입력 가능합니다.');
     END IF;
-    
-    IF :NEW.attenattendancepoints + NEW.practicalpoints + NEW.writtenpoints > 100 then
-        RAISE_APPLICATION_ERROR(-20004, '점수의 합은 100입니다.');
-    
+
+    -- writtenpoints, practicalpoints, attendancepoints의 합이 100을 초과하는 경우 오류를 발생시킵니다.
+    IF v_total_points > 100 THEN
+        RAISE_APPLICATION_ERROR(-20004, '총점이 100을 초과할 수 없습니다.');
+    END IF;
 END;
 /
-select * from tbltrainees;
+-- 학생 성적 insert 용 
+CREATE OR REPLACE TRIGGER trgTraineeCheckPoints
+BEFORE INSERT ON tblgrades
+FOR EACH ROW
+DECLARE
+    v_total_grade NUMBER;
+BEGIN
+    -- writtengrade, practicalgrade, attendancegrade의 합을 계산합니다.
+    v_total_grade := :NEW.writtengrade + :NEW.practicalgrade + :NEW.attendancegrade;
+
+    IF :NEW.writtengrade > 40 THEN
+        RAISE_APPLICATION_ERROR(-20001, '최대 40까지 입력 가능합니다.');
+    END IF;
+    
+    IF :NEW.practicalgrade > 40 THEN
+        RAISE_APPLICATION_ERROR(-20002, '최대 40까지 입력 가능합니다.');
+    END IF;
+    
+    IF :NEW.attendancegrade > 30 THEN
+        RAISE_APPLICATION_ERROR(-20003, '최대 30까지 입력 가능합니다.');
+    END IF;
+
+    -- writtengrade, practicalgrade, attendancegrade의 합이 100을 초과하는 경우 오류를 발생시킵니다.
+    IF v_total_grade > 100 THEN
+        RAISE_APPLICATION_ERROR(-20004, '총점이 100을 초과할 수 없습니다.');
+    END IF;
+END;
+/
+/
 -- 7번 
 /
 CREATE OR REPLACE TRIGGER trgCheckStatus
@@ -72,7 +107,6 @@ EXCEPTION
 END;
 /
 
-select * from tblopensubjectlist;
 
 
 -- 8번
@@ -97,41 +131,31 @@ EXCEPTION
         RAISE_APPLICATION_ERROR(-20002, '해당 과목 ID가 tblOpensubjectList에 존재하지 않습니다.');
 END;
 /
---9번(아직 다 못 함)
-select * from tbltraineelist;
 
-
-
-
-
-/
-
-
--- 10번
-/
-CREATE OR REPLACE TRIGGER trgUpdateAttendanceStatus
-BEFORE INSERT OR UPDATE ON tblAttendance
+--9번
+-- 중도탈락 된 학생은 중도탈락 날짜 이후 더 이상 성적 입력을 할 수 없음에 대한 트리거
+CREATE OR REPLACE TRIGGER trgCheckMidtermExit
+BEFORE INSERT OR UPDATE ON tblTestInfo
 FOR EACH ROW
 DECLARE
-    v_current_time NUMBER;
+    v_status VARCHAR2(20);
+    v_day DATE;
 BEGIN
-    -- 현재 시간을 가져옵니다.
-    SELECT TO_NUMBER(TO_CHAR(SYSDATE, 'HH24')) INTO v_current_time FROM DUAL;
+    -- tbltraineelist에서 해당 trainee의 status와 day 값을 가져옵니다.
+    SELECT status, day INTO v_status, v_day
+    FROM tbltraineelist
+    WHERE seq_traineelist = seq_traineelist;
 
-    -- inTime이 null이고 현재 시간이 9시 이후인 경우
-    IF :NEW.inTime IS NULL AND v_current_time >= 9 THEN
-        :NEW.seq_AttendanceStatus := 2;
+    -- status가 '중도탈락'인 경우에만 성적을 삽입할 수 있습니다.
+    IF v_status = '중도탈락' THEN
+        -- writtendate와 practicaldate 값을 가져와서 비교합니다.
+        IF (:NEW.writtendate = v_day OR :NEW.practicaldate = v_day) THEN
+            RAISE_APPLICATION_ERROR(-20001, '중도탈락 상태일 때는 해당 날짜의 성적을 삽입할 수 없습니다.');
+        END IF;
     END IF;
-
-    -- outTime이 null이고 현재 시간이 18시 이후인 경우
-    IF :NEW.outTime IS NULL AND v_current_time >= 18 THEN
-        :NEW.seq_AttendanceStatus := 3;
-    END IF;
-
-    -- intime과 outtime이 모두 null이고 현재 시간이 18시 이후인 경우
-    IF :NEW.inTime IS NULL AND :NEW.outTime IS NULL AND v_current_time >= 18 THEN
-        :NEW.seq_AttendanceStatus := 6;
-    END IF;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        RAISE_APPLICATION_ERROR(-20002, '해당 trainee_id가 tbltraineelist에 존재하지 않습니다.');
 END;
 /
 
