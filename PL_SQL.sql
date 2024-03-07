@@ -476,7 +476,7 @@ IS
     vos_startdate DATE;
     vos_enddate DATE;
     vtb_name VARCHAR2(200);
-    vr_capacity number;
+    vtl_seq_opencurriculum number;
     
     CURSOR vcursor IS
         select distinct 
@@ -489,7 +489,7 @@ s.name as 과목명,
 os.startdate as 과목시작일,
 os.enddate as 과목종료일,
 tb.name as 교재명,
-r.capacity as 인원수 --(수정필요!)
+count(tl.seq_opencurriculum) as "교육생 등록 인원" --(수정필요!)
 from tblTeacher t
     inner join tblOpenSubjectList os
         on t.seq_teacher = os.seq_teacher
@@ -513,16 +513,19 @@ from tblTeacher t
                                                                         on cop.seq_coursePeriod = c.seq_coursePeriod
                                                                             inner join tblTextBook tb 
                                                                                 on tb.seq_textbook = os.seq_textbook
-                                                                                where t.name = ptname;         
+                                                                                      where t.name = ptname    
+                                                                                         group by c.name, cp.status, oc.startDate,oc.endDate,s.seq_subject,s.name,
+                                                                                           os.startdate,os.enddate,tb.name;
+                                                                                  
 
 BEGIN
     OPEN vcursor;
     LOOP
-        FETCH vcursor INTO  vc_name,vcp_status, voc_startdate,voc_enddate,vs_seq_subject, vs_name, vos_startdate, vos_enddate, vtb_name,vr_capacity;
+        FETCH vcursor INTO  vc_name,vcp_status, voc_startdate,voc_enddate,vs_seq_subject, vs_name, vos_startdate, vos_enddate, vtb_name, vtl_seq_opencurriculum;
         EXIT WHEN vcursor%NOTFOUND;
         DBMS_OUTPUT.PUT_LINE( '과정명: ' || vc_name || '| 과정상태'  || vcp_status|| '| 과정시작일: ' || voc_startdate || ' | 과정종료일: ' ||  voc_enddate ||
                                                '| 과목번호'||vs_seq_subject|| '| 과목명: ' ||vs_name ||'| 과목시작일: ' || vos_startdate || '| 과목종료일: ' ||  vos_enddate ||
-                                                '| 교재명'|| vtb_name||'| 등록인원' || vr_capacity);
+                                                '| 교재명'|| vtb_name||'| 등록인원' ||  vtl_seq_opencurriculum);
       dbms_output.put_line ('----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------');         
     END LOOP;
     CLOSE vcursor;
