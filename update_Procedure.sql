@@ -271,12 +271,3 @@ begin
     close vcursor;
 end;
 /
-
-select * from tblAttendanceStatus order by tblattendancestatus.seq_attendancestatus;
-
-select 
-to_char(inTime, 'HH24:MI') "출근 시간",
-to_char(outTime, 'HH24:MI') "퇴근 시간",
-seq_attendanceStatus
-from tblAttendance;
-
