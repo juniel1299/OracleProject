@@ -47,27 +47,35 @@ BEGIN
 END;
 /
 
--- 3번 (수정필요!)
+-- 3번 
 -- 학생 성적 insert 용 
 CREATE OR REPLACE TRIGGER trgTraineeCheckPoints
 BEFORE INSERT ON tblgrades
 FOR EACH ROW
 DECLARE
     v_total_grade NUMBER;
+    v_seq_testinfo number;
+    v_writtenpoints number;
+    v_practicalpoints number;
+    v_attendancepoints number;
 BEGIN
     -- writtengrade, practicalgrade, attendancegrade의 합을 계산합니다.
     v_total_grade := :NEW.writtengrade + :NEW.practicalgrade + :NEW.attendancegrade;
+    v_seq_testinfo := :new.seq_testinfo;
+    
+    select writtenpoints, practicalpoints, v_attendancepoints into v_writtenpoints, v_practicalpoints, v_attendancepoints
+    from tbltestinfo where seq_testinfo = v_seq_testinfo;
 
-    IF :NEW.writtengrade > 40 THEN
-        RAISE_APPLICATION_ERROR(-20006, '최대 40까지 입력 가능합니다.');
+    IF :NEW.writtengrade > v_writtenpoints THEN
+        RAISE_APPLICATION_ERROR(-20006, '최대 배점까지만 입력 가능합니다.');
     END IF;
     
-    IF :NEW.practicalgrade > 40 THEN
-        RAISE_APPLICATION_ERROR(-20007, '최대 40까지 입력 가능합니다.');
+    IF :NEW.practicalgrade > v_practicalpoints THEN
+        RAISE_APPLICATION_ERROR(-20007, '최대 배점까지만 입력 가능합니다.');
     END IF;
     
-    IF :NEW.attendancegrade > 30 THEN
-        RAISE_APPLICATION_ERROR(-20008, '최대 30까지 입력 가능합니다.');
+    IF :NEW.attendancegrade > v_attendancepoints THEN
+        RAISE_APPLICATION_ERROR(-20008, '최대 배점까지만 입력 가능합니다.');
     END IF;
 
     -- writtengrade, practicalgrade, attendancegrade의 합이 100을 초과하는 경우 오류를 발생시킵니다.
