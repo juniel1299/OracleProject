@@ -86,8 +86,24 @@ END;
 /
 -- 7번 
 /
+CREATE OR REPLACE TRIGGER trgAllowEvaluation
+BEFORE INSERT ON tblcurriculumevaluation
+FOR EACH ROW
+DECLARE
+    v_status VARCHAR2(20);
+BEGIN
+    -- tbltraineelist에서 해당 trainee의 status를 가져옵니다.
+    SELECT status INTO v_status
+    FROM tbltraineelist
+    WHERE seq_traineelist = :NEW.seq_traineelist;
 
+    -- status가 '수료'인 경우에만 데이터를 삽입할 수 있습니다.
+    IF v_status <> '수료' THEN
+        RAISE_APPLICATION_ERROR(-20001, '수료 상태일 때만 평가를 입력할 수 있습니다.');
+    END IF;
+END;
 /
+
 
 
 
