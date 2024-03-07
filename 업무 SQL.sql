@@ -1030,10 +1030,26 @@ values(
 1,1,1,5,'설명을 자세하게 해주신다.');
 
 
---D-4 교사별로 출력되야 한다. 자기가 수강 중인 교사님의 추천 교재만 볼 수 있어야 한다. (수정필요!)
---교사 추천 도서 조회 
+-- D-4 교사별로 출력되야 한다. 자기가 수강 중인 교사님의 추천 교재만 볼 수 있어야 한다.
+-- 교사 추천 도서 조회 
 -- 조회
-select * from tblRecommendTextbook;
+select 
+distinct osl.seq_openCurriculum 교육과정명,
+tea.name 교사명,
+rb.grade 별점,
+b.name "책 제목",
+b.publisher "출판사명"
+from tblRecommendTextbook rb
+    inner join tblOpenSubjectList osl
+        on rb.seq_teacher = osl.seq_teacher
+            inner join tblTraineeList tl
+                on tl.seq_openCurriculum = osl.seq_openCurriculum
+                    inner join tblTeacher tea
+                        on tea.seq_teacher = osl.seq_teacher
+                            inner join tblTextbook b
+                                on b.seq_textbook = rb.seq_textbook
+                                    where osl.seq_teacher = rb.seq_teacher
+                                    and tl.seq_trainee = 1;
 
 
 --D-5
