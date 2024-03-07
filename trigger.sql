@@ -86,25 +86,7 @@ END;
 /
 -- 7번 
 /
-CREATE OR REPLACE TRIGGER trgAllowEvaluation
-BEFORE INSERT ON tblcurriculumevaluation
-FOR EACH ROW
-DECLARE
-    v_status VARCHAR2(20);
-    v_trainee_seq NUMBER;
-BEGIN
-    -- tbltraineelist에서 해당 trainee의 status와 seq_traineelist를 가져옵니다.
-    SELECT status, seq_traineelist INTO v_status, v_trainee_seq
-    FROM tbltraineelist
-    WHERE seq_traineelist = :NEW.seq_traineelist;
 
-    -- status가 '수료'이며, seq_traineelist가 같은 경우에만 데이터를 삽입할 수 있습니다.
-    IF v_status <> '수료' THEN
-        RAISE_APPLICATION_ERROR(-20001, '수료 상태일 때만 평가를 입력할 수 있습니다.');
-    ELSIF v_trainee_seq <> :NEW.seq_traineelist THEN
-        RAISE_APPLICATION_ERROR(-20002, 'seq_traineelist 값이 일치하지 않습니다.');
-    END IF;
-END;
 /
 
 
