@@ -185,7 +185,7 @@ begin
     if :new.admitattendance = '출석 인정' then
         update tblAttendance a
         set a.seq_attendanceStatus = 1
-        where a.seq_traineeList = :new.seq_traineeList;
+        where a.seq_traineeList = :new.seq_traineeList and a.day = :new.day;
     end if;
 end;
 /
