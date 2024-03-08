@@ -191,6 +191,50 @@ begin
 end;
 /
 
+-- 8번  교육과정 기간 수료 중에 면접 스케줄을 잡을 수 없게
+CREATE OR REPLACE TRIGGER trgInterviewScheduleInsert
+BEFORE INSERT ON tblinterviewschedule
+FOR EACH ROW
+DECLARE
+    v_count NUMBER;
+BEGIN
+    SELECT COUNT(*)
+    INTO v_count
+    FROM tblopencurriculum
+    WHERE :NEW.day BETWEEN startdate AND enddate;
+
+    IF v_count > 0 THEN
+        RAISE_APPLICATION_ERROR(-20015, '이미 수강중인 학생입니다. ');
+    END IF;
+END;
+/
+
+--9번 합격자만 교육생 목록으로 insert 할 수 있게 제한
+/
+CREATE OR REPLACE TRIGGER trgPerInsertTraineelist
+BEFORE INSERT ON tbltraineelist
+FOR EACH ROW
+DECLARE
+    v_status tblinterviewResults.Status%TYPE;
+    v_seq_schedule tblinterviewschedule.seq_schedule%TYPE;
+BEGIN
+    -- tblinterviewschedule 테이블에서 해당 seq_trainee의 seq_schedule 값을 가져옵니다.
+    SELECT seq_schedule INTO v_seq_schedule
+    FROM tblinterviewschedule
+    WHERE seq_trainee = :NEW.seq_trainee;
+
+    -- tblinterviewResults 테이블에서 해당 seq_schedule의 Status 값을 가져옵니다.
+    SELECT Status INTO v_status
+    FROM tblinterviewResults
+    WHERE seq_schedule = v_seq_schedule;
+
+    -- 가져온 Status 값이 '불합격'인 경우에만 삽입을 막습니다.
+    IF v_status = '불합격' THEN
+        RAISE_APPLICATION_ERROR(-20001, '불합격자입니다.');
+    END IF;
+END;
+/
+    
 
 -- 10번 수료자만 취업 현황 테이블에 insert 할수 있게
 CREATE OR REPLACE TRIGGER trgEmploymentStatus
