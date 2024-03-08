@@ -52,8 +52,8 @@ BEGIN
         RAISE_APPLICATION_ERROR(-20003, '최대 40까지 입력 가능합니다.');
     END IF;
 
-    IF :NEW.attendancepoints >= 30 THEN
-        RAISE_APPLICATION_ERROR(-20004, '최대 30까지 입력 가능합니다.');
+    IF :NEW.attendancepoints >= 30 and NEW.attendancepoints < 20 THEN
+        RAISE_APPLICATION_ERROR(-20004, '최소 20, 최대 30까지 입력 가능합니다.');
     END IF;
 
     -- writtenpoints, practicalpoints, attendancepoints의 합이 100을 초과하는 경우 오류를 발생시킵니다.

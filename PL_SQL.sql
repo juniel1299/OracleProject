@@ -415,7 +415,6 @@ begin
     select seq_locker into v_seq_locker
     from tblLocker
     where seq_traineeList is null
-    and seq_locker between 21 and 178
     and rownum = 1;
     
     update tblLocker
@@ -436,7 +435,7 @@ begin
 end;
 /
 
--- B-16. 취업현황 조회 및 관리 (수정완료)
+-- B-16. 취업현황 조회 및 관리
 -- 조회
 create or replace procedure procSelectemploymentStatus (
     p_curriculum in number
