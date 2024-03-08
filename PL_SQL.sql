@@ -380,37 +380,67 @@ end;
 
 -- B-14 기자재 & 사물함 관리
 -- 사물함 배정 및 관리
-
--- (수정필요!) 사물함 자동 배정 기능 추가해주세요!!!, 
 -- 수료 완료 시 빈 사물함으로 자동 수정
-
--- 1. 등록
-create or replace procedure procInsertlocker (
-    p_seq_locker in tblLocker.seq_locker%type,
-    p_seq_equipment in tblLocker.seq_equipment%type,
-    p_seq_traineelist in tblLocker.seq_traineelist%type
+create or replace procedure procManagelocker (
+    p_status tblTraineeList.status%type,
+    p_seq_locker tblLocker.seq_locker%type
 )
 is
 begin
-    insert into tblLocker(seq_locker, seq_equipment, seq_traineelist)
-        values (p_seq_locker, p_seq_equipment, p_seq_traineelist);
-        dbms_output.put_line('등록이 완료되었습니다');
-    exception
-        when others then
-        dbms_output.put_line('등록 중 오류가 발생했습니다');
-end procInsertlocker;
+    if p_status = '수료' then
+        update tblLocker
+        set seq_traineeList = null
+        where seq_locker = p_seq_locker;
+    dbms_output.put_line('교육생이 수료했습니다. 사물함이 비었습니다.');
+    end if;
+end procManagelocker;
 /
-
+declare
+    v_seq_locker tblLocker.seq_locker%type;
 begin
-    procInsertlocker(132, 1, 132);
+    v_seq_locker := 111;
+    procManagelocker('수료', v_seq_locker);
 end;
 /
 
+-- 교육생 목록에 리스트가 들어갔을 때 사물함이 자동 배정
+create or replace procedure procAutoInsertlocker (
+    p_seq_traineeList tblTraineeList.seq_traineeList%type,
+    p_seq_trainee tblTraineeList.seq_trainee%type,
+    p_seq_openCurriculum tblTraineeList.seq_openCurriculum%type
+)
+is
+    v_seq_locker tblLocker.seq_locker%type;
+    
+begin
+    select seq_locker into v_seq_locker
+    from tblLocker
+    where seq_traineeList is null
+    and seq_locker between 21 and 178
+    and rownum = 1;
+    
+    update tblLocker
+    set seq_traineelist = p_seq_traineeList
+    where seq_locker = v_seq_locker;
+    
+    -- 배정 결과를 출력합니다.
+    dbms_output.put_line('교육생이 사물함에 자동으로 배정되었습니다.');
+exception
+    when no_data_found then
+        dbms_output.put_line('비어있는 사물함이 없습니다.');
+    when others then
+        dbms_output.put_line('오류가 발생했습니다.');
+end procAutoInsertlocker;
+/
+begin
+    procAutoInsertlocker(71, 51, 3);
+end;
+/
 
--- B-16. 취업현황 조회 및 관리 (수정필요!) 교육과정 번호를 매개 변수로 받아서 해당 정보만 출력되게 해주세요
+-- B-16. 취업현황 조회 및 관리 (수정완료)
 -- 조회
 create or replace procedure procSelectemploymentStatus (
-    p_status in varchar2
+    p_curriculum in number
 )
 is
     p_seq_employmentStatus tblEmploymentStatus.seq_employmentStatus%type;
@@ -438,7 +468,7 @@ from tblEmploymentStatus es
                 on oc.seq_openCurriculum = tl.seq_openCurriculum
                     inner join tblCurriculum c
                         on oc.seq_curriculum = c.seq_curriculum
-                            where es.status = p_status
+                            where oc.seq_openCurriculum = p_curriculum
                                 order by es.seq_employmentStatus;
 begin
 open vcursor;
@@ -453,7 +483,7 @@ end procSelectemploymentStatus;
 /
 
 begin
-    procSelectemploymentStatus('취업');
+    procSelectemploymentStatus(1);
 end;
 /
 
