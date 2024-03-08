@@ -230,7 +230,7 @@ BEGIN
 
     -- 가져온 seq_schedule 값이 없거나, 가져온 Status 값이 '불합격'인 경우에만 삽입을 막습니다.
     IF v_status = '불합격' OR v_seq_schedule IS NULL THEN
-        RAISE_APPLICATION_ERROR(-20016, '불합격자입니다.');
+        RAISE_APPLICATION_ERROR(-20016, '불합격 또는 아직 면접을 보지 않았습니다.');
     END IF;
 END;
 /
