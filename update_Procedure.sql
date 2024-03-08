@@ -249,3 +249,42 @@ begin
     end if;
 end;
 /
+
+-- B-14
+create or replace procedure procManagelocker  
+is
+    vseq_locker tblLocker.seq_locker%type;
+    vseq_traineelist tblLocker.seq_traineelist%type;
+    vstatus tblTraineeList.status%type;
+    cursor vcursor is
+    select 
+        l.seq_locker as "사물함 번호",
+        l.seq_traineelist as "교육생 목록 번호", 
+        tl.status as "수료 및 중도퇴사"
+    from tblLocker l
+    left outer join tblTraineeList tl
+    on tl.seq_traineeList = l.seq_traineeList
+    left outer join tblTrainees t
+    on t.seq_trainee = tl.seq_trainee
+    order by l.seq_locker;
+
+begin
+    open vcursor;
+    loop
+        fetch vcursor into vseq_locker, vseq_traineelist, vstatus;
+        exit when vcursor%notfound;
+        
+        if vstatus = '수료' then
+            update tblLocker
+            set seq_traineeList = null
+            where seq_locker = vseq_locker;
+            dbms_output.put_line('교육생이 수료했습니다. 사물함이 비었습니다.');
+        end if;
+    end loop;
+    close vcursor;
+end procManagelocker;
+/
+begin
+    procManagelocker;
+end;
+/
