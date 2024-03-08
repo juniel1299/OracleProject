@@ -117,17 +117,10 @@ create table tblPublicHoliday (
 
 -- 시험지
 create table tblExamPaper (
-    seq_attendancePapers number primary key,
+    seq_examPaper number primary key,
     seq_question references tblQuestion(seq_question),
-    seq_subject references tblSubject(seq_subject),
+    seq_openSubjectList references tblOpenSubjectList(seq_openSubjectList),
     kind varchar2(50) not null
-);
-
--- 교재 목록
-create table tblTextbookList (
-    seq_textbookList number primary key,
-    seq_textbook references tblTextbook(seq_textbook),
-    seq_subject references tblSubject(seq_subject)
 );
 
 -- 교육과정
@@ -178,7 +171,6 @@ create table tblOpenCurriculum (
     seq_openCurriculum number primary key,
     seq_curriculum references tblCurriculum(seq_curriculum),
     seq_room references tblRoom(seq_room), 
-    seq_teacher references tblTeacher(seq_teacher), 
     seq_curriculumProgress references tblCurriculumProgress(seq_curriculumProgress),
     startDate date not null,
     endDate date 
@@ -191,9 +183,30 @@ create table tblSubjectList(
     seq_curriculum references tblCurriculum(seq_curriculum)
 );
 
+--개설 과목 목록
+create table tblOpenSubjectList(
+    seq_openSubjectList number primary key,
+    seq_subjectList references tblSubjectList(seq_subjectList),
+    seq_openCurriculum references tblopenCurriculum(seq_openCurriculum),
+    seq_textbook references tbltextbook(seq_textbook),
+    seq_teacher references tblTeacher(seq_teacher), 
+    startDate date,
+    endDate date
+);
+
+
 -- 두번째 자식 테이블--
 
-
+--시험 정보
+create table tblTestInfo(
+    seq_testInfo number primary key,
+    seq_openSubjectList references tblOpenSubjectList(seq_openSubjectList),
+    writtenDate date,
+    practicalDate date,
+    writtenPoints number,
+    practicalPoints number,
+    attendancePoints number
+);
 
 --교육생 목록
 create table tblTraineeList(                          
@@ -264,9 +277,9 @@ create table tblOnlineCourseList (
     status varchar2(50) default '0' not null 
 );
 
---교사 평가
-create table tblTeacherEvaluation(  
-    seq_teacherEvaluation number primary key,
+--교육 과정 평가
+create table tblCurriculumEvaluation(  
+    seq_curriculumEvaluation number primary key,
     seq_traineeList references tblTraineeList(seq_traineeList),
     seq_openCurriculum references tblOpenCurriculum(seq_openCurriculum),
     grade number not null,
@@ -277,11 +290,9 @@ create table tblTeacherEvaluation(
 create table tblGrades(  
     seq_grades number primary key,
     seq_traineeList references tblTraineeList(seq_traineeList),
-    seq_subjectList references tblSubjectList(seq_subjectList),
+    seq_testInfo references tbltestInfo(seq_testInfo),
     writtenGrade number,
-    writtenDate date,
     practicalGrade number,
-    practicalDate date,
     attendanceGrade number
 );
 
