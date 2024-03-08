@@ -116,7 +116,7 @@ BEGIN
     WHERE seq_traineelist = :NEW.seq_traineelist;
 
     -- status가 '수료'인 경우에만 데이터를 삽입할 수 있습니다.
-    IF v_status <> '수료' THEN
+     IF v_status != '수료' or v_status is null THEN
         RAISE_APPLICATION_ERROR(-20010, '수료 상태일 때만 평가를 입력할 수 있습니다.');
     END IF;
 END;
@@ -178,6 +178,7 @@ END;
 
 -- 7번 출결 인정 서류 관리 > 출석 인정 상태로 변했을 때 출결 상태의 번호가 1로 변하는 트리거
 -- 프로시저 > 트리거로 변환
+
 create or replace trigger trgUpdateAttendance
 after update of admitattendance on tblAttendancePapers
 for each row
@@ -188,4 +189,68 @@ begin
         where a.seq_traineeList = :new.seq_traineeList and a.day = :new.day;
     end if;
 end;
+/
+
+-- 8번  교육과정 기간 수료 중에 면접 스케줄을 잡을 수 없게
+CREATE OR REPLACE TRIGGER trgInterviewScheduleInsert
+BEFORE INSERT ON tblinterviewschedule
+FOR EACH ROW
+DECLARE
+    v_count NUMBER;
+BEGIN
+    SELECT COUNT(*)
+    INTO v_count
+    FROM tblopencurriculum
+    WHERE :NEW.day BETWEEN startdate AND enddate;
+
+    IF v_count > 0 THEN
+        RAISE_APPLICATION_ERROR(-20015, '이미 수강중인 학생입니다. ');
+    END IF;
+END;
+/
+
+--9번 합격자만 교육생 목록으로 insert 할 수 있게 제한
+/
+CREATE OR REPLACE TRIGGER trgPerInsertTraineelist
+BEFORE INSERT ON tbltraineelist
+FOR EACH ROW
+DECLARE
+    v_status tblinterviewResults.Status%TYPE;
+    v_seq_schedule tblinterviewschedule.seq_schedule%TYPE;
+BEGIN
+    -- tblinterviewschedule 테이블에서 해당 seq_trainee의 seq_schedule 값을 가져옵니다.
+    SELECT seq_schedule INTO v_seq_schedule
+    FROM tblinterviewschedule
+    WHERE seq_trainee = :NEW.seq_trainee;
+
+    -- 가져온 seq_schedule 값이 tblinterviewResults 테이블에 있는지 확인합니다.
+    SELECT Status INTO v_status
+    FROM tblinterviewResults
+    WHERE seq_schedule = v_seq_schedule;
+
+    -- 가져온 seq_schedule 값이 없거나, 가져온 Status 값이 '불합격'인 경우에만 삽입을 막습니다.
+    IF v_status = '불합격' OR v_seq_schedule IS NULL THEN
+        RAISE_APPLICATION_ERROR(-20016, '불합격 또는 아직 면접을 보지 않았습니다.');
+    END IF;
+END;
+/
+
+-- 10번 수료자만 취업 현황 테이블에 insert 할수 있게
+CREATE OR REPLACE TRIGGER trgEmploymentStatus
+BEFORE INSERT ON tblEmploymentStatus
+FOR EACH ROW
+DECLARE
+    v_status VARCHAR2(20);
+BEGIN
+    -- tbltraineelist에서 해당 trainee의 status를 가져옵니다.
+    SELECT status INTO v_status
+    FROM tbltraineelist
+    WHERE seq_traineelist = :NEW.seq_traineelist;
+
+    -- status가 '수료'인 경우에만 데이터를 삽입할 수 있습니다.
+    IF v_status != '수료' or v_status is null THEN
+       
+        RAISE_APPLICATION_ERROR(-20017, '수료 상태일 때만 평가를 입력할 수 있습니다.');
+    END IF;
+END;
 /
