@@ -116,7 +116,7 @@ BEGIN
     WHERE seq_traineelist = :NEW.seq_traineelist;
 
     -- status가 '수료'인 경우에만 데이터를 삽입할 수 있습니다.
-    IF v_status <> '수료' THEN
+     IF v_status != '수료' or v_status is null THEN
         RAISE_APPLICATION_ERROR(-20010, '수료 상태일 때만 평가를 입력할 수 있습니다.');
     END IF;
 END;
@@ -188,4 +188,25 @@ begin
         where a.seq_traineeList = :new.seq_traineeList;
     end if;
 end;
+/
+
+
+-- 10번 수료자만 취업 현황 테이블에 insert 할수 있게
+CREATE OR REPLACE TRIGGER trgEmploymentStatus
+BEFORE INSERT ON tblEmploymentStatus
+FOR EACH ROW
+DECLARE
+    v_status VARCHAR2(20);
+BEGIN
+    -- tbltraineelist에서 해당 trainee의 status를 가져옵니다.
+    SELECT status INTO v_status
+    FROM tbltraineelist
+    WHERE seq_traineelist = :NEW.seq_traineelist;
+
+    -- status가 '수료'인 경우에만 데이터를 삽입할 수 있습니다.
+    IF v_status != '수료' or v_status is null THEN
+       
+        RAISE_APPLICATION_ERROR(-20010, '수료 상태일 때만 평가를 입력할 수 있습니다.');
+    END IF;
+END;
 /
