@@ -223,18 +223,17 @@ BEGIN
     FROM tblinterviewschedule
     WHERE seq_trainee = :NEW.seq_trainee;
 
-    -- tblinterviewResults 테이블에서 해당 seq_schedule의 Status 값을 가져옵니다.
+    -- 가져온 seq_schedule 값이 tblinterviewResults 테이블에 있는지 확인합니다.
     SELECT Status INTO v_status
     FROM tblinterviewResults
     WHERE seq_schedule = v_seq_schedule;
 
-    -- 가져온 Status 값이 '불합격'인 경우에만 삽입을 막습니다.
-    IF v_status = '불합격' THEN
-        RAISE_APPLICATION_ERROR(-20001, '불합격자입니다.');
+    -- 가져온 seq_schedule 값이 없거나, 가져온 Status 값이 '불합격'인 경우에만 삽입을 막습니다.
+    IF v_status = '불합격' OR v_seq_schedule IS NULL THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Cannot insert into tbltraineelist when status is 불합격 or seq_schedule does not exist');
     END IF;
 END;
 /
-    
 
 -- 10번 수료자만 취업 현황 테이블에 insert 할수 있게
 CREATE OR REPLACE TRIGGER trgEmploymentStatus
