@@ -403,33 +403,9 @@ end;
 
 -- B-14 기자재 & 사물함 관리
 -- 사물함 배정 및 관리
--- 수료 완료 시 빈 사물함으로 자동 수정
-create or replace procedure procManagelocker (
-    p_status tblTraineeList.status%type,
-    p_seq_locker tblLocker.seq_locker%type
-)
-is
-begin
-    if p_status = '수료' then
-        update tblLocker
-        set seq_traineeList = null
-        where seq_locker = p_seq_locker;
-    dbms_output.put_line('교육생이 수료했습니다. 사물함이 비었습니다.');
-    end if;
-end procManagelocker;
-/
-declare
-    v_seq_locker tblLocker.seq_locker%type;
-begin
-    v_seq_locker := 111;
-    procManagelocker('수료', v_seq_locker);
-end;
-/
-
 -- 교육생 목록에 리스트가 들어갔을 때 사물함이 자동 배정
 create or replace procedure procAutoInsertlocker (
     p_seq_traineeList tblTraineeList.seq_traineeList%type,
-    p_seq_trainee tblTraineeList.seq_trainee%type,
     p_seq_openCurriculum tblTraineeList.seq_openCurriculum%type
 )
 is
@@ -456,7 +432,7 @@ exception
 end procAutoInsertlocker;
 /
 begin
-    procAutoInsertlocker(71, 51, 3);
+    procAutoInsertlocker(71, 3);
 end;
 /
 
