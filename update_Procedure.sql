@@ -235,3 +235,17 @@ begin
     procUpdateaAttendanceStatus;
 end;
 /
+
+-- B-13. 출결 인정 서류 관리 > 출석 인정 상태로 변했을 때 출결 상태의 번호가 1로 변하는 트리거
+-- 프로시저 > 트리거로 변환
+create or replace trigger trgUpdateAttendance
+after update of admitattendance on tblAttendancePapers
+for each row
+begin
+    if :new.admitattendance = '출석 인정' then
+        update tblAttendance a
+        set a.seq_attendanceStatus = 1
+        where a.seq_traineeList = :new.seq_traineeList;
+    end if;
+end;
+/
