@@ -146,62 +146,73 @@ end;
 
 
 -- b-7 
--- 과목별 (수정필요!) 과목명, 교사명, 교재명, 교육생 이름 위치 변경 필요
-CREATE OR REPLACE PROCEDURE select_curriculum_by_subject(
-    p_subject IN vwcurriculum.s_name%TYPE
-) IS
-    CURSOR c_curriculum IS
-        SELECT vc.c_name,vt.t_name,vc.s_name,vc.period,vc.r_name,vt.t_ssn,vg.writtengrade,vg.practicalgrade 
+
+--과목별
+
+CREATE OR REPLACE PROCEDURE procCurriculumBySubject (
+    p_subject_name IN VARCHAR2
+)
+IS
+    v_output VARCHAR2(4000);
+BEGIN
+    FOR cur IN (
+        SELECT vc.c_name || ', ' || cp.period || ', ' || vc.r_name || ', ' || vc.s_name || ', ' || tea.name || ', ' || tb.name || ', ' || vt.t_name || ', ' || vt.t_ssn || ', ' || vg.writtengrade || ', ' || vg.practicalgrade AS output_line
         FROM vwcurriculum vc
         INNER JOIN vwtrainees vt ON vt.seq_opencurriculum = vc.seq_opencurriculum
         INNER JOIN vwgrades vg ON vg.seq_traineelist = vt.seq_traineelist
-        WHERE vc.s_name = p_subject
-        GROUP BY vc.c_name,vt.t_name,vc.s_name,vc.period,vc.r_name,vt.t_ssn,vg.writtengrade,vg.practicalgrade;
-    v_curriculum c_curriculum%ROWTYPE;
-BEGIN
-    OPEN c_curriculum;
+        INNER JOIN tblteacher tea ON tea.seq_teacher = vc.seq_teacher
+        INNER JOIN tbltextbook tb ON tb.seq_textbook = vc.seq_textbook
+        INNER JOIN tblcourseperiod cp ON cp.seq_courseperiod = vc.seq_courseperiod
+        WHERE vc.c_name = p_subject_name
+    )
     LOOP
-        FETCH c_curriculum INTO v_curriculum;
-        EXIT WHEN c_curriculum%NOTFOUND;
-        DBMS_OUTPUT.PUT_LINE('과정 이름: ' || v_curriculum.c_name || ', 교육생 이름: ' || v_curriculum.t_name || ', 주제: ' || v_curriculum.s_name || ', 기간: ' || v_curriculum.period || ', 강의실 이름: ' || v_curriculum.r_name || ', 주민등록번호: ' || v_curriculum.t_ssn || ', 필기 성적: ' || v_curriculum.writtengrade || ', 실기 성적: ' || v_curriculum.practicalgrade);
-        dbms_output.put_line('----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------');
-
+        v_output := cur.output_line;
+        DBMS_OUTPUT.PUT_LINE(v_output);
     END LOOP;
-    CLOSE c_curriculum;
-EXCEPTION
-    WHEN NO_DATA_FOUND THEN
-        DBMS_OUTPUT.PUT_LINE('해당 주제를 가진 과정 정보를 찾을 수 없습니다.');
-    WHEN OTHERS THEN
-        ROLLBACK;
-        RAISE;
-END select_curriculum_by_subject;
+END procCurriculumBySubject;
+/
+/
+
 /
 BEGIN
-    select_curriculum_by_subject('AWS');
+    procCurriculumBySubject ('자바(Java)기반 Web과 스마트플랫폼 Full-Stack 과정(A)');
 END;
 /
 
 
--- 특정 개설 과정 (수정필요!) 성적 등록 여부, 시험 문제 파일 등록 여부 추가 필요, 교육생 이름 필요 없음
+-- 특정 개설 과정 
 CREATE OR REPLACE PROCEDURE procGradesCourseInfo(
     p_course IN vwcurriculum.c_name%TYPE
 ) IS
- 
     CURSOR c_grades IS
-        SELECT vt.t_name, vc.c_name, vc.s_name, t.name, vg.writtengrade, vg.practicalgrade
+        SELECT vt.t_name, vc.c_name, vc.s_name, t.name AS teacher_name, 
+               vg.writtengrade, vg.practicalgrade,
+               (CASE WHEN vg.writtengrade IS NOT NULL THEN '필기성적입력완료' END) AS written,
+               (CASE WHEN vg.practicalgrade IS NOT NULL THEN '실기성적입력완료' END) AS practical
         FROM vwgrades vg
         INNER JOIN vwtrainees vt ON vt.seq_traineelist = vg.seq_traineelist
         INNER JOIN vwcurriculum vc ON vc.seq_subject = vg.seq_subject
         INNER JOIN tblteacher t ON t.seq_teacher = vc.seq_teacher
         WHERE vc.c_name = p_course
         GROUP BY vt.t_name, vc.c_name, vc.s_name, t.name, vg.writtengrade, vg.practicalgrade;
+
     v_grades c_grades%ROWTYPE;
+    written VARCHAR2(50);
+    practical VARCHAR2(50);
 BEGIN
     OPEN c_grades;
     LOOP
         FETCH c_grades INTO v_grades;
         EXIT WHEN c_grades%NOTFOUND;
-        DBMS_OUTPUT.PUT_LINE('교육생 이름: ' || v_grades.t_name || ', 과정 이름: ' || v_grades.c_name || ', 주제: ' || v_grades.s_name || ', 강사 이름: ' || v_grades.name || ', 필기 성적: ' || v_grades.writtengrade || ', 실기 성적: ' || v_grades.practicalgrade);
+        
+        written := v_grades.written;
+        practical := v_grades.practical;
+
+        DBMS_OUTPUT.PUT_LINE('과정 이름: ' || v_grades.c_name || ', 주제: ' || v_grades.s_name || 
+                             ', 강사 이름: ' || v_grades.teacher_name || ', 필기 성적: ' || 
+                             v_grades.writtengrade || ', 실기 성적: ' || v_grades.practicalgrade || 
+                             ', 필기성적입력 ' || written || ', 실기성적입력 ' || practical);
+                             
         dbms_output.put_line('----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------');
     END LOOP;
     CLOSE c_grades;
@@ -212,6 +223,7 @@ EXCEPTION
         ROLLBACK;
         RAISE;
 END procGradesCourseInfo;
+
 /
 
 BEGIN
@@ -220,50 +232,60 @@ END;
 /
 
 
---교육생 개인 별 (수정필요!) 교사명, 출결 추가 필요
-CREATE OR REPLACE PROCEDURE procTraineeInfo(
-    p_name IN vwtrainees.t_name%TYPE
+--교육생 개인 별 
+CREATE OR REPLACE PROCEDURE procGradesInfoByTrainee(
+    p_trainee_name IN VARCHAR2
 ) IS
-    CURSOR c_trainee IS
-        SELECT vt.t_name, vt.t_ssn, vc.c_name, vc.oc_startdate, vc.oc_enddate, vc.r_name, vc.s_name, vc.period, vg.writtengrade, vg.practicalgrade
+BEGIN
+    FOR rec IN (
+        SELECT vt.t_name AS trainee_name, vt.t_ssn, vc.c_name AS course_name, cp.period, 
+               vc.r_name AS classroom_name, vc.s_name AS subject_name, vc.period AS subject_period, 
+               tea.name AS teacher_name, ass.situation, vg.writtengrade, vg.practicalgrade
         FROM vwgrades vg
         INNER JOIN vwtrainees vt ON vt.seq_traineelist = vg.seq_traineelist
         INNER JOIN vwcurriculum vc ON vc.seq_subject = vg.seq_subject
-        WHERE vt.t_name = p_name
-        GROUP BY vt.t_name, vt.t_ssn, vc.c_name, vc.oc_startdate, vc.oc_enddate, vc.r_name, vc.c_name, vc.period, vc.s_name, vg.writtengrade, vg.practicalgrade;
-    
-    v_trainee c_trainee%ROWTYPE;
-BEGIN
-    OPEN c_trainee;
+        INNER JOIN tblcourseperiod cp ON cp.seq_courseperiod = vc.seq_courseperiod
+        INNER JOIN tblattendancestatus ass ON ass.seq_attendancestatus = vt.seq_attendancestatus
+        INNER JOIN tblteacher tea ON tea.seq_teacher = vc.seq_teacher
+        WHERE vt.t_name = p_trainee_name
+        GROUP BY vt.t_name, vt.t_ssn, vc.c_name, cp.period, vc.oc_startdate, vc.oc_enddate,
+                 vc.r_name, vc.c_name, vc.period, tea.name, ass.situation, vc.s_name, vg.writtengrade, vg.practicalgrade
+    )
     LOOP
-        FETCH c_trainee INTO v_trainee;
-        EXIT WHEN c_trainee%NOTFOUND;
-        
-        DBMS_OUTPUT.PUT_LINE('교육생 이름: ' || v_trainee.t_name || ', 주민등록번호: ' || v_trainee.t_ssn || ', 과정 이름: ' || v_trainee.c_name || ', 시작 날짜: ' || v_trainee.oc_startdate || ', 종료 날짜: ' || v_trainee.oc_enddate || ', 강의실: ' || v_trainee.r_name || ', 과목 이름: ' || v_trainee.s_name || ', 기간: ' || v_trainee.period || ', 필기 성적: ' || v_trainee.writtengrade || ', 실기 성적: ' || v_trainee.practicalgrade);
-        dbms_output.put_line('----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------');
-
+        DBMS_OUTPUT.PUT_LINE('교육생 이름: ' || rec.trainee_name || ', 주민등록번호: ' || rec.t_ssn || 
+                             ', 과정명: ' || rec.course_name || ', 교시: ' || rec.period || 
+                             ', 강의실: ' || rec.classroom_name || ', 주제: ' || rec.subject_name || 
+                             ', 기간: ' || rec.subject_period || ', 교사 이름: ' || rec.teacher_name || 
+                             ', 출결상태: ' || rec.situation || ', 필기성적: ' || 
+                             rec.writtengrade || ', 실기성적: ' || rec.practicalgrade);
     END LOOP;
-    CLOSE c_trainee;
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
-        DBMS_OUTPUT.PUT_LINE('해당 교육생의 정보를 찾을 수 없습니다.');
+        DBMS_OUTPUT.PUT_LINE('해당 교육생의 성적 정보를 찾을 수 없습니다.');
     WHEN OTHERS THEN
         ROLLBACK;
         RAISE;
-END procTraineeInfo;
+END procGradesInfoByTrainee;
 /
 
+
+
+/
 BEGIN
-    procTraineeInfo('천유서');
+    procGradesInfoByTrainee('천유서'); 
 END;
+
 /
 
 
--- b-8 (수정필요!) 두개 모두 기간 별로 조회할 매개 변수 추가 필요
--- 출결관리 
--- 1. 개설 과정별
+-- b-8 
+
 CREATE OR REPLACE PROCEDURE procCourseInfo(
-    p_course IN tblCurriculum.name%TYPE
+    p_course IN tblCurriculum.name%TYPE,
+    p_start_date IN DATE,
+    p_end_date IN DATE
+    
+   
 ) IS
     CURSOR c_course IS
         SELECT t.name AS trainee_name, a.day, c.name AS course_name, ad.situation 
@@ -273,7 +295,8 @@ CREATE OR REPLACE PROCEDURE procCourseInfo(
         INNER JOIN tblCurriculum c ON c.seq_curriculum = oc.seq_opencurriculum
         INNER JOIN tblattendancestatus ad ON ad.seq_attendancestatus = a.seq_attendancestatus
         INNER JOIN tblTrainees t ON t.seq_trainee = tl.seq_trainee
-        WHERE c.name = p_course
+        WHERE c.name = p_course 
+        AND a.day BETWEEN p_start_date AND p_end_date
         GROUP BY t.name, a.day, c.name, ad.situation;
     
     v_course c_course%ROWTYPE;
@@ -298,7 +321,7 @@ END procCourseInfo;
 /
 
 BEGIN
-    procCourseInfo('AWS 클라우드와 Elasticsearch를 활용한 Java Full-Stack 과정(B)');
+    procCourseInfo('AWS 클라우드와 Elasticsearch를 활용한 Java Full-Stack 과정(B)', TO_DATE('2023-11-01', 'YYYY-MM-DD'), TO_DATE('2023-12-30', 'YYYY-MM-DD'));
 END;
 /
 
