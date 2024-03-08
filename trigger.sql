@@ -230,7 +230,7 @@ BEGIN
 
     -- 가져온 seq_schedule 값이 없거나, 가져온 Status 값이 '불합격'인 경우에만 삽입을 막습니다.
     IF v_status = '불합격' OR v_seq_schedule IS NULL THEN
-        RAISE_APPLICATION_ERROR(-20001, 'Cannot insert into tbltraineelist when status is 불합격 or seq_schedule does not exist');
+        RAISE_APPLICATION_ERROR(-20016, '불합격자입니다.');
     END IF;
 END;
 /
@@ -250,7 +250,7 @@ BEGIN
     -- status가 '수료'인 경우에만 데이터를 삽입할 수 있습니다.
     IF v_status != '수료' or v_status is null THEN
        
-        RAISE_APPLICATION_ERROR(-20010, '수료 상태일 때만 평가를 입력할 수 있습니다.');
+        RAISE_APPLICATION_ERROR(-20017, '수료 상태일 때만 평가를 입력할 수 있습니다.');
     END IF;
 END;
 /
