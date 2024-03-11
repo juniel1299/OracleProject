@@ -3,15 +3,15 @@
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FOracleProject%2FOracleProject&count_bg=%23FF0000&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com) <br/>
 <div align="center">
   👍 Skill  <br/>
-ANSI-SQL
-Oracle(PL/SQL)
-Git
-
-
+ANSI-SQL  <br/> 
+Oracle(PL/SQL) <br/>  
+Git  <br/> 
+  
+  <br/> 
 📂 Collaborative Software <br/>
-Github
-Canva
-Google Docs
+Github <br/> 
+Canva <br/> 
+Google Docs <br/> 
 Discord
   
   
