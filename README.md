@@ -1,4 +1,4 @@
-아직 수정 중임
+
 
 # 오라클 프로젝트
 <br/>				<div align="center">
