@@ -1,24 +1,27 @@
-아직 수정 중임
+
 
 # 오라클 프로젝트
-<br/>				<div align="center">
-[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FOracleProject%2FOracleProject&count_bg=%23FF0000&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com) <br/>
-<div align="center">
-  👍 Skill  <br/>
+
+
+교육 기관에서 사용한다 가정하여 교육 기관 내에서 사용 가능한 운영프로그램을 위한 데이터베이스 설계를 하여, 요구 분석 , DB 설계 , DB 구현을 진행하는 프로젝트입니다.
+
+<hr/>
+<div align="left">
+  📕 Skill  <br/>
 ANSI-SQL  <br/> 
-Oracle(PL/SQL) <br/>  
-Git  <br/> 
-  
-  <br/> 
+Oracle(PL/SQL) <br/> 
+
+<hr/>
+
 📂 Collaborative Software <br/>
-Github <br/> 
-Canva <br/> 
-Google Docs <br/> 
-Discord
+<img src="https://img.shields.io/badge/github-#181717?style=for-the-badge&logo=github&logoColor=white">   <br/> 
+<img src="https://img.shields.io/badge/canva-#00C4CC?style=for-the-badge&logo=canva&logoColor=white">   <br/> 
+<img src="https://img.shields.io/badge/googledocs-#4285F4?style=for-the-badge&logo=googledocs&logoColor=white">  <br/> 
+<img src="https://img.shields.io/badge/discord-#5865F2?style=for-the-badge&logo=discord&logoColor=white"> <br/>
   
+
   
-  <br/> 
-  <br/>
+  <hr/>
 
 
 ## 😀  해당 프로젝트 참가 멤버
