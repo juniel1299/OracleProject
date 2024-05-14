@@ -1,9 +1,36 @@
 
 
-# 오라클 프로젝트
-<br/>				<div align="center">
-[![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FOracleProject%2FOracleProject&count_bg=%23FF0000&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com) <br/>
-<div align="center">
+# 💻 Oracle SQL 프로젝트
+
+---				
+## 📝 요약
+IT 국비 지원 학원에서 외주를 받아 관리자는 강사와 학생 그리고 학원에서 필요로 하는 전반적인 프로세스를 조율 할 수 있고 데이터를 조회 생성 수정 삭제 등을 할 수 있으며, 강사는 학생에 대한 데이터를 보고 좀 더 효율적인 관리를 할 수 있는 프로그램을 제작하는 프로젝트를 진행하였습니다.
+
+---
+
+## :pushpin: 상세기능
+<b> 관리자 </b>
+- 관리자는 교사에 대한 정보를 조회 추가 수정 삭제를 할 수 있다.
+- 관리자는 학원 프로세스에 관한 데이터들을 조회 추가 수정 삭제를 할 수 있다.
+- 관리자는 교사의 평가에 대한 데이터들을 조회 추가 수정 삭제 할 수 있다.
+- 관리자는 학생들의 출결사항 및 개인정보를 조회 추가 수정 삭제 할 수 있다.
+
+<b> 교사 </b>
+- 교사는 학생에 대한 성적을 조회 추가 수정 삭제 할 수 있다.
+- 교사는 강의 스케줄, 학생 출결, 교사 평가에 대하여 조회만 가능하다.
+- 교사는 프로젝트 팀 및 프로젝트 후기를 조회 추가 수정 삭제가 가능하다.
+
+<b> 학생 </b>
+
+
+
+
+
+
+
+
+
+
   👍 Skill  <br/>
 ANSI-SQL  <br/> 
 Oracle(PL/SQL) <br/>  
