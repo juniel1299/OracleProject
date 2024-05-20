@@ -61,13 +61,10 @@ IT 국비 지원 학원에서 외주를 받아 관리자는 강사와 학생 그
 
 ## 😀  해당 프로젝트 참가 멤버
 
-|이름|깃허브 주소|비고|
-|------|---|---|
-|김민곤|https://github.com/kmggmk|테스트3|
-|김희연|https://github.com/Heey2|테스트3|
-|장원준|https://github.com/juniel1299|테스트3|
-|정원혁|https://github.com/wonhyuk21|테스트3|
-|정혜정|https://github.com/VVjD|테스트3|
+## Team
+|<img src="https://avatars.githubusercontent.com/u/127924216?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/155238712?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/62318700?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/157667022?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/128907052?v=4" width="150" height="150"/>|
+|:-:|:-:|:-:|:-:|:-:|
+|[@kmggmk](https://github.com/kmggmk)|Heeyeon KIM<br/>[@Heey2](https://github.com/Heey2)|juniel1299<br/>[@juniel1299](https://github.com/juniel1299)|[@wonhyuk21](https://github.com/wonhyuk21)|[@VVjD](https://github.com/VVjD)|
 
 
 
