@@ -33,10 +33,13 @@ IT 국비 지원 학원에서 외주를 받아 관리자는 강사와 학생 그
 ---
 
 ## 📂 Collaborative Software <br/>
-<img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">   <br/> 
-<img src="https://img.shields.io/badge/canva-00C4CC?style=for-the-badge&logo=canva&logoColor=white">   <br/> 
-<img src="https://img.shields.io/badge/googledocs-4285F4?style=for-the-badge&logo=googledocs&logoColor=white">  <br/> 
-<img src="https://img.shields.io/badge/discord-5865F2?style=for-the-badge&logo=discord&logoColor=white"> <br/>
+
+<div>
+<img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">   
+<img src="https://img.shields.io/badge/canva-00C4CC?style=for-the-badge&logo=canva&logoColor=white">   
+<img src="https://img.shields.io/badge/googledocs-4285F4?style=for-the-badge&logo=googledocs&logoColor=white">  
+<img src="https://img.shields.io/badge/discord-5865F2?style=for-the-badge&logo=discord&logoColor=white"> 
+  </div>
   
 ## 🗄 Document <br/>
 <div><a href="https://github.com/juniel1299/OracleProject/tree/main/4%EC%A1%B0%20db%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%20%EB%AC%B8%EC%84%9C%20%EB%AA%A8%EC%9D%8C/1.%20%EC%9A%94%EA%B5%AC%EB%B6%84%EC%84%9D%EC%84%9C">1. 요구분석</a> </div>
@@ -64,7 +67,7 @@ IT 국비 지원 학원에서 외주를 받아 관리자는 강사와 학생 그
 
 |<img src="https://avatars.githubusercontent.com/u/127924216?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/155238712?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/62318700?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/157667022?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/128907052?v=4" width="150" height="150"/>|
 |:-:|:-:|:-:|:-:|:-:|
-|[@kmggmk](https://github.com/kmggmk)|Heeyeon KIM<br/>[@Heey2](https://github.com/Heey2)|juniel1299<br/>[@juniel1299](https://github.com/juniel1299)|[@wonhyuk21](https://github.com/wonhyuk21)|[@VVjD](https://github.com/VVjD)|
+|[@kmggmk](https://github.com/kmggmk)|[@Heey2](https://github.com/Heey2)|[@juniel1299](https://github.com/juniel1299)|[@wonhyuk21](https://github.com/wonhyuk21)|[@VVjD](https://github.com/VVjD)|
 |김민곤|김희연|장원준|정원혁|정혜정|
 
 
