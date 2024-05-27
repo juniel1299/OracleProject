@@ -28,17 +28,18 @@ IT 국비 지원 학원에서 외주를 받아 관리자는 강사와 학생 그
 ---
 
 <h2>  📕 Skill </h2> 
-<img src="https://img.shields.io/badge/oracle-F80000?style=flat&logo=oracle&logoColor=white"/> <br/>
+
+![Oracle](https://img.shields.io/badge/Oracle-F80000?style=for-the-badge&logo=oracle&logoColor=white)
 
 ---
 
 ## 📂 Collaborative Software <br/>
 
 <div>
-<img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">   
-<img src="https://img.shields.io/badge/canva-00C4CC?style=for-the-badge&logo=canva&logoColor=white">   
-<img src="https://img.shields.io/badge/googledocs-4285F4?style=for-the-badge&logo=googledocs&logoColor=white">  
-<img src="https://img.shields.io/badge/discord-5865F2?style=for-the-badge&logo=discord&logoColor=white"> 
+	
+![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)
+![Canva](https://img.shields.io/badge/Canva-%2300C4CC.svg?style=for-the-badge&logo=Canva&logoColor=white)
+![Discord](https://img.shields.io/badge/Discord-%235865F2.svg?style=for-the-badge&logo=discord&logoColor=white)
   </div>
   
 ## 🗄 Document <br/>
@@ -64,11 +65,10 @@ IT 국비 지원 학원에서 외주를 받아 관리자는 강사와 학생 그
 
 
 ## 😀  해당 프로젝트 참가 멤버
-
-|<img src="https://avatars.githubusercontent.com/u/127924216?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/155238712?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/62318700?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/157667022?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/128907052?v=4" width="150" height="150"/>|
-|:-:|:-:|:-:|:-:|:-:|
-|[@kmggmk](https://github.com/kmggmk)|[@Heey2](https://github.com/Heey2)|[@juniel1299](https://github.com/juniel1299)|[@wonhyuk21](https://github.com/wonhyuk21)|[@VVjD](https://github.com/VVjD)|
 |김민곤|김희연|장원준|정원혁|정혜정|
+|:-:|:-:|:-:|:-:|:-:|
+|<img src="https://avatars.githubusercontent.com/u/127924216?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/155238712?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/62318700?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/157667022?v=4" width="150" height="150"/>|<img src="https://avatars.githubusercontent.com/u/128907052?v=4" width="150" height="150"/>|
+|[@kmggmk](https://github.com/kmggmk)|[@Heey2](https://github.com/Heey2)|[@juniel1299](https://github.com/juniel1299)|[@wonhyuk21](https://github.com/wonhyuk21)|[@VVjD](https://github.com/VVjD)|
 
 
 
